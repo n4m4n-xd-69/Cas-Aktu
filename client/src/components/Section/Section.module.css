@@ -1,0 +1,27 @@
+/* Moved out of assets/css/base.css "Layout primitives". Values unchanged.
+
+   The three vertical-rhythm steps exist because one value used to serve every
+   band, which put ~200px of dead air between adjacent sections nine times over
+   on the home page. tokens.css documents the reasoning; a band's padding
+   should reflect what the band is. */
+
+.section {
+  padding-block: var(--section-y);
+  position: relative;
+}
+
+.subtle {
+  background: var(--bg-subtle);
+}
+.muted {
+  background: var(--bg-muted);
+}
+.tight {
+  padding-block: var(--section-y-tight);
+}
+.loose {
+  padding-block: var(--section-y-loose);
+}
+.flushTop {
+  padding-top: 0;
+}

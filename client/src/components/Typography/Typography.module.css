@@ -1,0 +1,58 @@
+/* Typographic primitives.
+
+   Headings themselves are NOT here: h1-h6 are styled globally in base.css,
+   because a heading must look right whether or not it came through a
+   component. This file holds the named typographic roles that the legacy
+   system applies by class — moved from base.css "Layout primitives" and
+   components.css section 2. */
+
+/* Intro paragraph under a page or section heading. Used 93 times. */
+.lede {
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--text-secondary);
+  max-width: var(--prose);
+}
+
+/* Editorial hairline. Deliberately lighter than --border so it reads as
+   typographic structure rather than as a box edge. */
+.rule {
+  border: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.stack > * + * {
+  margin-top: var(--space-4);
+}
+.stackLg > * + * {
+  margin-top: var(--space-8);
+}
+
+/* The eyebrow and its trailing rule are the system's most repeated editorial
+   signal — they establish hierarchy in place of an oversized heading. Used
+   101 times. */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-4);
+}
+
+.eyebrow::after {
+  content: '';
+  flex: 1;
+  max-width: 3.5rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+.eyebrowOnDark {
+  color: color-mix(in srgb, #fff 78%, var(--accent));
+}

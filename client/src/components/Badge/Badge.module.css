@@ -1,0 +1,46 @@
+/* Ported from assets/css/components.css section 2 (lines 82-107).
+   Dropped: `.badge--updated` (zero occurrences anywhere in the corpus). */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.22em 0.62em;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.01em;
+  border-radius: var(--radius-full);
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+
+/* State is never colour alone — each badge carries its own word, and the dot
+   is decorative reinforcement only. This is what keeps the component at
+   WCAG 1.4.1 (Use of Colour) without needing an icon set. */
+.badge::before {
+  content: '';
+  width: 0.42em;
+  height: 0.42em;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+
+.open {
+  color: var(--success);
+  background: color-mix(in srgb, var(--success) 10%, transparent);
+}
+.closing {
+  color: var(--warning);
+  background: color-mix(in srgb, var(--warning) 10%, transparent);
+}
+.archived,
+.draft {
+  color: var(--text-tertiary);
+  background: var(--bg-muted);
+}
+.canceled {
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+}

@@ -7,30 +7,29 @@ import {
   isRouteErrorResponse,
 } from 'react-router';
 
+import { Container } from '~/components';
+import { ThemeProvider } from '~/theme/ThemeProvider';
+import { chromeHeightScript, prePaintScript } from '~/theme/theme-script';
+
+// Order is load-bearing: tokens.css declares the custom properties that
+// base.css and every CSS Module consume. Vite preserves import order when it
+// extracts the stylesheet.
+import './styles/tokens.css';
+import './styles/base.css';
+
 import type { Route } from './+types/root';
-import styles from './styles/root.module.css';
 
 /**
- * RootLayout — the document shell for every page.
+ * RootLayout — the document shell for every page. Replaces
+ * templates/_layout.html.
  *
- * Replaces templates/_layout.html. What has been carried over at S1 is only
- * structure: language, viewport, the skip link, and the #main landmark that
- * the skip link targets. The current site ships that skip link on 392 of 392
- * pages (docs/AUDIT.md section 8) and losing it would be a regression.
+ * Present at S2: language, viewport, the skip link and #main landmark, the
+ * design system, the pre-paint scripts, and the theme provider.
  *
- * NOT yet present, deliberately — S2 work, tracked in the design spec section 5.1:
- *
- *   1. The pre-paint theme resolver. It reads localStorage["cas-theme"] and
- *      sets data-theme before first paint. It is meaningless until tokens.css
- *      is ported, and must land as an inline script in <head>, never as a
- *      component effect, or the wrong theme flashes.
- *
- *   2. The --chrome-h measurement. Running it after paint instead of inline
- *      cost 0.06 CLS on the current site; that regression is documented in
- *      templates/_layout.html and must not be reintroduced.
- *
- *   3. The js-on class, which lets scroll-reveal start hidden only when
- *      scripts actually run, so non-JS visitors still see all content.
+ * Still to come: the alert band, utility bar, header, notice ticker and
+ * footer (S4). Each of those must carry `data-site-chrome` if it is part of
+ * the fixed chrome, so the --chrome-h measurement below can see it, and
+ * `print-hide` if it must not appear in print.
  */
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -38,14 +37,58 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="theme-color"
+          content="#292B88"
+          media="(prefers-color-scheme: light)"
+        />
+        <meta
+          name="theme-color"
+          content="#0B0C11"
+          media="(prefers-color-scheme: dark)"
+        />
         <Meta />
         <Links />
+
+        {/* Self-hosted, so there is no third-party origin to preconnect to.
+            Only the latin subsets are preloaded; latin-ext is fetched on
+            demand through its unicode-range. */}
+        <link
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          crossOrigin=""
+          href="/assets/fonts/inter-latin.woff2"
+        />
+        <link
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          crossOrigin=""
+          href="/assets/fonts/source-serif-4-latin.woff2"
+        />
+
+        {/* Must run before first paint and before any bundle: sets js-on and
+            resolves the stored theme. A React effect would be far too late —
+            the theme would flash and .reveal content would start hidden for
+            visitors whose JavaScript never runs. */}
+        <script dangerouslySetInnerHTML={{ __html: prePaintScript }} />
       </head>
       <body>
-        <a className={styles.skipLink} href="#main">
+        <a className="skip-link" href="#main">
           Skip to main content
         </a>
+
+        {/* Site chrome (alert band, utility bar, header) mounts here at S4. */}
+
+        {/* Measures the chrome and publishes --chrome-h. Sits exactly where it
+            sat in _layout.html: after the chrome markup, before <main> exists,
+            so a full-viewport hero is laid out correctly on the first pass.
+            Running this from a bundle instead cost 0.06 CLS. */}
+        <script dangerouslySetInnerHTML={{ __html: chromeHeightScript }} />
+
         <main id="main">{children}</main>
+
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -54,7 +97,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <ThemeProvider>
+      <Outlet />
+    </ThemeProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
@@ -72,9 +119,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <section className={styles.errorPage}>
+    <Container width="prose">
       <h1>{heading}</h1>
       <p>{detail}</p>
-    </section>
+    </Container>
   );
 }

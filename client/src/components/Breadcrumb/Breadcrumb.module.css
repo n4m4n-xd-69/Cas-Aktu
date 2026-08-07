@@ -1,0 +1,39 @@
+/* Ported from assets/css/components.css section 6 (lines 1146-1151).
+   Present on 388 of 392 pages. */
+
+.breadcrumbs {
+  padding-block: var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-tertiary);
+}
+
+/* The separator is a CSS ::before, so it is never announced by a screen
+   reader and never selectable as text. */
+.item + .item::before {
+  content: '/';
+  color: var(--border-strong);
+}
+
+.item a {
+  color: var(--text-secondary);
+}
+
+.item a:hover {
+  color: var(--brand);
+}
