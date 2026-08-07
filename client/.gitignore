@@ -1,0 +1,7 @@
+node_modules/
+
+# Build output — regenerate with `npm run build`
+dist/
+
+# React Router generated route types — regenerate with `npm run typecheck`
+.react-router/
