@@ -1,0 +1,77 @@
+---
+/**
+ * S5 proof: dynamic routes generated from a content collection.
+ *
+ * getStaticPaths emits one static HTML file per record at build time, which
+ * is the whole reason Astro was chosen over a Vite SPA — 158 real, crawlable
+ * URLs rather than one shell.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('documents');
+  return docs.map((doc) => ({
+    params: { slug: doc.data.slug },
+    props: { doc: doc.data },
+  }));
+}
+
+const { doc } = Astro.props;
+
+function formatSize(bytes: number): string {
+  if (!bytes) return 'Unknown size';
+  const mb = bytes / (1024 * 1024);
+  return mb >= 1 ? `${mb.toFixed(1)} MB` : `${Math.round(bytes / 1024)} KB`;
+}
+---
+
+<BaseLayout
+  title={doc.title}
+  description={`${doc.title} — official document, Centre for Advanced Studies (CAS), AKTU.`}
+  canonicalPath={`/documents/${doc.slug}/`}
+>
+  <div class="page-head container">
+    <p class="eyebrow">{doc.type}</p>
+    <h1>{doc.title}</h1>
+  </div>
+
+  <section class="section section--flush-top">
+    <div class="container">
+      <ul class="record-list">
+        <li class="record-row">
+          <div class="record-row__title">Type</div>
+          <div class="record-row__meta">{doc.type}</div>
+        </li>
+        <li class="record-row">
+          <div class="record-row__title">Area</div>
+          <div class="record-row__meta">{doc.area}</div>
+        </li>
+        <li class="record-row">
+          <div class="record-row__title">Year</div>
+          <div class="record-row__meta">{doc.year ?? 'Not dated'}</div>
+        </li>
+        <li class="record-row">
+          <div class="record-row__title">Format</div>
+          <div class="record-row__meta">PDF, {formatSize(doc.sizeBytes)}</div>
+        </li>
+        <li class="record-row">
+          <div class="record-row__title">Status</div>
+          <div class="record-row__meta">
+            {/*
+              verified is schema-enforced, so this badge cannot be forgotten
+              the way a convention can. FR-08 is not met for this collection.
+            */}
+            <span class={doc.verified ? 'badge badge--open' : 'badge badge--draft'}>
+              {doc.verified ? 'Reviewed' : 'Unreviewed migration copy'}
+            </span>
+          </div>
+        </li>
+      </ul>
+
+      <p class="hub-meta">
+        Source: <code>{doc.sourceUrl}</code>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

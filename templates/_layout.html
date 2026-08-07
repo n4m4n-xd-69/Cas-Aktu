@@ -1,0 +1,66 @@
+<!doctype html>
+<!-- data-asset-prefix lets palette.js build the search-index URL from any
+     directory depth; the palette ships on every page, at every depth. -->
+<html lang="en" data-asset-prefix="{{ASSET_PREFIX}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<link rel="canonical" href="{{CANONICAL}}">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="{{DESCRIPTION}}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Centre for Advanced Studies">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#292B88" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B0C11" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="{{ASSET_PREFIX}}assets/favicon.svg" type="image/svg+xml">
+
+<!-- Fonts are self-hosted, so there is no third-party origin to connect to
+     and nothing to preconnect. Only the latin subsets are preloaded; the
+     latin-ext files download on demand via their unicode-range. -->
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="{{ASSET_PREFIX}}assets/fonts/inter-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="{{ASSET_PREFIX}}assets/fonts/source-serif-4-latin.woff2">
+
+<script>
+/* Runs before first paint, so the correct theme is set with no flash. */
+/* js-on marks that scripts run, so scroll-reveal may safely start hidden.
+   Without JS the class is absent and all content renders visible (FR-02). */
+document.documentElement.classList.add("js-on");
+(function(){try{var t=localStorage.getItem("cas-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();
+</script>
+<link rel="stylesheet" href="{{ASSET_PREFIX}}assets/css/tokens.css">
+<link rel="stylesheet" href="{{ASSET_PREFIX}}assets/css/base.css">
+<link rel="stylesheet" href="{{ASSET_PREFIX}}assets/css/components.css">
+{{HEAD_EXTRA}}
+</head>
+<body class="{{BODY_CLASS}}">
+<a class="skip-link" href="#main">Skip to main content</a>
+{{HEADER}}
+<script>
+/* Measures the alert band + utility bar + header and publishes their combined
+   height, so a full-viewport hero can size to the space that is actually
+   left. This runs inline, immediately after that markup is parsed and before
+   <main> exists, so the hero is laid out correctly the first time. Setting it
+   from app.js instead resized the hero after first paint and cost 0.06 CLS.
+   The CSS carries a 140px fallback, so this is a refinement, not a
+   dependency. */
+(function(){try{var t=0;["site-header"].forEach(function(c){
+var e=document.querySelector("."+c);if(e)t+=e.getBoundingClientRect().height;});
+if(t>0)document.documentElement.style.setProperty("--chrome-h",Math.round(t)+"px");}catch(e){}})();
+</script>
+{{BREADCRUMBS}}
+<main id="main">
+{{CONTENT}}
+</main>
+{{FOOTER}}
+<script src="{{ASSET_PREFIX}}assets/js/app.js" defer></script>
+<!-- The palette ships everywhere but pulls its 55KB index only on first
+     open, so it costs ~5KB of script and no index bytes until used. -->
+<script src="{{ASSET_PREFIX}}assets/js/palette.js" defer></script>
+{{PAGE_SCRIPTS}}
+</body>
+</html>

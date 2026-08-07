@@ -1,0 +1,91 @@
+[
+  {
+    "slug": "kb-naik",
+    "name": "Dr. K.B. Naik",
+    "title": "Professor (Visiting)",
+    "department": "Electrical Engineering",
+    "degrees": [
+      "Ph.D., Electrical Engineering, Kanpur University (1984)",
+      "M.Tech., Power System, Nagpur University (1972)",
+      "B.Sc. (Electrical Engineering), Kanpur University (1969)"
+    ],
+    "interests": [
+      "Power systems",
+      "Research methodology"
+    ],
+    "bio": "Dr. K.B. Naik has held posts including Director at Kamla Nehru Institute of Technology, Sultanpur (2000-06), Director at Raj Kumar Goel Institute of Technology, Ghaziabad (2007-08), and at College of Engineering Science and Technology, Lucknow (2008-11). He is a Fellow of the Institution of Engineers (India) and a Fellow of the Institution of Electronics and Telecommunication Engineers (India).",
+    "source_url": "https://cas.res.in/visitingfaculty.html"
+  },
+  {
+    "slug": "vijay-tiwari",
+    "name": "Dr. Vijay Tiwari",
+    "title": "Visiting Faculty",
+    "department": null,
+    "degrees": [
+      "Ph.D., SVS University",
+      "Master of Engineering, Indian Institute of Science, Bengaluru",
+      "B.Tech., Military College of Engineering"
+    ],
+    "interests": [
+      "Computer networks",
+      "Cyber security",
+      "Wireless and satellite networks"
+    ],
+    "bio": "Dr. Vijay Tiwari is a 1991-batch defence officer and alumnus of the Indian Military Academy, Dehradun. He was visiting faculty at the University of South Sudan, Malakal, and has served as Chief Operations Officer in a United Nations Mission Sector HQ during peacekeeping operations.",
+    "source_url": "https://cas.res.in/visitingfaculty.html"
+  },
+  {
+    "slug": "kv-arya",
+    "name": "Dr. K.V. Arya",
+    "title": "Adjunct Faculty",
+    "department": "Computer Science and Engineering",
+    "degrees": [
+      "Ph.D., Computer Science and Engineering, IIT Kanpur",
+      "M.E. (Integrated), Electrical Engineering, Indian Institute of Science, Bangalore (1991)"
+    ],
+    "interests": [
+      "Image processing",
+      "Biometrics (face/iris recognition)",
+      "Wireless ad hoc networks",
+      "Information security"
+    ],
+    "bio": "Dr. K.V. Arya has more than 24 years of teaching experience, has guided 8 Ph.D. and 76 M.Tech. dissertations, and has published more than 150 journal and conference papers. He is Senior Member of IEEE, Fellow of IETE, and a life member of ISTE.",
+    "source_url": "https://cas.res.in/visitingfaculty.html"
+  },
+  {
+    "slug": "vrijendra-singh",
+    "name": "Dr. Vrijendra Singh",
+    "title": "Assistant Professor (Visiting)",
+    "department": null,
+    "degrees": [
+      "Ph.D. (Computer Science), Dayalbagh Educational Institute, Agra",
+      "M.Sc. (Computer Science), Dayalbagh Educational Institute, Agra (2002)"
+    ],
+    "interests": [
+      "Data mining",
+      "Machine learning",
+      "Blind source separation",
+      "Digital signal and image processing",
+      "Information security & forensics"
+    ],
+    "bio": "Dr. Vrijendra Singh is an Associate Professor at IIIT Allahabad, with more than 13 years of research experience, including as Senior Project Associate at the Department of EE, IIT Kanpur.",
+    "source_url": "https://cas.res.in/visitingfaculty.html"
+  },
+  {
+    "slug": "manish-kumar",
+    "name": "Dr. Manish Kumar",
+    "title": "Visiting Faculty",
+    "department": null,
+    "degrees": [
+      "Ph.D., Indian Institute of Information Technology, Allahabad",
+      "M.Tech. (Computer Science), Birla Institute of Technology, Mesra (2002)"
+    ],
+    "interests": [
+      "Data management in wireless sensor networks",
+      "Big data analytics",
+      "Data mining"
+    ],
+    "bio": "Dr. Manish Kumar is an Associate Professor at IIIT Allahabad with more than 15 years of teaching experience, and initiated the Data Analytics Lab there.",
+    "source_url": "https://cas.res.in/visitingfaculty.html"
+  }
+]

@@ -1,0 +1,86 @@
+---
+/**
+ * Document library — 158 records, statically rendered, with a React island
+ * supplying the filter controls.
+ *
+ * The rows below are emitted at build time and are present in the HTML on
+ * first byte. The island toggles their visibility; it never owns them. See
+ * the header comment in DocumentFilters.tsx for why.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DocumentFilters from '../../components/DocumentFilters.tsx';
+
+const docs = (await getCollection('documents')).map((d) => d.data);
+docs.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
+
+type Facet = 'area' | 'type' | 'year';
+const count = (field: Facet): [string, number][] => {
+  const m = new Map<string, number>();
+  for (const d of docs) {
+    const v = field === 'year' ? (d.year || 'Not dated') : (d[field] as string);
+    if (v) m.set(v, (m.get(v) ?? 0) + 1);
+  }
+  return [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+};
+
+const options = { area: count('area'), type: count('type'), year: count('year') };
+
+const formatSize = (b: number) =>
+  !b ? '' : b >= 1048576 ? `${(b / 1048576).toFixed(1)} MB` : `${Math.round(b / 1024)} KB`;
+---
+
+<BaseLayout
+  title="Document library"
+  description="Official CAS AKTU documents: ordinances, syllabi, calendars, fee notices, and more."
+  canonicalPath="/documents/"
+>
+  <div class="page-head container">
+    <p class="eyebrow">Records</p>
+    <h1>Document library</h1>
+    <p class="lede">{docs.length} official documents migrated from the legacy site.</p>
+  </div>
+
+  <section class="section section--flush-top">
+    <div class="container">
+      <p class="migration-notice" role="note">
+        Every document below passed a basic sanity check (file exists on disk,
+        matched to a real source URL) but has <strong>not</strong> been through
+        the malware scan, accessibility remediation, or current/archived status
+        review that PRODUCT_REQUIREMENTS.md FR-08 requires before public launch.
+        Treat this as a migration working set, not a launch-ready library.
+      </p>
+
+      <div class="browse" data-facets>
+        {/* client:visible — the controls are below the fold on most screens,
+            so hydration waits until they are actually approached. */}
+        <DocumentFilters client:visible options={options} total={docs.length} />
+
+        <div class="browse__results">
+          <ul class="record-list" data-facet-list>
+            {docs.map((d) => (
+              <li
+                class="record-row"
+                data-area={d.area}
+                data-type={d.type}
+                data-year={d.year ?? ''}
+                data-size={d.sizeBytes}
+                data-title={d.title.toLowerCase()}
+              >
+                <div class="record-row__title">
+                  <a href={`/documents/${d.slug}/`}>{d.title}</a>
+                </div>
+                <div class="record-row__meta">
+                  {[d.type, d.area !== 'Unassigned' ? d.area : null, d.year]
+                    .filter(Boolean)
+                    .join(' · ')}
+                </div>
+                <div class="record-row__meta">PDF, {formatSize(d.sizeBytes)}</div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

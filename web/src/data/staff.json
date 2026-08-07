@@ -1,0 +1,156 @@
+[
+  {
+    "slug": "veer-vikram-singh",
+    "name": "Mr. Veer Vikram Singh",
+    "title": "Research Engineer",
+    "department": null,
+    "degrees": [
+      "M.Sc. IT, SMU",
+      "B.Sc. (Computer Science), Lucknow University",
+      "Cisco Certified Network Associate"
+    ],
+    "interests": [
+      "Networking",
+      "System administration",
+      "System security"
+    ],
+    "bio": "Manages networking, servers, and security configuration at CAS, with prior experience configuring the network for the UP State Data Centre's UPE-district project.",
+    "source_url": "https://cas.res.in/staff.html"
+  },
+  {
+    "slug": "diyanshu-chauhan",
+    "name": "Mr. Diyanshu Chauhan",
+    "title": "Research Engineer",
+    "department": null,
+    "degrees": [
+      "Masters, Guru Gobind Singh Indraprastha University, New Delhi (Computer Application)"
+    ],
+    "interests": [
+      "Web application development",
+      "Database systems",
+      "AI",
+      "Software testing"
+    ],
+    "bio": "More than 4 years of industrial experience in software design, testing, and maintenance, including work on bioinformatics databases and ERP software modules.",
+    "source_url": "https://cas.res.in/staff.html"
+  },
+  {
+    "slug": "gaurav-rai",
+    "name": "Mr. Gaurav Rai",
+    "title": "Research Engineer",
+    "department": null,
+    "degrees": [
+      "M.Tech., Amity University",
+      "PG Diploma, CDAC ACTS, Pune"
+    ],
+    "interests": [
+      "Embedded systems",
+      "Real-time operating systems",
+      "FPGA and ASIC design",
+      "IoT"
+    ],
+    "bio": "More than 4 years of industry experience across automobile, networking, and small-scale industry sectors.",
+    "source_url": "https://cas.res.in/staff.html"
+  },
+  {
+    "slug": "shubhi-pandey",
+    "name": "Ms. Shubhi Pandey",
+    "title": "Computer Programmer, Grade 1",
+    "department": null,
+    "degrees": [
+      "B.Tech., Information Technology, AKTU, Lucknow"
+    ],
+    "interests": [
+      "Software engineering",
+      "Big data",
+      "Object-oriented programming"
+    ],
+    "bio": "More than 8 years of industrial experience in software engineering; contributed to the UP government URISE project and AKTU ERP modules including PhD, UIIC, and AMS.",
+    "source_url": "https://cas.res.in/staff.html"
+  },
+  {
+    "slug": "sadka-kouser",
+    "name": "Ms. Sadka Kouser",
+    "title": "Computer Programmer, Grade 1",
+    "department": null,
+    "degrees": [
+      "MCA, Integral University"
+    ],
+    "interests": [
+      "Big data",
+      "Data science",
+      "Open-source technologies"
+    ],
+    "bio": "8 years of industrial experience; a core programmer of AKTU ERP, with expertise in domain analysis, examination and payment modules, and result processing.",
+    "source_url": "https://cas.res.in/staff.html"
+  },
+  {
+    "slug": "ram-kumar-pathak",
+    "name": "Dr. Ram Kumar Pathak",
+    "title": "Assistant Librarian, CAS; Digital Library In-Charge, AKTU Central Digital Library",
+    "department": "Library",
+    "degrees": [
+      "Ph.D., Assam University (Central University), Silchar",
+      "BLIS, MLIS, PGDLAN, UGC-NET",
+      "M.Sc. (Physics, solid state electronics)",
+      "B.Sc. (Physics Honors)"
+    ],
+    "interests": [
+      "E-learning",
+      "Digital library management",
+      "Knowledge management",
+      "Digital library automation and policy"
+    ],
+    "bio": "Dr. Ram Kumar Pathak has served as Digital Library In-Charge and Assistant Librarian at CAS AKTU since April 2018. He previously served as Chief Librarian at Vidya Knowledge Park, Meerut (2006-18), and Librarian at Pioneer Institute of Academics, Meerut (2000-05).",
+    "source_url": "https://cas.res.in/staff.html"
+  },
+  {
+    "slug": "anurag-chaubey",
+    "name": "Mr. Anurag Chaubey",
+    "title": "Junior Research Engineer",
+    "department": "Mechatronics",
+    "degrees": [
+      "M.Tech., Electrical Engineering",
+      "B.Tech. (Electrical Engineering), Maharana Pratap Engineering College, Kanpur (AKTU)"
+    ],
+    "interests": [
+      "PLC",
+      "SCADA",
+      "3D printing",
+      "Industrial automation",
+      "Electrical drives"
+    ],
+    "bio": "Handles the 3D Printing Lab, Industrial Automation Lab, Tribology Lab, and Kuka Robotics Centre under the Mechatronics Department; more than 4 years of experience in industrial automation.",
+    "source_url": "https://cas.res.in/staff.html"
+  },
+  {
+    "slug": "monika-singh",
+    "name": "Ms. Monika Singh",
+    "title": "Junior Research Engineer",
+    "department": null,
+    "degrees": [
+      "B.Tech. (Honors), United College of Engineering and Research (AKTU)"
+    ],
+    "interests": [
+      "MEMS and NEMS devices",
+      "Micro/nano device design",
+      "Micro-nano scale fabrication and characterization"
+    ],
+    "bio": "More than 4 years of research experience, including as project assistant at the Centre for Nano Science and Engineering, IISc Bangalore, on an ISRO gas sensors project.",
+    "source_url": "https://cas.res.in/staff.html"
+  },
+  {
+    "slug": "mukesh-kumar-mourya",
+    "name": "Mr. Mukesh Kumar Mourya",
+    "title": "PS to Director",
+    "department": null,
+    "degrees": [
+      "B.Sc., Dr. RML Avadh University, Faizabad, Uttar Pradesh"
+    ],
+    "interests": [
+      "Administration"
+    ],
+    "bio": "Previously served as a stenographer on an ICSSR project at the Giri Institute of Development Studies, Lucknow, and as private stenographer to the Legal Advisor to the Governor of Uttar Pradesh.",
+    "source_url": "https://cas.res.in/staff.html"
+  }
+]
