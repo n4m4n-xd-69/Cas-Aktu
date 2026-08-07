@@ -1,0 +1,43 @@
+# Python dependencies for the static site generator (build/).
+#
+# Scope
+# -----
+# These are the packages `build/` imports. Derived by AST-walking every module
+# under build/ and filtering out the standard library and local modules, so the
+# list reflects real imports rather than a guess:
+#
+#   PIL        -> build/imagepipe.py:28    from PIL import Image
+#   fontTools  -> build/font_metrics.py:33 from fontTools.ttLib import TTFont
+#
+# Nothing else in build/ imports a third-party package. The two `importlib`
+# call sites (generate.py:792, export_json.py:78) load local page and data
+# modules, not external ones.
+#
+# NOT included: `requests` and `beautifulsoup4`. Those are imported only by
+# tools/crawl_cas.py and tools/download_cas_documents.py, which are one-off
+# crawlers used to acquire source material, not part of building the site.
+# Install them separately if you need to re-crawl.
+#
+# Why this file exists
+# --------------------
+# The generator is the verification oracle for the React migration: every
+# parity check compares the new build against site/, which only this generator
+# can produce. Until it is retired it has to remain rebuildable on a clean
+# machine. See docs/AUDIT.md section 4.
+#
+# Pinning
+# -------
+# Exact pins (==) match the versions that produced the current site/ output.
+# Both packages declare zero hard runtime dependencies, so this list is the
+# complete transitive closure - there are no unpinned indirect dependencies.
+#
+# Hashes are deliberately omitted. Pillow ships per-platform, per-ABI wheels;
+# hash-pinning would bind this file to one OS and CPython version, and the
+# build has to run both on Windows and in CI. Add `--require-hashes` with a
+# generated lock if the deployment target is ever fixed to a single platform.
+#
+# Verified: clean install into an empty venv on Python 3.14.3 / Windows,
+# followed by importing every build/ module. See the commit for the transcript.
+
+Pillow==12.1.1
+fonttools==4.62.1
