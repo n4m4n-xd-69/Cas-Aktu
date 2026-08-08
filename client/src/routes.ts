@@ -3,7 +3,7 @@ import { type RouteConfig, index, route } from '@react-router/dev/routes';
 /**
  * Route tree.
  *
- * S4: building the full 392-page route tree. Groups completed:
+ * S4: Complete. All 392 pages implemented across 9 route groups:
  *   - Group 1: Home (1 page)
  *   - Group 2: Core pages (7 pages)
  *   - Group 3: Academics (14 pages)
@@ -11,8 +11,8 @@ import { type RouteConfig, index, route } from '@react-router/dev/routes';
  *   - Group 5: Research (89 pages)
  *   - Group 6: Updates (51 pages)
  *   - Group 7: Documents (159 pages)
- *
- * Remaining: Groups 8-9 (7 pages).
+ *   - Group 8: Legal pages (4 pages)
+ *   - Group 9: Error pages (3 pages)
  */
 const routes: RouteConfig = [
   // Home
@@ -100,6 +100,18 @@ const routes: RouteConfig = [
     index('routes/documents.index.tsx'),
     route(':slug', 'routes/documents.$slug.tsx'),
   ]),
+
+  // Legal pages (Group 8)
+  route('privacy', 'routes/privacy.tsx'),
+  route('copyright', 'routes/copyright.tsx'),
+  route('terms', 'routes/terms.tsx'),
+  route('security', 'routes/security.tsx'),
+
+  // Error pages (Group 9)
+  route('404', 'routes/404.tsx'),
+  route('500', 'routes/500.tsx'),
+  route('maintenance', 'routes/maintenance.tsx'),
+  route('*', 'routes/$.tsx'), // Catch-all for non-matched routes
 ];
 
 /**
