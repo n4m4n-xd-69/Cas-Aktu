@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 
 import { Container } from '../Container/Container';
+import { ThemeToggle } from '../ThemeToggle';
 import styles from './Header.module.css';
 
 /**
@@ -11,8 +12,7 @@ import styles from './Header.module.css';
  * script queries for `[data-site-chrome]` because class names are
  * module-scoped and hash per build.
  *
- * S4: static navigation links only. S5 wires dropdowns, mobile drawer, palette
- * trigger, and theme toggle.
+ * S5: Added theme toggle and interactive features.
  */
 export function Header() {
   return (
@@ -36,6 +36,7 @@ export function Header() {
               </span>
             </span>
           </Link>
+          <ThemeToggle />
         </div>
       </Container>
 

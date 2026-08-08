@@ -7,7 +7,7 @@ import {
   isRouteErrorResponse,
 } from 'react-router';
 
-import { Footer, Header } from '~/components';
+import { CommandPalette, Footer, Header } from '~/components';
 import { ThemeProvider } from '~/theme/ThemeProvider';
 import { chromeHeightScript, prePaintScript } from '~/theme/theme-script';
 
@@ -80,6 +80,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </a>
 
         <Header />
+        <CommandPalette />
 
         {/* Measures the chrome and publishes --chrome-h. Sits exactly where it
             sat in _layout.html: after the chrome markup, before <main> exists,
