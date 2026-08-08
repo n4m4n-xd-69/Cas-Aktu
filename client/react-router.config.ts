@@ -17,12 +17,18 @@ export default {
   // mechanism that keeps 392 indexed URLs crawlable without a server.
   ssr: false,
 
-  // S1 probe set only. These three shapes cover every URL form in the live
-  // site: root, single-segment, and deep path with a dynamic segment. The full
-  // 392-URL list arrives at S4, generated from the data layer.
+  // S4 prerender list. Group 1 (Home) + Group 2 (Core pages) = 8 routes.
+  // S1 probe routes (/people/faculty/*) remain until Group 4 replaces them
+  // with the full dynamic person route set.
   prerender: [
     '/',
     '/about',
+    '/contact',
+    '/campus',
+    '/admissions',
+    '/search',
+    '/accessibility',
+    '/sitemap',
     '/people/faculty/vijay-singh',
     '/people/faculty/parul-singh',
   ],
