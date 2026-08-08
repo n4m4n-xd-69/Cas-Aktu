@@ -24,12 +24,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "build"))
 
-OUT = ROOT / "web" / "src" / "data"
+OUT = ROOT / "client" / "src" / "data" / "collections"
 
 # (output name, module, symbol)
 EXPORTS = [
     ("programs", "data.programs", "PROGRAMS"),
     ("faculty", "data.people", "CURRENT_FACULTY"),
+    ("former-faculty", "data.past_faculty", "PAST_FACULTY"),
     ("staff", "data.people", "STAFF"),
     ("visiting-faculty", "data.people", "VISITING_FACULTY"),
     ("notices", "data.notices", "NOTICES"),
