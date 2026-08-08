@@ -1,0 +1,64 @@
+.wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  position: absolute;
+  left: var(--space-4);
+  display: grid;
+  place-items: center;
+  color: var(--text-tertiary);
+  pointer-events: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.input {
+  width: 100%;
+  /* Left padding clears the icon; the value is the icon offset plus its
+     box plus one space step. */
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-10);
+  min-height: var(--touch);
+  font-size: var(--text-base);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.input:hover {
+  border-color: var(--border-strong);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--border-focus) 18%, transparent);
+}
+
+.wrap:focus-within .icon {
+  color: var(--brand);
+}
+
+/* The UA clear button is styled per-engine and cannot be themed; the
+   Escape key and an empty field both clear it, so removing it costs
+   nothing and stops a light-mode glyph appearing on a dark input. */
+.input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input,
+  .icon {
+    transition: none;
+  }
+}

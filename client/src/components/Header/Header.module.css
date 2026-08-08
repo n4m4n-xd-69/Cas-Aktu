@@ -1,15 +1,27 @@
-/* Site header — fixed at top, carries `data-site-chrome` so the --chrome-h
-   measurement can find it. Interactive features (dropdown menus, mobile drawer,
-   palette trigger) are wired at S5. S4 renders static navigation only. */
+/* Site header — sticky, carries `data-site-chrome` so the --chrome-h
+   measurement can find it.
+
+   S8: the masthead is the one surface in the system permitted to use the
+   frosted tokens (tokens.css documents the rule: floating chrome only,
+   never a surface holding body text). It sits over scrolling content, so
+   translucency here reads as depth rather than as unreadable text. */
 
 .header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  background: var(--surface-glass);
+  border-bottom: 1px solid var(--surface-glass-brd);
   backdrop-filter: var(--blur-glass);
   -webkit-backdrop-filter: var(--blur-glass);
+}
+
+/* Browsers without backdrop-filter get an opaque masthead rather than a
+   washed-out translucent one that would put nav text on live content. */
+@supports not (backdrop-filter: blur(1px)) {
+  .header {
+    background: var(--surface);
+  }
 }
 
 .identity {
@@ -18,7 +30,7 @@
   justify-content: space-between;
   gap: var(--space-6);
   padding-block: var(--space-4);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--rule);
 }
 
 .brand {
@@ -27,12 +39,18 @@
   gap: var(--space-3);
   color: var(--text);
   font-weight: var(--weight-semibold);
+  border-radius: var(--radius-md);
 }
 
 .brand__emblem {
   width: 48px;
   height: 48px;
   flex: none;
+  transition: transform var(--dur-base) var(--ease-spring);
+}
+
+.brand:hover .brand__emblem {
+  transform: scale(1.04);
 }
 
 .brand__text {
@@ -52,33 +70,94 @@
   color: var(--text-secondary);
 }
 
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
 .nav {
   display: flex;
   align-items: center;
-  gap: var(--space-6);
-  padding-block: var(--space-3);
+  gap: var(--space-1);
+  padding-block: var(--space-2);
 }
 
 .nav a {
+  position: relative;
+  padding: var(--space-2) var(--space-3);
+  min-height: var(--touch);
+  display: inline-flex;
+  align-items: center;
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
-  color: var(--text);
+  color: var(--text-secondary);
   white-space: nowrap;
+  border-radius: var(--radius-md);
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
 }
 
 .nav a:hover {
-  color: var(--brand);
+  color: var(--text);
+  background: color-mix(in srgb, var(--text) 5%, transparent);
 }
 
-@media (max-width: 768px) {
+/* Active section. An underline rather than a filled pill: the fill is the
+   hover affordance, and using it for state too made hover ambiguous. */
+.nav a[aria-current='page'] {
+  color: var(--brand);
+  font-weight: var(--weight-semibold);
+}
+
+.nav a[aria-current='page']::after {
+  content: '';
+  position: absolute;
+  left: var(--space-3);
+  right: var(--space-3);
+  bottom: 2px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: var(--brand);
+}
+
+@media (max-width: 900px) {
   .nav {
-    flex-wrap: wrap;
-    gap: var(--space-3);
+    /* Horizontal scroll beats wrapping to two rows: the masthead height is
+       measured into --chrome-h before paint, and a wrapping nav changes
+       that height at a breakpoint the measurement never re-runs for. */
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
-  .brand__name {
-    font-size: var(--text-sm);
+  .nav::-webkit-scrollbar {
+    display: none;
   }
   .brand__sub {
     display: none;
+  }
+  .brand__emblem {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 560px) {
+  .brand__name {
+    font-size: var(--text-sm);
+  }
+  .identity {
+    gap: var(--space-3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand__emblem,
+  .nav a {
+    transition: none;
+  }
+  .brand:hover .brand__emblem {
+    transform: none;
   }
 }

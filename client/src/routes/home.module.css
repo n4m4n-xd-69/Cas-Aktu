@@ -1,0 +1,172 @@
+/* ---- Hero ----
+   No photograph: the image library was not carried into the React build,
+   and a stock gradient masquerading as a campus photo is worse than an
+   honest typographic hero. The wash is brand-tinted at very low alpha so
+   the headline still sits on near-paper and keeps its contrast ratio. */
+.hero {
+  padding-block: clamp(3rem, 7vw, 6.5rem) clamp(2.5rem, 5vw, 5rem);
+  background:
+    radial-gradient(
+      90% 120% at 8% -10%,
+      color-mix(in srgb, var(--brand) 11%, transparent) 0%,
+      transparent 62%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--brand) 4%, transparent) 0%,
+      transparent 78%
+    );
+  border-bottom: 1px solid var(--rule);
+}
+
+.hero__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 62ch;
+}
+
+.hero__eyebrow {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.hero__title {
+  font-size: var(--text-6xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+}
+
+.hero__lede {
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.hero__actions {
+  margin-top: var(--space-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* ---- Sections ---- */
+.sectionTitle {
+  margin-bottom: var(--space-6);
+}
+
+/* ---- Bento panel internals ---- */
+.panelEyebrow {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--on-ink-dim);
+}
+
+.panelBody {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.panelLink {
+  margin-top: auto;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--on-ink);
+  border-radius: var(--radius-sm);
+}
+
+.panelLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.itemLink {
+  margin-top: auto;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--brand);
+  border-radius: var(--radius-sm);
+}
+
+.itemLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* ---- Notices ----
+   A ruled list, not cards. Six short titles in six bordered boxes reads as
+   a dashboard; the rule keeps it an announcement column. */
+.notices {
+  list-style: none;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.notice {
+  margin: 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.notice + .notice {
+  margin-top: 0;
+}
+
+.notice__link {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-2);
+  min-height: var(--touch);
+  color: var(--text);
+  font-weight: var(--weight-medium);
+  border-radius: var(--radius-sm);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    padding-left var(--dur-base) var(--ease-out);
+}
+
+.notice__link:hover {
+  background: color-mix(in srgb, var(--brand) 5%, transparent);
+  color: var(--brand);
+  padding-left: var(--space-4);
+}
+
+.notice__title {
+  font-weight: var(--weight-medium);
+}
+
+.notice__meta {
+  flex: none;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-normal);
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+.more {
+  margin-top: var(--space-8);
+}
+
+@media (max-width: 560px) {
+  .notice__link {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notice__link {
+    transition: none;
+  }
+  .notice__link:hover {
+    padding-left: var(--space-2);
+  }
+}

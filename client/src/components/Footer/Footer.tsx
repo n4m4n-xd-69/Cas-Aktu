@@ -6,15 +6,33 @@ import styles from './Footer.module.css';
 /**
  * Site footer.
  *
- * S4: minimal static version with key links. S5: full link grid, newsletter
- * signup, and enhanced copyright/trust badges.
+ * S8: rendered on --ink, one of the two always-dark contrast anchors the
+ * token file defines. It stays dark in both themes deliberately — it is the
+ * page's closing weight — so every colour inside pairs with --on-ink and
+ * never with --text.
  */
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className={styles.footer}>
+    <footer className={`${styles.footer} print-hide`}>
       <Container>
+        <div className={styles.identity}>
+          <img
+            src="/assets/brand/cas-emblem.png"
+            alt=""
+            width={40}
+            height={40}
+            className={styles.emblem}
+          />
+          <div>
+            <p className={styles.identity__name}>Centre for Advanced Studies</p>
+            <p className={styles.identity__sub}>
+              Dr. A.P.J. Abdul Kalam Technical University, Lucknow
+            </p>
+          </div>
+        </div>
+
         <div className={styles.grid}>
           <div className={styles.section}>
             <h3>About</h3>

@@ -8,23 +8,67 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  /* Anchors the title's ::after click target below. */
+  /* S8: the hairline top edge. One inset highlight, no outer glow — enough
+     to give the surface a lit edge without tipping into a plastic bevel. */
+  box-shadow: var(--shadow-xs), var(--edge);
+  /* Anchors the title's ::after click target below, and the sheen. */
   position: relative;
+  overflow: hidden;
   transition:
     border-color var(--dur-base) var(--ease-out),
     box-shadow var(--dur-base) var(--ease-out),
     transform var(--dur-base) var(--ease-out);
 }
 
+/* S8 sheen. Painted only on hover, so an idle grid of 24 cards costs no
+   extra compositing. Sits under content via z-order, not opacity tricks. */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--sheen);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
 .card:hover {
   border-color: var(--border-strong);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-md), var(--edge);
+  transform: translateY(var(--lift));
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+/* Keeps every child above the sheen without needing a z-index on each. */
+.card > * {
+  position: relative;
+}
+
+/* The card is one click target (see .title a::after), so the ring belongs
+   on the card, not on the invisible expanded link. */
+.card:focus-within {
+  border-color: var(--border-focus);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--border-focus) 18%, transparent),
+    var(--edge);
 }
 
 .feature {
   padding: var(--space-8);
   background: var(--bg-subtle);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card::before {
+    transition: none;
+  }
+  .card:hover {
+    transform: none;
+  }
 }
 
 .icon {

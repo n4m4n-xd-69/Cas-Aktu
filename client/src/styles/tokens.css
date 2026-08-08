@@ -353,6 +353,35 @@
   --dur-slower: 700ms;
   --dur-cine: 1400ms; /* hero cross-fade */
 
+  /* ================= S8 — premium layer =================
+     Added at S8. Everything here composes existing role tokens; no new
+     raw colour is introduced, so the premium layer inherits theming and
+     forced-colours behaviour for free.
+
+     The lift/sheen pair is the whole interaction language: a surface
+     rises 2px and gains a one-directional highlight. It is deliberately
+     the ONLY hover treatment in the system — repeating one gesture is
+     what reads as considered rather than decorated. */
+  --lift: -2px;
+  --lift-lg: -4px;
+  --sheen: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--text) 4%, transparent) 0%,
+    transparent 42%
+  );
+  /* Hairline highlight along a card's top edge — the neumorphic cue.
+     Kept at 1px and low alpha so it survives dark mode without glowing. */
+  --edge-light: inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent);
+  --edge-light-dark: inset 0 1px 0 color-mix(in srgb, #fff 8%, transparent);
+  --edge: light-dark(
+    inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent),
+    inset 0 1px 0 color-mix(in srgb, #fff 8%, transparent)
+  );
+
+  /* Bento rhythm. Wider than --space-4 so the grid reads as separate
+     panels rather than a table. */
+  --bento-gap: clamp(0.75rem, 1.2vw, 1.25rem);
+
   /* ================= Effects ================= */
   --blur-glass: saturate(180%) blur(20px);
   /* Hero scrim. Layered rather than a single flat overlay so the photo

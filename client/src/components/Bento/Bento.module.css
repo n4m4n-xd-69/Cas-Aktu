@@ -1,0 +1,114 @@
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--bento-gap);
+  /* Equal-height rows so a tall cell's neighbours stay aligned rather than
+     stretching to fill, which is what makes a bento read as panels. */
+  grid-auto-rows: minmax(0, auto);
+}
+
+.item {
+  grid-column: span var(--span, 4);
+  grid-row: span var(--rows, 1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-xs), var(--edge);
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+
+/* The sheen sits above the background but below content, and is painted
+   only on hover so an idle page has no extra compositing work. */
+.item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--sheen);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.item:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md), var(--edge);
+  transform: translateY(var(--lift));
+}
+
+.item:hover::before {
+  opacity: 1;
+}
+
+.item > * {
+  position: relative;
+}
+
+.subtle {
+  background: var(--bg-subtle);
+}
+
+/* Contrast anchor. Fixed dark in both themes by design — pairs with
+   --on-ink, never with --text. */
+.ink {
+  background:
+    radial-gradient(
+      120% 140% at 12% 0%,
+      color-mix(in srgb, var(--brand-500) 42%, transparent) 0%,
+      transparent 58%
+    ),
+    var(--ink);
+  border-color: transparent;
+  color: var(--on-ink);
+  box-shadow: var(--shadow-md);
+}
+
+.ink :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--on-ink);
+}
+
+.ink p {
+  color: var(--on-ink-dim);
+}
+
+.ink:hover {
+  border-color: transparent;
+  box-shadow: var(--shadow-lg);
+}
+
+@media (max-width: 900px) {
+  .item {
+    /* Two-up: halves stay halves, anything wider goes full width. */
+    grid-column: span min(var(--span, 4), 6);
+  }
+}
+
+@media (max-width: 700px) {
+  .bento {
+    grid-template-columns: 1fr;
+  }
+  .item {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item {
+    transition: none;
+  }
+  .item:hover {
+    transform: none;
+  }
+  .item::before {
+    transition: none;
+  }
+}

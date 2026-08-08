@@ -297,6 +297,36 @@ a:not([class]):hover {
   }
 }
 
+/* ---- Route transition (S8) ----
+   Deliberately an ANIMATION, not a transition from a declared hidden state.
+   A declarative `initial` (opacity: 0) would be serialised into the
+   prerendered HTML and every one of the 392 pages would ship blank to a
+   visitor whose JavaScript never runs. An animation's element is visible by
+   default and the keyframes only ever run forward, so a failed script or a
+   dropped stylesheet degrades to "no animation", never to "no content".
+
+   See client/src/lib/motion.ts for the same rule stated for Motion. */
+@keyframes route-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.route-fade {
+  animation: route-enter var(--dur-base) var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-fade {
+    animation: none;
+  }
+}
+
 /* ---- Print ---- */
 @media print {
   /* Chrome that must not print. Was a list of global class names; those are

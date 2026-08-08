@@ -5,6 +5,7 @@ import {
   Scripts,
   ScrollRestoration,
   isRouteErrorResponse,
+  useLocation,
 } from 'react-router';
 
 import { CommandPalette, Footer, Header } from '~/components';
@@ -100,9 +101,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  // Re-keying on pathname restarts the enter animation on every navigation.
+  // The key is the only reason this wrapper exists; it adds no layout.
+  const { pathname } = useLocation();
+
   return (
     <ThemeProvider>
-      <Outlet />
+      <div key={pathname} className="route-fade">
+        <Outlet />
+      </div>
     </ThemeProvider>
   );
 }

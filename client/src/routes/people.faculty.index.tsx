@@ -4,10 +4,11 @@ import { Link } from 'react-router';
 import {
   Card,
   Container,
+  EmptyState,
   FadeIn,
   Grid,
-  Heading,
-  Lede,
+  PageHeader,
+  SearchField,
   Section,
 } from '~/components';
 import { getFaculty } from '~/data/loaders';
@@ -27,92 +28,63 @@ export default function Faculty() {
   const allFaculty = getFaculty();
   const [search, setSearch] = useState('');
 
-  const filteredFaculty = useMemo(() => {
+  const filtered = useMemo(() => {
     if (!search) return allFaculty;
 
-    const lowerSearch = search.toLowerCase();
+    const q = search.toLowerCase();
     return allFaculty.filter(
       (person) =>
-        person.name.toLowerCase().includes(lowerSearch) ||
-        person.title.toLowerCase().includes(lowerSearch) ||
-        (person.department &&
-          person.department.toLowerCase().includes(lowerSearch)) ||
-        (person.interests &&
-          person.interests.some((interest) =>
-            interest.toLowerCase().includes(lowerSearch),
-          )),
+        person.name.toLowerCase().includes(q) ||
+        person.title.toLowerCase().includes(q) ||
+        person.department?.toLowerCase().includes(q) ||
+        person.interests?.some((i) => i.toLowerCase().includes(q)),
     );
   }, [allFaculty, search]);
 
   return (
-    <Container>
-      <Section>
-        <Heading level={1}>Faculty</Heading>
-        <Lede>
-          {allFaculty.length} faculty members conducting research and teaching
-          across five specialized departments.
-        </Lede>
-      </Section>
+    <>
+      <PageHeader
+        eyebrow="People"
+        title="Faculty"
+        lede={`${allFaculty.length} faculty members conducting research and teaching across five specialised departments.`}
+      >
+        <SearchField
+          label="Search faculty"
+          placeholder="Search by name, title, department or interest…"
+          value={search}
+          onChange={setSearch}
+          resultCount={filtered.length}
+        />
+      </PageHeader>
 
       <Section>
-        <div style={{ marginBottom: 'var(--space-6)' }}>
-          <input
-            type="search"
-            placeholder="Search faculty by name, title, department, or interests..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            aria-label="Search faculty"
-            style={{
-              width: '100%',
-              padding: 'var(--space-3) var(--space-4)',
-              fontSize: 'var(--text-base)',
-              border: '1px solid var(--border)',
-              borderRadius: 'var(--radius-md)',
-              background: 'var(--surface)',
-              color: 'var(--text)',
-            }}
-          />
-        </div>
-
-        {search && (
-          <p
-            style={{
-              marginBottom: 'var(--space-4)',
-              color: 'var(--text-secondary)',
-            }}
-          >
-            Showing {filteredFaculty.length} of {allFaculty.length} faculty
-            member
-            {filteredFaculty.length !== 1 ? 's' : ''}
-          </p>
-        )}
-
-        <FadeIn>
-          <Grid columns={3}>
-            {filteredFaculty.map((person, i) => (
-              <FadeIn key={person.slug} delay={i * 50}>
-                <Card>
-                  <Card.Title>
-                    <Link to={`/people/faculty/${person.slug}`}>
-                      {person.name}
-                    </Link>
-                  </Card.Title>
-                  <Card.Body>{person.title}</Card.Body>
-                  {person.department && (
-                    <Card.Foot>{person.department}</Card.Foot>
-                  )}
-                </Card>
-              </FadeIn>
-            ))}
-          </Grid>
-        </FadeIn>
-
-        {filteredFaculty.length === 0 && (
-          <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
-            No faculty members found matching "{search}"
-          </p>
-        )}
+        <Container>
+          {filtered.length > 0 ? (
+            <FadeIn>
+              <Grid columns={3}>
+                {filtered.map((person) => (
+                  <Card key={person.slug}>
+                    <Card.Title>
+                      <Link to={`/people/faculty/${person.slug}`}>
+                        {person.name}
+                      </Link>
+                    </Card.Title>
+                    <Card.Body>{person.title}</Card.Body>
+                    {person.department && (
+                      <Card.Foot>{person.department}</Card.Foot>
+                    )}
+                  </Card>
+                ))}
+              </Grid>
+            </FadeIn>
+          ) : (
+            <EmptyState
+              title="No faculty members match that search"
+              description={`Nothing found for “${search}”. Try a department, a research interest, or part of a name.`}
+            />
+          )}
+        </Container>
       </Section>
-    </Container>
+    </>
   );
 }

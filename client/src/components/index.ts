@@ -1,4 +1,5 @@
 export { Badge, type BadgeProps, type BadgeTone } from './Badge/Badge';
+export { Bento, type BentoItemProps, type BentoProps } from './Bento';
 export {
   Breadcrumb,
   type BreadcrumbProps,
@@ -18,12 +19,15 @@ export {
   type ContainerProps,
   type ContainerWidth,
 } from './Container/Container';
+export { EmptyState, type EmptyStateProps } from './EmptyState/EmptyState';
 export { ErrorBoundary } from './ErrorBoundary';
 export { FadeIn } from './FadeIn';
 export { Footer } from './Footer/Footer';
 export { Grid, type GridColumns, type GridProps } from './Grid/Grid';
 export { Header } from './Header/Header';
+export { PageHeader, type PageHeaderProps } from './PageHeader/PageHeader';
 export { Pagination, type PaginationProps } from './Pagination/Pagination';
+export { SearchField, type SearchFieldProps } from './SearchField/SearchField';
 export {
   Section,
   type SectionProps,
@@ -31,6 +35,7 @@ export {
   type SectionTone,
 } from './Section/Section';
 export { Skeleton, SkeletonCard } from './Skeleton';
+export { Stat, type StatProps } from './Stat/Stat';
 export { ThemeToggle } from './ThemeToggle';
 export {
   Eyebrow,

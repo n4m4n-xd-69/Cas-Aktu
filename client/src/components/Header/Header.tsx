@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { NavLink, Link } from 'react-router';
 
 import { Container } from '../Container/Container';
 import { ThemeToggle } from '../ThemeToggle';
@@ -12,11 +12,25 @@ import styles from './Header.module.css';
  * script queries for `[data-site-chrome]` because class names are
  * module-scoped and hash per build.
  *
- * S5: Added theme toggle and interactive features.
+ * S8: frosted masthead, and NavLink replaces Link so the current section is
+ * marked with aria-current. That attribute is what the stylesheet keys the
+ * active underline off, so the visual state and the assistive-technology
+ * state cannot diverge.
  */
+
+const NAV = [
+  { to: '/about', label: 'About' },
+  { to: '/academics', label: 'Academics' },
+  { to: '/admissions', label: 'Admissions' },
+  { to: '/research', label: 'Research' },
+  { to: '/people', label: 'People' },
+  { to: '/campus', label: 'Campus' },
+  { to: '/updates', label: 'News & Notices' },
+];
+
 export function Header() {
   return (
-    <header className={styles.header} data-site-chrome>
+    <header className={`${styles.header} print-hide`} data-site-chrome>
       <Container>
         <div className={styles.identity}>
           <Link to="/" className={styles.brand}>
@@ -36,19 +50,19 @@ export function Header() {
               </span>
             </span>
           </Link>
-          <ThemeToggle />
+          <div className={styles.actions}>
+            <ThemeToggle />
+          </div>
         </div>
       </Container>
 
       <Container>
         <nav className={styles.nav} aria-label="Primary navigation">
-          <Link to="/about">About</Link>
-          <Link to="/academics">Academics</Link>
-          <Link to="/admissions">Admissions</Link>
-          <Link to="/research">Research</Link>
-          <Link to="/people">People</Link>
-          <Link to="/campus">Campus</Link>
-          <Link to="/updates">News &amp; Notices</Link>
+          {NAV.map((item) => (
+            <NavLink key={item.to} to={item.to}>
+              {item.label}
+            </NavLink>
+          ))}
         </nav>
       </Container>
     </header>
