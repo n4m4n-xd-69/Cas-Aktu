@@ -10,8 +10,9 @@ import { type RouteConfig, index, route } from '@react-router/dev/routes';
  *   - Group 4: People (64 pages)
  *   - Group 5: Research (89 pages)
  *   - Group 6: Updates (51 pages)
+ *   - Group 7: Documents (159 pages)
  *
- * Remaining: Groups 7-9 (166 pages).
+ * Remaining: Groups 8-9 (7 pages).
  */
 const routes: RouteConfig = [
   // Home
@@ -92,6 +93,12 @@ const routes: RouteConfig = [
       index('routes/updates.events.index.tsx'),
       route(':id', 'routes/updates.events.$id.tsx'),
     ]),
+  ]),
+
+  // Documents (Group 7)
+  route('documents', 'routes/documents.tsx', [
+    index('routes/documents.index.tsx'),
+    route(':slug', 'routes/documents.$slug.tsx'),
   ]),
 ];
 
