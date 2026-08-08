@@ -6,8 +6,9 @@ import { type RouteConfig, index, route } from '@react-router/dev/routes';
  * S4: building the full 392-page route tree. Groups completed:
  *   - Group 1: Home (1 page)
  *   - Group 2: Core pages (7 pages)
+ *   - Group 3: Academics (14 pages)
  *
- * Remaining: Groups 3-9 (384 pages).
+ * Remaining: Groups 4-9 (370 pages).
  */
 const routes: RouteConfig = [
   // Home
@@ -21,6 +22,18 @@ const routes: RouteConfig = [
   route('search', 'routes/search.tsx'),
   route('accessibility', 'routes/accessibility.tsx'),
   route('sitemap', 'routes/sitemap.tsx'),
+
+  // Academics (Group 3)
+  route('academics', 'routes/academics.tsx', [
+    index('routes/academics.index.tsx'),
+    route('btech', 'routes/academics.btech.tsx'),
+    route('mtech', 'routes/academics.mtech.tsx'),
+    route('phd', 'routes/academics.phd.tsx'),
+    route('programs', 'routes/academics.programs.tsx', [
+      index('routes/academics.programs.index.tsx'),
+      route(':slug', 'routes/academics.programs.$slug.tsx'),
+    ]),
+  ]),
 
   // S1 probe route (will be replaced by dynamic person routes in Group 4)
   route('people/faculty/:slug', 'routes/person.tsx'),

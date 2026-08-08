@@ -17,9 +17,11 @@ export default {
   // mechanism that keeps 392 indexed URLs crawlable without a server.
   ssr: false,
 
-  // S4 prerender list. Group 1 (Home) + Group 2 (Core pages) = 8 routes.
-  // S1 probe routes (/people/faculty/*) remain until Group 4 replaces them
-  // with the full dynamic person route set.
+  // S4 prerender list.
+  // Group 1 (Home): 1 route
+  // Group 2 (Core): 7 routes
+  // Group 3 (Academics): 14 routes
+  // S1 probe routes (/people/faculty/*) remain until Group 4 replaces them.
   prerender: [
     '/',
     '/about',
@@ -29,6 +31,20 @@ export default {
     '/search',
     '/accessibility',
     '/sitemap',
+    '/academics',
+    '/academics/btech',
+    '/academics/mtech',
+    '/academics/phd',
+    '/academics/programs',
+    '/academics/programs/mtech-cse',
+    '/academics/programs/mtech-nanotechnology',
+    '/academics/programs/mtech-energy-science-technology',
+    '/academics/programs/mtech-mechatronics',
+    '/academics/programs/mtech-manufacturing-technology-automation',
+    '/academics/programs/phd-cse',
+    '/academics/programs/phd-mechatronics',
+    '/academics/programs/phd-nanotechnology',
+    '/academics/programs/btech',
     '/people/faculty/vijay-singh',
     '/people/faculty/parul-singh',
   ],

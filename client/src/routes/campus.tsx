@@ -29,38 +29,38 @@ export default function Campus() {
 
         <div style={{ marginTop: 'var(--space-6)' }}>
           <Grid columns={2}>
-          <div>
-            <h3>Campus-wide connectivity</h3>
-            <p>
-              1 Gbps Wi-Fi with 1 Gbps LAN connectivity and 10 Gbps traffic
-              support across the campus.
-            </p>
-          </div>
+            <div>
+              <h3>Campus-wide connectivity</h3>
+              <p>
+                1 Gbps Wi-Fi with 1 Gbps LAN connectivity and 10 Gbps traffic
+                support across the campus.
+              </p>
+            </div>
 
-          <div>
-            <h3>24-hour security</h3>
-            <p>
-              HD CCTV surveillance, round-the-clock security at entry points,
-              and a full perimeter compound wall.
-            </p>
-          </div>
+            <div>
+              <h3>24-hour security</h3>
+              <p>
+                HD CCTV surveillance, round-the-clock security at entry points,
+                and a full perimeter compound wall.
+              </p>
+            </div>
 
-          <div>
-            <h3>Residential facilities</h3>
-            <p>
-              Separate hostels for men and women, approximately 75 single-seater
-              rooms each, with internet and security.
-            </p>
-          </div>
+            <div>
+              <h3>Residential facilities</h3>
+              <p>
+                Separate hostels for men and women, approximately 75
+                single-seater rooms each, with internet and security.
+              </p>
+            </div>
 
-          <div>
-            <h3>Digital library</h3>
-            <p>
-              Access to international science and engineering books, journals,
-              and e-resource consortia.
-            </p>
-          </div>
-        </Grid>
+            <div>
+              <h3>Digital library</h3>
+              <p>
+                Access to international science and engineering books, journals,
+                and e-resource consortia.
+              </p>
+            </div>
+          </Grid>
         </div>
       </Section>
     </Container>
