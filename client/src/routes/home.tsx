@@ -1,44 +1,173 @@
-import * as motion from 'motion/react-client';
+import { Button, Container, Grid, Heading, Lede, Section } from '~/components';
+import {
+  getEquipment,
+  getEvents,
+  getFaculty,
+  getPatents,
+  getPrograms,
+  getProjects,
+  getPublications,
+} from '~/data/loaders';
 
-import { transition } from '~/lib/motion';
-import type { Route } from './+types/home';
-
-export function meta(_: Route.MetaArgs) {
+export function meta() {
   return [
     { title: 'Home | Centre for Advanced Studies' },
     {
       name: 'description',
-      content: 'S1 scaffold placeholder. The real home page is built at S4.',
+      content:
+        'Centre for Advanced Studies — an in-campus research institute of Dr. A.P.J. Abdul Kalam Technical University, Lucknow. M.Tech, Ph.D. and B.Tech programmes in computing, mechatronics, nanotechnology, manufacturing and energy.',
+    },
+    { property: 'og:title', content: 'Home | Centre for Advanced Studies' },
+    {
+      property: 'og:description',
+      content:
+        'Centre for Advanced Studies — an in-campus research institute of Dr. A.P.J. Abdul Kalam Technical University, Lucknow.',
+    },
+    { property: 'og:type', content: 'website' },
+    {
+      property: 'og:site_name',
+      content: 'Centre for Advanced Studies',
     },
   ];
 }
 
 /**
- * S1 placeholder. Exercises Motion inside a prerendered route to prove
- * animation does not break static generation or hydration.
+ * Home page — institutional landing page.
  *
- * `initial={false}` is load-bearing, not stylistic. With `initial="hidden"`
- * the prerenderer writes the hidden state into the static HTML:
- *
- *     <div style="opacity:0;transform:translateY(8px)"><h1>…</h1></div>
- *
- * The text is still there for crawlers, but a visitor whose JavaScript fails
- * or is still loading sees an empty page. The current site deliberately avoids
- * this: templates/_layout.html only adds the `js-on` class once scripts run,
- * so scroll-reveal starts hidden for them and everyone else gets visible
- * content (FR-02). Entrance animations therefore belong on client-side
- * navigation, not on the first prerendered paint — where they would also delay
- * LCP on a content site.
+ * S4: basic content with data from S3 loaders. S8: premium cinematic redesign
+ * (hero slideshow, asymmetric mosaic, sticky features, horizontal rails).
  */
 export default function Home() {
+  const programs = getPrograms();
+  const faculty = getFaculty();
+  const equipment = getEquipment();
+  const publications = getPublications();
+  const patents = getPatents();
+  const projects = getProjects();
+  const events = getEvents();
+
   return (
-    <motion.div
-      initial={false}
-      animate={{ opacity: 1, y: 0 }}
-      transition={transition.base}
-    >
-      <h1>Centre for Advanced Studies</h1>
-      <p>S1 scaffold. Route tree and content arrive at S4.</p>
-    </motion.div>
+    <>
+      <Section>
+        <Container>
+          <Heading level={1}>Centre for Advanced Studies</Heading>
+          <Lede>
+            An in-campus research institute of Dr. A.P.J. Abdul Kalam Technical
+            University, Lucknow. M.Tech, Ph.D. and B.Tech programmes in
+            computing, mechatronics, nanotechnology, manufacturing and energy
+            science.
+          </Lede>
+          <div
+            style={{
+              marginTop: 'var(--space-6)',
+              display: 'flex',
+              gap: 'var(--space-3)',
+              flexWrap: 'wrap',
+            }}
+          >
+            <Button variant="primary" href="/academics">
+              View programmes
+            </Button>
+            <Button variant="secondary" href="/admissions">
+              Admissions
+            </Button>
+          </div>
+        </Container>
+      </Section>
+
+      <Section tone="subtle">
+        <Container>
+          <Heading level={2}>By the numbers</Heading>
+          <Grid columns={4}>
+            <div>
+              <h3
+                style={{ fontSize: 'var(--text-5xl)', color: 'var(--brand)' }}
+              >
+                {programs.length}
+              </h3>
+              <p
+                style={{
+                  fontSize: 'var(--text-sm)',
+                  color: 'var(--text-secondary)',
+                }}
+              >
+                Academic programmes
+              </p>
+            </div>
+            <div>
+              <h3
+                style={{ fontSize: 'var(--text-5xl)', color: 'var(--brand)' }}
+              >
+                {faculty.length}
+              </h3>
+              <p
+                style={{
+                  fontSize: 'var(--text-sm)',
+                  color: 'var(--text-secondary)',
+                }}
+              >
+                Faculty members
+              </p>
+            </div>
+            <div>
+              <h3
+                style={{ fontSize: 'var(--text-5xl)', color: 'var(--brand)' }}
+              >
+                {equipment.length}
+              </h3>
+              <p
+                style={{
+                  fontSize: 'var(--text-sm)',
+                  color: 'var(--text-secondary)',
+                }}
+              >
+                Research facilities
+              </p>
+            </div>
+            <div>
+              <h3
+                style={{ fontSize: 'var(--text-5xl)', color: 'var(--brand)' }}
+              >
+                {publications.length}
+              </h3>
+              <p
+                style={{
+                  fontSize: 'var(--text-sm)',
+                  color: 'var(--text-secondary)',
+                }}
+              >
+                Publications
+              </p>
+            </div>
+          </Grid>
+        </Container>
+      </Section>
+
+      <Section>
+        <Container>
+          <Heading level={2}>Research output</Heading>
+          <Grid columns={3}>
+            <div>
+              <h3>{patents.length} patents</h3>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                Filed and under examination
+              </p>
+            </div>
+            <div>
+              <h3>{projects.length} active projects</h3>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                Government-funded research
+              </p>
+            </div>
+            <div>
+              <h3>{events.length} events</h3>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                Workshops and training programmes
+              </p>
+            </div>
+          </Grid>
+        </Container>
+      </Section>
+    </>
   );
 }

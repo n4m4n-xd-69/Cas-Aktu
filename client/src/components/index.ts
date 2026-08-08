@@ -17,7 +17,9 @@ export {
   type ContainerProps,
   type ContainerWidth,
 } from './Container/Container';
+export { Footer } from './Footer/Footer';
 export { Grid, type GridColumns, type GridProps } from './Grid/Grid';
+export { Header } from './Header/Header';
 export { Pagination, type PaginationProps } from './Pagination/Pagination';
 export {
   Section,

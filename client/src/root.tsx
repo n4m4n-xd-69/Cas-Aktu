@@ -7,7 +7,7 @@ import {
   isRouteErrorResponse,
 } from 'react-router';
 
-import { Container } from '~/components';
+import { Footer, Header } from '~/components';
 import { ThemeProvider } from '~/theme/ThemeProvider';
 import { chromeHeightScript, prePaintScript } from '~/theme/theme-script';
 
@@ -79,7 +79,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           Skip to main content
         </a>
 
-        {/* Site chrome (alert band, utility bar, header) mounts here at S4. */}
+        <Header />
 
         {/* Measures the chrome and publishes --chrome-h. Sits exactly where it
             sat in _layout.html: after the chrome markup, before <main> exists,
@@ -88,6 +88,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: chromeHeightScript }} />
 
         <main id="main">{children}</main>
+
+        <Footer />
 
         <ScrollRestoration />
         <Scripts />
@@ -119,9 +121,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <Container width="prose">
+    <section style={{ padding: 'var(--space-8) var(--gutter)' }}>
       <h1>{heading}</h1>
       <p>{detail}</p>
-    </Container>
+    </section>
   );
 }
