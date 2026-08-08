@@ -1,29 +1,29 @@
-# Dependencies — restorable from web/package-lock.json
-web/node_modules/
+# Node dependencies — restorable from client/package-lock.json
+node_modules/
 
-# Generated image cache. The directory and its manifest are ignored together:
-# imagepipe.py trusts the manifest's size:mtime fingerprints, so keeping the
-# manifest without the files it describes would make the build skip work it
-# still needs to do.
-build/.imgcache/
-build/.imagecache.json
+# React build output
+client/dist/
+client/.react-router/
 
 # Python bytecode
 __pycache__/
 *.py[cod]
-
-# Astro build output and cache (the app itself is tracked)
-web/.astro/
-web/dist/
 
 # OS cruft
 Thumbs.db
 Desktop.ini
 .DS_Store
 
-# NOTE: site/ and source-assets/ are deliberately NOT ignored.
-# This repository exists as the rollback point for a migration that deletes
-# both. source-assets/ holds irreplaceable originals; site/ is the parity
-# oracle the migration is verified against, and cannot be reliably regenerated
-# today because the generator's Python dependencies are undeclared
-# (see docs/AUDIT.md section 4).
+# NOTE: source-assets/ is deliberately NOT ignored. It holds the irreplaceable
+# originals — 577 images and 176 PDFs — that the published site was built from.
+# docs/AUDIT.md section 16 lists it under "Never delete".
+#
+# The legacy static implementation (build/, site/, assets/, templates/, web/)
+# was removed at S7. The pristine pre-migration baseline, including the
+# generated site/ that served as the migration's parity oracle, remains on the
+# `main` branch:
+#
+#     git checkout main
+#
+# The generator's pinned Python dependencies were Pillow==12.1.1 and
+# fonttools==4.62.1 (verified in a clean venv on Python 3.14.3).
