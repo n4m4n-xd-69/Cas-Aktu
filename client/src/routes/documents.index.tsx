@@ -86,6 +86,7 @@ export default function Documents() {
               setSearch(e.target.value);
               setCurrentPage(1);
             }}
+            aria-label="Search documents"
             style={{
               width: '100%',
               padding: 'var(--space-3) var(--space-4)',

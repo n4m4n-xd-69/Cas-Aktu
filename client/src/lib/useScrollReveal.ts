@@ -21,6 +21,8 @@ export function useScrollReveal({
 
     // Skip animation if user prefers reduced motion
     if (prefersReducedMotion) {
+      // Immediately show content for reduced motion preference
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsVisible(true);
       return;
     }

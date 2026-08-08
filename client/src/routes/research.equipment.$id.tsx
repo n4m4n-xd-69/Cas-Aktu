@@ -13,7 +13,10 @@ export function meta({ params }: Route.MetaArgs) {
 
   return [
     { title: `${item.name} | Centre for Advanced Studies` },
-    { name: 'description', content: item.summary },
+    {
+      name: 'description',
+      content: item.summary || `${item.name} — Research equipment at CAS.`,
+    },
   ];
 }
 

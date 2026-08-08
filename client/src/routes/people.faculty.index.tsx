@@ -61,6 +61,7 @@ export default function Faculty() {
             placeholder="Search faculty by name, title, department, or interests..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            aria-label="Search faculty"
             style={{
               width: '100%',
               padding: 'var(--space-3) var(--space-4)',

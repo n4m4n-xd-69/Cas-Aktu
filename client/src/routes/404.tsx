@@ -1,7 +1,13 @@
 import { Container, Heading, Section } from '~/components';
 
 export function meta() {
-  return [{ title: 'Page Not Found | Centre for Advanced Studies' }];
+  return [
+    { title: 'Page Not Found | Centre for Advanced Studies' },
+    {
+      name: 'description',
+      content: 'The page you are looking for could not be found.',
+    },
+  ];
 }
 
 export default function NotFound() {

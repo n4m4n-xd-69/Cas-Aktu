@@ -1,7 +1,13 @@
 import { Container, Heading, Section } from '~/components';
 
 export function meta() {
-  return [{ title: 'Server Error | Centre for Advanced Studies' }];
+  return [
+    { title: 'Server Error | Centre for Advanced Studies' },
+    {
+      name: 'description',
+      content: 'An unexpected server error occurred. Please try again later.',
+    },
+  ];
 }
 
 export default function ServerError() {

@@ -1,10 +1,10 @@
-import { useTheme } from '~/theme/ThemeProvider';
+import { useTheme, type Theme } from '~/theme/ThemeProvider';
 import styles from './ThemeToggle.module.css';
 
 export function ThemeToggle() {
   // During SSR/prerendering, ThemeProvider might not be available yet
-  let theme = 'system';
-  let setTheme = () => {};
+  let theme: Theme = 'system';
+  let setTheme = (_next: Theme) => {};
 
   try {
     const themeContext = useTheme();

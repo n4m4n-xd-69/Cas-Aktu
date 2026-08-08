@@ -1,7 +1,14 @@
 import { Container, Heading, Section } from '~/components';
 
 export function meta() {
-  return [{ title: 'Maintenance | Centre for Advanced Studies' }];
+  return [
+    { title: 'Maintenance | Centre for Advanced Studies' },
+    {
+      name: 'description',
+      content:
+        'The CAS website is currently undergoing maintenance. We will be back online shortly.',
+    },
+  ];
 }
 
 export default function Maintenance() {

@@ -42,13 +42,19 @@ export function CommandPalette() {
   useEffect(() => {
     if (isOpen) {
       inputRef.current?.focus();
+      // Reset selection when modal opens
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedIndex(0);
     } else {
+      // Clear query when modal closes
+
       setQuery('');
     }
   }, [isOpen]);
 
   useEffect(() => {
+    // Reset selection when search query changes
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSelectedIndex(0);
   }, [query]);
 
