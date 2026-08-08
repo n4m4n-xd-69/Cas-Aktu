@@ -1,4 +1,12 @@
-import { Button, Container, Grid, Heading, Lede, Section } from '~/components';
+import {
+  Button,
+  Card,
+  Container,
+  Grid,
+  Heading,
+  Lede,
+  Section,
+} from '~/components';
 import { getPrograms } from '~/data/loaders';
 
 export function meta() {
@@ -28,38 +36,48 @@ export default function Academics() {
           industry-ready professionals.
         </Lede>
 
+        {/* Cards rather than bare <div><h3>: these tiles sat directly under
+            the page h1, which skipped a heading level (WCAG 1.3.1). Card.Title
+            renders h2, so the outline is h1 -> h2 and the inline styles go
+            with it. */}
         <div style={{ marginTop: 'var(--space-8)' }}>
           <Grid columns={3}>
-            <div>
-              <h3>{mtechPrograms.length} M.Tech programmes</h3>
-              <p style={{ color: 'var(--text-secondary)' }}>
+            <Card>
+              <Card.Title>{mtechPrograms.length} M.Tech programmes</Card.Title>
+              <Card.Body>
                 Two-year postgraduate programmes in specialized technology
                 domains
-              </p>
-              <Button variant="secondary" href="/academics/mtech">
-                View M.Tech
-              </Button>
-            </div>
+              </Card.Body>
+              <Card.Foot>
+                <Button variant="secondary" href="/academics/mtech">
+                  View M.Tech
+                </Button>
+              </Card.Foot>
+            </Card>
 
-            <div>
-              <h3>{phdPrograms.length} Ph.D. programmes</h3>
-              <p style={{ color: 'var(--text-secondary)' }}>
+            <Card>
+              <Card.Title>{phdPrograms.length} Ph.D. programmes</Card.Title>
+              <Card.Body>
                 Doctoral research programmes in advanced technology areas
-              </p>
-              <Button variant="secondary" href="/academics/phd">
-                View Ph.D.
-              </Button>
-            </div>
+              </Card.Body>
+              <Card.Foot>
+                <Button variant="secondary" href="/academics/phd">
+                  View Ph.D.
+                </Button>
+              </Card.Foot>
+            </Card>
 
-            <div>
-              <h3>{btechPrograms.length} B.Tech programme</h3>
-              <p style={{ color: 'var(--text-secondary)' }}>
+            <Card>
+              <Card.Title>{btechPrograms.length} B.Tech programme</Card.Title>
+              <Card.Body>
                 Four-year undergraduate engineering programme
-              </p>
-              <Button variant="secondary" href="/academics/btech">
-                View B.Tech
-              </Button>
-            </div>
+              </Card.Body>
+              <Card.Foot>
+                <Button variant="secondary" href="/academics/btech">
+                  View B.Tech
+                </Button>
+              </Card.Foot>
+            </Card>
           </Grid>
         </div>
 

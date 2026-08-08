@@ -42,9 +42,12 @@
   opacity: 1;
 }
 
-/* Keeps every child above the sheen without needing a z-index on each. */
+/* Keeps every child above the sheen without needing a z-index on each.
+   margin-block:0 opts out of the base.css prose-flow rules — this card
+   spaces its children with flex gap, and the two would compound. */
 .card > * {
   position: relative;
+  margin-block: 0;
 }
 
 /* The card is one click target (see .title a::after), so the ring belongs

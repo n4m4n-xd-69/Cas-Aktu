@@ -134,6 +134,26 @@ p + p {
   margin-top: var(--space-4);
 }
 
+/* ---- Prose flow (S9) ----
+   `* { margin: 0 }` above strips every default margin, and the S2 system
+   put spacing back through components (Section, Stack, flex gap). Prose
+   routes — About, the legal pages, every programme and profile detail —
+   write plain <h2>/<p> straight into a prose Container with no such
+   wrapper, so headings sat flush against the paragraph above them: a
+   measured gap of 0px on every heading of /about/.
+
+   These two rules restore flow spacing for adjacent siblings only.
+   :where() keeps them at ZERO specificity, so any component rule beats
+   them without needing !important or a more specific selector. Components
+   that space their own children with flex gap null these out explicitly
+   (Card, Bento, PageHeader, the home hero) rather than fighting them. */
+:where(p, ul, ol, dl, blockquote, table, pre) + :where(h2, h3, h4) {
+  margin-top: var(--space-10);
+}
+:where(h1, h2, h3, h4) + :where(p, ul, ol, dl, blockquote, table, pre) {
+  margin-top: var(--space-4);
+}
+
 ul,
 ol {
   padding-left: 1.15em;

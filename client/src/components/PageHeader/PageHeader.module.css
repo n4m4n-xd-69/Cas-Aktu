@@ -17,6 +17,12 @@
   gap: var(--space-3);
 }
 
+/* Spaced by flex gap; opts out of the base.css prose-flow rules so the
+   h1 -> lede pair does not get gap AND margin. */
+.inner > * {
+  margin-block: 0;
+}
+
 .eyebrow {
   font-size: var(--text-xs);
   font-weight: var(--weight-semibold);

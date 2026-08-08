@@ -18,7 +18,12 @@ export type EmptyStateProps = {
  */
 export function EmptyState({ title, description, children }: EmptyStateProps) {
   return (
-    <div className={styles.empty} role="status">
+    // Deliberately NOT role="status". SearchField already publishes the
+    // result count to a live region, and browser testing confirmed a
+    // screen reader announcing both — "0 results", then the whole of this
+    // panel. The count is the event worth announcing; this is the visual
+    // explanation of it.
+    <div className={styles.empty}>
       <p className={styles.title}>{title}</p>
       {description && <p className={styles.description}>{description}</p>}
       {children && <div className={styles.action}>{children}</div>}

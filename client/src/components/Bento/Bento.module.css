@@ -48,8 +48,11 @@
   opacity: 1;
 }
 
+/* margin-block:0 opts out of the base.css prose-flow rules; this panel
+   spaces its children with flex gap. */
 .item > * {
   position: relative;
+  margin-block: 0;
 }
 
 .subtle {

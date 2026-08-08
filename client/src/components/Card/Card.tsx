@@ -52,10 +52,22 @@ Card.Foot = part(styles.foot);
  * The card's heading. Wrap a link in it to make the whole card clickable —
  * the stylesheet expands that link over the card via ::after, which keeps a
  * single focusable target rather than nesting interactive elements.
+ *
+ * Defaults to <h2>, not <h3>. Listing pages put a grid of cards directly
+ * under the page <h1>, so an h3 default skipped a level on all 16 of them —
+ * WCAG 1.3.1 Level A, and the same defect docs/AUDIT.md section 8 measured
+ * on 142 legacy pages. Fixing it here rather than per-route is what that
+ * audit recommended: one shared template, one change.
+ *
+ * Lowering the default cannot introduce a skip anywhere else, because a
+ * heading that DECREASES in level is always valid. Appearance is unchanged:
+ * .title sets its own font-size, weight and family, so the tag carries
+ * outline semantics only. Pass `as` where a card genuinely sits under an
+ * h2 section heading.
  */
 Card.Title = function CardTitle({
   children,
-  as: Tag = 'h3',
+  as: Tag = 'h2',
   className,
 }: {
   children: ReactNode;

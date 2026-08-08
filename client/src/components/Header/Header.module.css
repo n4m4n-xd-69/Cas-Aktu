@@ -12,8 +12,14 @@
   z-index: 100;
   background: var(--surface-glass);
   border-bottom: 1px solid var(--surface-glass-brd);
+  /* Unprefixed ONLY. Lightning CSS treats backdrop-filter and
+     -webkit-backdrop-filter as the same declaration and keeps whichever
+     comes last, so writing the prefixed line after the standard one
+     deleted the standard one from the build. Chrome has no -webkit-
+     alias, so the masthead shipped with no blur at all — computed
+     backdrop-filter was `none` in the production build until S9.
+     Prefixing is the bundler's job; browserslist drives it. */
   backdrop-filter: var(--blur-glass);
-  -webkit-backdrop-filter: var(--blur-glass);
 }
 
 /* Browsers without backdrop-filter get an opaque masthead rather than a

@@ -5,7 +5,7 @@
   "sideEffects": false,
   "scripts": {
     "dev": "react-router dev",
-    "build": "react-router build && node scripts/verify-urls.mjs",
+    "build": "react-router build && node scripts/verify-urls.mjs && node scripts/generate-seo.mjs",
     "preview": "vite preview",
     "typecheck": "react-router typegen && tsc --noEmit",
     "lint": "eslint .",

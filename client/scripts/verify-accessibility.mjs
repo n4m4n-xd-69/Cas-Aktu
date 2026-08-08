@@ -101,6 +101,33 @@ function checkAccessibility(html, route) {
     issues.push('Missing main landmark');
   }
 
+  // Heading order — WCAG 1.3.1 (Level A).
+  //
+  // Added at S9. docs/AUDIT.md section 8 measured this defect on 142 of the
+  // 392 legacy pages (always h1 -> h3, one shared template reproduced 142
+  // times) and HANDOFF.md listed fixing it as an S4 contract. It was not
+  // fixed, and this checker did not look for it, so it survived S4 through
+  // S8 and was only caught when Lighthouse flagged /documents/ at S9.
+  //
+  // Only headings inside <main> are considered: the header and footer are
+  // site chrome and their headings are not part of the page outline. The
+  // slice must be bounded at </main> — taking everything after <main>
+  // swept in the footer's <h3> column titles and reported a skip on all
+  // 392 pages.
+  const mainStart = html.indexOf('<main');
+  const mainEnd = html.indexOf('</main>');
+  const main =
+    mainStart === -1 || mainEnd === -1 ? '' : html.slice(mainStart, mainEnd);
+  const levels = [...main.matchAll(/<h([1-6])[\s>]/g)].map((m) => Number(m[1]));
+  let prev = 0;
+  for (const level of levels) {
+    if (prev && level > prev + 1) {
+      issues.push(`Heading order skips h${prev} -> h${level}`);
+      break;
+    }
+    prev = level;
+  }
+
   return issues;
 }
 
