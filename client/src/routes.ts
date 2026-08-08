@@ -8,8 +8,9 @@ import { type RouteConfig, index, route } from '@react-router/dev/routes';
  *   - Group 2: Core pages (7 pages)
  *   - Group 3: Academics (14 pages)
  *   - Group 4: People (64 pages)
+ *   - Group 5: Research (89 pages)
  *
- * Remaining: Groups 5-9 (306 pages).
+ * Remaining: Groups 6-9 (217 pages).
  */
 const routes: RouteConfig = [
   // Home
@@ -54,6 +55,28 @@ const routes: RouteConfig = [
     route('staff', 'routes/people.staff.tsx', [
       index('routes/people.staff.index.tsx'),
       route(':slug', 'routes/people.staff.$slug.tsx'),
+    ]),
+  ]),
+
+  // Research (Group 5)
+  route('research', 'routes/research.tsx', [
+    index('routes/research.index.tsx'),
+    route('facilities', 'routes/research.facilities.tsx'),
+    route('publications', 'routes/research.publications.tsx', [
+      index('routes/research.publications.index.tsx'),
+      route(':id', 'routes/research.publications.$id.tsx'),
+    ]),
+    route('patents', 'routes/research.patents.tsx', [
+      index('routes/research.patents.index.tsx'),
+      route(':id', 'routes/research.patents.$id.tsx'),
+    ]),
+    route('equipment', 'routes/research.equipment.tsx', [
+      index('routes/research.equipment.index.tsx'),
+      route(':id', 'routes/research.equipment.$id.tsx'),
+    ]),
+    route('projects', 'routes/research.projects.tsx', [
+      index('routes/research.projects.index.tsx'),
+      route(':id', 'routes/research.projects.$id.tsx'),
     ]),
   ]),
 ];
