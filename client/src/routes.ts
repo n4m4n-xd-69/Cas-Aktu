@@ -7,8 +7,9 @@ import { type RouteConfig, index, route } from '@react-router/dev/routes';
  *   - Group 1: Home (1 page)
  *   - Group 2: Core pages (7 pages)
  *   - Group 3: Academics (14 pages)
+ *   - Group 4: People (64 pages)
  *
- * Remaining: Groups 4-9 (370 pages).
+ * Remaining: Groups 5-9 (306 pages).
  */
 const routes: RouteConfig = [
   // Home
@@ -35,8 +36,26 @@ const routes: RouteConfig = [
     ]),
   ]),
 
-  // S1 probe route (will be replaced by dynamic person routes in Group 4)
-  route('people/faculty/:slug', 'routes/person.tsx'),
+  // People (Group 4)
+  route('people', 'routes/people.tsx', [
+    index('routes/people.index.tsx'),
+    route('faculty', 'routes/people.faculty.tsx', [
+      index('routes/people.faculty.index.tsx'),
+      route(':slug', 'routes/people.faculty.$slug.tsx'),
+    ]),
+    route('former', 'routes/people.former.tsx', [
+      index('routes/people.former.index.tsx'),
+      route(':slug', 'routes/people.former.$slug.tsx'),
+    ]),
+    route('visiting', 'routes/people.visiting.tsx', [
+      index('routes/people.visiting.index.tsx'),
+      route(':slug', 'routes/people.visiting.$slug.tsx'),
+    ]),
+    route('staff', 'routes/people.staff.tsx', [
+      index('routes/people.staff.index.tsx'),
+      route(':slug', 'routes/people.staff.$slug.tsx'),
+    ]),
+  ]),
 ];
 
 /**
