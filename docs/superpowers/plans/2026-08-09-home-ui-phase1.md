@@ -641,29 +641,88 @@ images/workshop23 8 · images/seminar 8 · home1/doc/gallery 8 · img 6 · campu
 npm install -D sharp
 ```
 
-- [ ] **Step 2: Shortlist candidates by bucket**
+- [ ] **Step 2: Build contact sheets, then choose from those**
 
-Run this to print the local paths for the buckets you need:
+Selection has to be visual — the filenames are content hashes and carry no meaning. But
+opening ~90 candidates one at a time is enormously wasteful. Instead generate one
+labelled contact sheet per bucket and look at that.
 
-```bash
-node -e "
-const fs=require('fs');
-const rows=fs.readFileSync('research/cas-asset-inventory.csv','utf8').split(/\r?\n/).slice(1);
-const want=process.argv[1];
-for(const line of rows){
-  const c=line.split(',');
-  if(c[1]!=='image'||c[4]!=='200'||!c[7])continue;
-  const p=c[0].replace('https://cas.res.in/','');
-  if(p.startsWith(want)) console.log(c[7], c[6]);
-}" "campustour/img/robolab"
+Write `scripts/contact-sheet.mjs`:
+
+```js
+import { mkdir, readFile } from 'node:fs/promises';
+import path from 'node:path';
+
+import sharp from 'sharp';
+
+const [, , bucket] = process.argv;
+const OUT = '.superpowers/sdd/2026-08-09-home-ui-phase1/sheets';
+
+const csv = await readFile('research/cas-asset-inventory.csv', 'utf8');
+const files = [];
+for (const line of csv.split(/\r?\n/).slice(1)) {
+  const c = line.split(',');
+  if (c[1] !== 'image' || c[4] !== '200' || !c[7]) continue;
+  if (!c[0].replace('https://cas.res.in/', '').startsWith(bucket)) continue;
+  files.push(c[7]);
+}
+
+const COLS = 5;
+const CELL = 260;
+const picks = files.slice(0, 30);
+const rows = Math.ceil(picks.length / COLS);
+
+const tiles = await Promise.all(
+  picks.map(async (file, i) => ({
+    input: await sharp(file)
+      .resize(CELL, CELL, { fit: 'cover' })
+      .composite([
+        {
+          input: Buffer.from(
+            `<svg width="${CELL}" height="46">
+               <rect width="70" height="34" x="6" y="6" fill="black" opacity="0.75"/>
+               <text x="16" y="30" font-size="24" fill="white">${i}</text>
+             </svg>`,
+          ),
+          top: 0,
+          left: 0,
+        },
+      ])
+      .jpeg({ quality: 70 })
+      .toBuffer(),
+    top: Math.floor(i / COLS) * CELL,
+    left: (i % COLS) * CELL,
+  })),
+);
+
+await mkdir(OUT, { recursive: true });
+const name = bucket.replace(/\//g, '-');
+await sharp({
+  create: {
+    width: COLS * CELL,
+    height: rows * CELL,
+    channels: 3,
+    background: '#111',
+  },
+})
+  .composite(tiles)
+  .jpeg({ quality: 72 })
+  .toFile(path.join(OUT, `${name}.jpg`));
+
+picks.forEach((f, i) => console.log(i, f));
 ```
 
-Repeat per bucket. Then **look at the candidates** with the Read tool before choosing —
-filenames are hashes, so selection must be visual.
+Run it per bucket (`node scripts/contact-sheet.mjs images/innov`), view the single
+resulting sheet with the Read tool, and note the index numbers you want. The script
+prints index → file path so you can map your choices back to real paths.
+
+Contact sheets are scratch — they live in the SDD workspace, which is git-ignored. Never
+commit them.
 
 Selection criteria: landscape orientation; ≥1600px wide for hero candidates; no burnt-in
 text, watermarks or date stamps; no identifiable face dominating the foreground where a
-wider shot of the same room serves equally.
+wider shot of the same room serves equally; and across a five-slide set, visible variety
+rather than five near-identical frames of one bench.
 
 - [ ] **Step 3: Record the chosen files**
 
@@ -736,15 +795,31 @@ Add to `package.json` scripts:
 "media": "node scripts/build-home-media.mjs"
 ```
 
-- [ ] **Step 4: Run it and check the output weight**
+- [ ] **Step 4: Run it and enforce the byte budget**
 
 ```bash
 npm run media
 du -sh public/assets/home
+du -sh public/assets/home/*
 ```
 
-Expected: 33 jpg + 33 webp pairs. If the directory exceeds ~4 MB total, lower the JPEG
-quality to 78 and re-run — the hero is the only large image and the rest are 800px.
+Expected: 33 jpg + 33 webp pairs.
+
+**Hard budget — this is load-bearing, not a nicety.** `<Crossfade>` keeps every slide
+mounted at `inset: 0`, so all slides in a stack share one bounding box. Native
+`loading="lazy"` keys off distance from the viewport, not opacity — so when a tile nears
+the viewport, **all five of its images fetch at once**, not just the visible one. The
+same is true of the hero's four. Budget accordingly:
+
+| Set | Cap (webp, per image) | Cap (set total, webp) |
+| --- | --- | --- |
+| hero (4 @ 2400px) | 220 KB | 880 KB |
+| each card set (5 @ 800px) | 70 KB | 350 KB |
+| campus (4 @ 600px) | 45 KB | 180 KB |
+
+Whole directory, webp + jpg fallbacks together: **≤ 4 MB**. If a set busts its cap, drop
+webp quality for that set to 72 and re-run; if still over, the source image is too busy —
+pick a different frame. Report the final per-set sizes in your report.
 
 - [ ] **Step 5: Write the typed manifest**
 
