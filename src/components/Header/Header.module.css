@@ -1,6 +1,13 @@
 .header {
   --identity-height: 96px;
   --nav-height: 56px;
+  /* Inter has no Devanagari coverage, so the AKTU university name in Hindi
+     falls back to a system font. That's expected — no webfont is added for
+     one line of text. This stack pins the fallback to real Devanagari faces
+     instead of leaving it to whatever the browser's generic sans resolves
+     to. */
+  --font-devanagari:
+    'Nirmala UI', 'Noto Sans Devanagari', 'Kohinoor Devanagari', sans-serif;
   top: 0;
   z-index: 1000;
   width: 100%;
@@ -82,8 +89,22 @@
   color: color-mix(in srgb, currentColor 78%, transparent);
 }
 
+/* Devanagari university name, secondary to the English name beneath it:
+   smaller, lighter weight, muted colour — same hierarchy relationship
+   .brandSub has to .universityName, just placed above instead of below.
+   line-height is looser than .universityName's 1.2 because Devanagari
+   ascenders/descenders sit taller than Latin's at the same font-size. */
+.universityNameHi {
+  font-family: var(--font-devanagari);
+  font-size: clamp(0.72rem, 1vw, 0.85rem);
+  font-weight: var(--weight-normal);
+  line-height: 1.35;
+  color: color-mix(in srgb, currentColor 82%, transparent);
+}
+
 .home .brandName,
 .home .universityName,
+.home .universityNameHi,
 .home .brandSub {
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
 }
@@ -254,6 +275,15 @@
     line-height: 1.18;
   }
 
+  /* .brandSub (the location line) hides at this width to keep the AKTU
+     side to two visible lines. .universityNameHi takes its place in the
+     line count instead of stacking as a third line, so the row's height
+     doesn't grow here even though it gains a line at desktop widths. */
+  .universityNameHi {
+    font-size: 0.62rem;
+    line-height: 1.3;
+  }
+
   .brandSub {
     display: none;
   }
@@ -277,6 +307,10 @@
   .brandName,
   .universityName {
     font-size: 0.66rem;
+  }
+
+  .universityNameHi {
+    font-size: 0.58rem;
   }
 }
 

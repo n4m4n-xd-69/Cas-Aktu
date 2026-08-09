@@ -1,9 +1,9 @@
 .backdrop {
   position: fixed;
   inset: 0;
+  /* Opaque scrim, not a blur — the design forbids backdrop-filter anywhere.
+     Same approach as .home.scrolled .navWrap in Header.module.css. */
   background: rgba(0, 0, 0, 0.5);
-  /* Unprefixed only — see Header.module.css. */
-  backdrop-filter: blur(4px);
   z-index: 1000;
   display: flex;
   align-items: flex-start;

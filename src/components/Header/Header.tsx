@@ -92,6 +92,9 @@ export function Header() {
               aria-label="Dr. A.P.J. Abdul Kalam Technical University website"
             >
               <span className={styles.brandText}>
+                <span className={styles.universityNameHi} lang="hi">
+                  डॉ. ए.पी.जे. अब्दुल कलाम प्राविधिक विश्वविद्यालय, लखनऊ
+                </span>
                 <span className={styles.universityName}>
                   Dr. A.P.J. Abdul Kalam Technical University
                 </span>
