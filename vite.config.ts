@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { reactRouter } from '@react-router/dev/vite';
 import { defineConfig } from 'vite';
 
@@ -27,5 +28,10 @@ export default defineConfig({
     // 99 KB of render-blocking CSS (docs/AUDIT.md section 11); the point of
     // CSS Modules here is that no single route ever loads all of it.
     chunkSizeWarningLimit: 250,
+  },
+
+  test: {
+    environment: 'jsdom',
+    include: ['src/**/*.test.{ts,tsx}'],
   },
 });
