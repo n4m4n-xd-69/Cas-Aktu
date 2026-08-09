@@ -6,12 +6,14 @@ type FadeInProps = {
   children: React.ReactNode;
   delay?: number;
   as?: string;
+  className?: string;
 };
 
 export function FadeIn({
   children,
   delay = 0,
   as: Component = 'div',
+  className,
 }: FadeInProps) {
   const { ref, isVisible } = useScrollReveal();
 
@@ -19,7 +21,9 @@ export function FadeIn({
     Component,
     {
       ref,
-      className: isVisible ? styles.visible : styles.hidden,
+      className: [isVisible ? styles.visible : styles.hidden, className]
+        .filter(Boolean)
+        .join(' '),
       style: { transitionDelay: `${delay}ms` },
     },
     children,

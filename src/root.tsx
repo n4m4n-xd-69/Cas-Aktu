@@ -76,25 +76,27 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: prePaintScript }} />
       </head>
       <body>
-        <a className="skip-link" href="#main">
-          Skip to main content
-        </a>
+        <ThemeProvider>
+          <a className="skip-link" href="#main">
+            Skip to main content
+          </a>
 
-        <Header />
-        <CommandPalette />
+          <Header />
+          <CommandPalette />
 
-        {/* Measures the chrome and publishes --chrome-h. Sits exactly where it
-            sat in _layout.html: after the chrome markup, before <main> exists,
-            so a full-viewport hero is laid out correctly on the first pass.
-            Running this from a bundle instead cost 0.06 CLS. */}
-        <script dangerouslySetInnerHTML={{ __html: chromeHeightScript }} />
+          {/* Measures the chrome and publishes --chrome-h. Sits exactly where it
+              sat in _layout.html: after the chrome markup, before <main> exists,
+              so a full-viewport hero is laid out correctly on the first pass.
+              Running this from a bundle instead cost 0.06 CLS. */}
+          <script dangerouslySetInnerHTML={{ __html: chromeHeightScript }} />
 
-        <main id="main">{children}</main>
+          <main id="main">{children}</main>
 
-        <Footer />
+          <Footer />
 
-        <ScrollRestoration />
-        <Scripts />
+          <ScrollRestoration />
+          <Scripts />
+        </ThemeProvider>
       </body>
     </html>
   );
@@ -106,11 +108,9 @@ export default function App() {
   const { pathname } = useLocation();
 
   return (
-    <ThemeProvider>
-      <div key={pathname} className="route-fade">
-        <Outlet />
-      </div>
-    </ThemeProvider>
+    <div key={pathname} className="route-fade">
+      <Outlet />
+    </div>
   );
 }
 
