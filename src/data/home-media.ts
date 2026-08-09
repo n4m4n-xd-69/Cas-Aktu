@@ -4,7 +4,12 @@ export type MediaSlide = CrossfadeSlide;
 
 export type CardKey = 'labs' | 'programs' | 'areas' | 'innovations' | 'life';
 
-/** Four slides, 3s each. Slide 0 is the LCP image. */
+/**
+ * Four slides, 3s each. Slide 0 is the LCP image and renders at 2400px; slides
+ * 1-3 crossfade behind a headline and are never inspected closely, so they render
+ * at 1800px (see scripts/build-home-media.mjs) — fix-round change, see
+ * task-4-report.md "Fix round" for why.
+ */
 export const HERO_SLIDES: readonly MediaSlide[] = [
   {
     src: '/assets/home/hero/hero-01.jpg',
@@ -14,12 +19,12 @@ export const HERO_SLIDES: readonly MediaSlide[] = [
   {
     src: '/assets/home/hero/hero-02.jpg',
     webp: '/assets/home/hero/hero-02.webp',
-    alt: 'An industrial robotic arm inside a glass safety enclosure in the CAS automation laboratory',
+    alt: 'A bright reading room in the CAS library, with study tables and floor-to-ceiling bookshelves',
   },
   {
     src: '/assets/home/hero/hero-03.jpg',
     webp: '/assets/home/hero/hero-03.webp',
-    alt: 'An angled street view of the Centre for Advanced Studies building along the AKTU campus road',
+    alt: 'A low-angle view of the Centre for Advanced Studies building, its red entrance columns and rooftop signage against the sky',
   },
   {
     src: '/assets/home/hero/hero-04.jpg',
@@ -81,6 +86,14 @@ export const CARD_SETS: Record<CardKey, readonly MediaSlide[]> = {
       alt: 'Automated assembly and inspection stations on the factory floor of the CAS industrial automation laboratory',
     },
   ],
+  /**
+   * Fix-round (curation finding 2): #3 and #4 used to be unpeopled rooms facing
+   * blank projection screens — replaced with two individually-verified real
+   * photographs from images/python. #2 stays as-is; no cleanly better
+   * people-in-classroom substitute turned up for it specifically. See
+   * task-4-report.md "Fix round" for the full re-check of python/seminar/
+   * workshop23/ai (only python had photographs; the rest are posters/flyers).
+   */
   programs: [
     {
       src: '/assets/home/programs/programs-01.jpg',
@@ -95,12 +108,12 @@ export const CARD_SETS: Record<CardKey, readonly MediaSlide[]> = {
     {
       src: '/assets/home/programs/programs-03.jpg',
       webp: '/assets/home/programs/programs-03.webp',
-      alt: 'The Shanti Swaroop Bhatnagar seminar hall at CAS, set up with a lectern and projection screen',
+      alt: 'Instructors addressing a full Python workshop classroom, with students seated at laptop workstations and a projection screen at the front',
     },
     {
       src: '/assets/home/programs/programs-04.jpg',
       webp: '/assets/home/programs/programs-04.webp',
-      alt: 'The MOOC recording room at CAS, used for producing online course content',
+      alt: 'Students working at laptops in a packed coding workshop at CAS, with instructors observing at the back of the room',
     },
     {
       src: '/assets/home/programs/programs-05.jpg',
@@ -108,6 +121,14 @@ export const CARD_SETS: Record<CardKey, readonly MediaSlide[]> = {
       alt: 'Rows of workstations in the CAS General Purpose computer laboratory',
     },
   ],
+  /**
+   * Fix-round (curation finding 1): stays instrument- and facility-led. Three
+   * frames that used to live here (solar install, CyberCity, 3D printer) read as
+   * outcomes/demonstrations rather than facilities, so they moved to
+   * `innovations`. Backfilled with three of the four equipment close-ups that
+   * used to sit in `innovations` — already clean/uncaptioned/byte-verified from
+   * the first curation pass.
+   */
   areas: [
     {
       src: '/assets/home/areas/areas-01.jpg',
@@ -122,50 +143,61 @@ export const CARD_SETS: Record<CardKey, readonly MediaSlide[]> = {
     {
       src: '/assets/home/areas/areas-03.jpg',
       webp: '/assets/home/areas/areas-03.webp',
-      alt: 'A student assembling a rooftop solar panel array for CAS energy research',
+      alt: 'A simultaneous thermal analyser used for materials research at CAS',
     },
     {
       src: '/assets/home/areas/areas-04.jpg',
       webp: '/assets/home/areas/areas-04.webp',
-      alt: 'A model train passing through a miniature smart-city installation used for CAS cybersecurity research',
+      alt: 'A precision stereo microscope measurement setup in a CAS laboratory',
     },
     {
       src: '/assets/home/areas/areas-05.jpg',
       webp: '/assets/home/areas/areas-05.webp',
-      alt: 'A Stratasys 3D printer with its lid open in the CAS additive manufacturing lab',
+      alt: "A Lee's disc apparatus used for thermal conductivity experiments at CAS",
     },
   ],
   /**
-   * Four slides, not five. images/innov (32 candidates) is entirely academic
-   * conference-style posters, not photographs; images/devices (7 candidates) is
-   * real product photography but every frame carries a baked-in caption band.
-   * Both violate the brief's no-burnt-in-text rule wholesale. Substituted with
-   * clean, uncaptioned instrumentation photography from images/equip, but only
-   * four frames there cleared both the "no watermark/date-stamp" and resolution
-   * bars — see task-4-report.md.
+   * Fix-round (curation finding 1): five slides, not four. The old four
+   * equipment close-ups here didn't signal an idea, prototype, demonstration or
+   * outcome, and were visually indistinguishable from `areas`/`labs` — swapped
+   * for frames that show CAS research becoming something tangible: a printer
+   * mid-print, a student wiring up solar panels, the CyberCity smart-city model
+   * (in close-up and as the full installation being viewed), and students flying
+   * a competition drone. See task-4-report.md "Fix round".
    */
   innovations: [
     {
       src: '/assets/home/innovations/innovations-01.jpg',
       webp: '/assets/home/innovations/innovations-01.webp',
-      alt: 'A simultaneous thermal analyser used for materials research at CAS',
+      alt: 'A 3D printer mid-print on an orange plumbing fitting in the CAS 3D printing lab, with a finished part sitting beside it',
     },
     {
       src: '/assets/home/innovations/innovations-02.jpg',
       webp: '/assets/home/innovations/innovations-02.webp',
-      alt: 'A precision stereo microscope measurement setup in a CAS laboratory',
+      alt: 'A student assembling a rooftop solar panel array for CAS energy research',
     },
     {
       src: '/assets/home/innovations/innovations-03.jpg',
       webp: '/assets/home/innovations/innovations-03.webp',
-      alt: "A Lee's disc apparatus used for thermal conductivity experiments at CAS",
+      alt: 'A model train passing through a miniature smart-city installation used for CAS cybersecurity research',
     },
     {
       src: '/assets/home/innovations/innovations-04.jpg',
       webp: '/assets/home/innovations/innovations-04.webp',
-      alt: 'A Hall effect measurement apparatus used in CAS materials research',
+      alt: 'Students flying a racing drone on the CAS lawn during a technical festival',
+    },
+    {
+      src: '/assets/home/innovations/innovations-05.jpg',
+      webp: '/assets/home/innovations/innovations-05.webp',
+      alt: 'The full CyberCity smart-city model in the CAS cyber lab — a miniature metro, power plant and water-treatment works — with two people viewing it beside a wall display',
     },
   ],
+  /**
+   * Fix-round (curation finding 1): #2 (the drone photo) moved to
+   * `innovations`, where it reads as a demonstrated outcome rather than
+   * community life. Backfilled with another candid, on-campus, non-ceremonial
+   * frame from the same event.
+   */
   life: [
     {
       src: '/assets/home/life/life-01.jpg',
@@ -175,7 +207,7 @@ export const CARD_SETS: Record<CardKey, readonly MediaSlide[]> = {
     {
       src: '/assets/home/life/life-02.jpg',
       webp: '/assets/home/life/life-02.webp',
-      alt: 'Students flying a racing drone on the CAS lawn during a technical festival',
+      alt: 'Students and staff crowding a balcony to watch a robot-combat competition below during a CAS technical festival',
     },
     {
       src: '/assets/home/life/life-03.jpg',

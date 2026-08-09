@@ -10,10 +10,11 @@ const OUT = 'public/assets/home';
 const SETS = {
   hero: {
     width: 2400,
-    // Byte-budget escalation (brief step 4): tried set-wide quality 72, still busted
-    // the 220KB/image cap on both exterior frames (foliage/facade detail compresses
-    // poorly at 2400px). Per-item overrides below on the two exteriors; interiors
-    // stay at the set default because they were already comfortably under cap.
+    // Fix-round (curation findings, see task-4-report.md "Fix round"): slide 0 is the
+    // LCP image and stays at the set default 2400px. Slides 1-3 crossfade behind a
+    // headline and are never inspected closely, so they now render at 1800px
+    // (per-item `width` override below) — ~40% fewer bytes, spent on stronger frames
+    // instead of the byte-constrained ones the first pass shipped.
     items: [
       {
         file: '3-d79113381dee.jpg',
@@ -22,17 +23,26 @@ const SETS = {
         alt: 'The Centre for Advanced Studies building at AKTU Lucknow, viewed from the entrance plaza with its signage and forecourt',
       },
       {
-        file: '2-93fd68a4c727.jpg',
-        alt: 'An industrial robotic arm inside a glass safety enclosure in the CAS automation laboratory',
+        file: '3-3e3165184a5b.jpg',
+        width: 1800,
+        // Busy frame (bookshelves are high-frequency detail) — overridden down to
+        // clear the whole-directory cap alongside hero-03 below.
+        webpQuality: 64,
+        jpegQuality: 56,
+        alt: 'A bright reading room in the CAS library, with study tables and floor-to-ceiling bookshelves',
       },
       {
-        file: '4-bc803ec1f7ad.jpg',
-        webpQuality: 46,
-        jpegQuality: 55,
-        alt: 'An angled street view of the Centre for Advanced Studies building along the AKTU campus road',
+        file: '5-a5d54dc84361.jpg',
+        width: 1800,
+        // Busiest frame in the set (foliage/facade detail compresses poorly, same
+        // failure mode the first curation pass hit at 2400px) — overridden down.
+        webpQuality: 60,
+        jpegQuality: 54,
+        alt: 'A low-angle view of the Centre for Advanced Studies building, its red entrance columns and rooftop signage against the sky',
       },
       {
         file: '3-fb8defe50f10.jpg',
+        width: 1800,
         alt: "Researchers' workbench in the CAS materials chemistry laboratory, lined with instrumentation and fume hoods",
       },
     ],
@@ -83,6 +93,13 @@ const SETS = {
       },
     ],
   },
+  // Fix-round (curation finding 2): #3 and #4 were unpeopled rooms facing blank
+  // projection screens (near-duplicates of each other) — replaced with two more
+  // individually-verified real photographs from images/python (the rest of that
+  // bucket, plus images/seminar, images/workshop23 and images/ai, were re-checked
+  // frame by frame and confirmed to be 100% poster/flyer graphics, no photographs
+  // among them — see task-4-report.md). #2 stays: no cleanly better people-in-
+  // classroom substitute turned up for it specifically (see report).
   programs: {
     width: 800,
     items: [
@@ -95,12 +112,12 @@ const SETS = {
         alt: 'A packed classroom of students following a technical workshop session at CAS',
       },
       {
-        file: '4-02ca26960854.jpg',
-        alt: 'The Shanti Swaroop Bhatnagar seminar hall at CAS, set up with a lectern and projection screen',
+        file: 'py6-ec90796b2ee3.jpg',
+        alt: 'Instructors addressing a full Python workshop classroom, with students seated at laptop workstations and a projection screen at the front',
       },
       {
-        file: '4-57ee06ff0e16.jpg',
-        alt: 'The MOOC recording room at CAS, used for producing online course content',
+        file: 'py1-aa3e36bc3aa5.jpg',
+        alt: 'Students working at laptops in a packed coding workshop at CAS, with instructors observing at the back of the room',
       },
       {
         file: 'gpl-0b63f288b762.jpg',
@@ -108,6 +125,12 @@ const SETS = {
       },
     ],
   },
+  // Fix-round (curation finding 1): areas stays instrument- and facility-led. The
+  // three frames that used to live here (solar install, CyberCity, 3D printer) read
+  // as outcomes/demonstrations, not facilities, so they moved to `innovations`.
+  // Backfilled with three of the four equipment close-ups that used to sit in
+  // `innovations` — they're exactly the "instrument-led" material this set wants,
+  // already clean/uncaptioned/byte-verified from the first curation pass.
   areas: {
     width: 800,
     items: [
@@ -120,23 +143,6 @@ const SETS = {
         alt: 'Server racks in the CAS artificial intelligence and computing laboratory',
       },
       {
-        file: 'est3-3213b51d6fc8.jpg',
-        alt: 'A student assembling a rooftop solar panel array for CAS energy research',
-      },
-      {
-        file: '1-feb83970814a.jpg',
-        alt: 'A model train passing through a miniature smart-city installation used for CAS cybersecurity research',
-      },
-      {
-        file: '3-42a89367c41f.jpg',
-        alt: 'A Stratasys 3D printer with its lid open in the CAS additive manufacturing lab',
-      },
-    ],
-  },
-  innovations: {
-    width: 800,
-    items: [
-      {
         file: 'tga-8358d7b52d43.jpg',
         alt: 'A simultaneous thermal analyser used for materials research at CAS',
       },
@@ -148,12 +154,42 @@ const SETS = {
         file: 'ldtc-e4e270250f2a.jpg',
         alt: "A Lee's disc apparatus used for thermal conductivity experiments at CAS",
       },
+    ],
+  },
+  // Fix-round (curation finding 1): the old four equipment close-ups here didn't
+  // signal an idea, prototype, demonstration or outcome — swapped for frames that
+  // show CAS research becoming something tangible: a printer mid-print, a student
+  // wiring up solar panels, the CyberCity smart-city model (in close-up and as the
+  // full installation being viewed), and students flying a competition drone.
+  innovations: {
+    width: 800,
+    items: [
       {
-        file: 'hem-b2c097433daf.jpg',
-        alt: 'A Hall effect measurement apparatus used in CAS materials research',
+        file: '2-e02b0f1d7ed1.jpg',
+        alt: 'A 3D printer mid-print on an orange plumbing fitting in the CAS 3D printing lab, with a finished part sitting beside it',
+      },
+      {
+        file: 'est3-3213b51d6fc8.jpg',
+        alt: 'A student assembling a rooftop solar panel array for CAS energy research',
+      },
+      {
+        file: '1-feb83970814a.jpg',
+        alt: 'A model train passing through a miniature smart-city installation used for CAS cybersecurity research',
+      },
+      {
+        file: '1-9-c487927f4a0b.jpeg',
+        webpQuality: 62,
+        alt: 'Students flying a racing drone on the CAS lawn during a technical festival',
+      },
+      {
+        file: '2-6b2da2bae044.jpg',
+        alt: 'The full CyberCity smart-city model in the CAS cyber lab — a miniature metro, power plant and water-treatment works — with two people viewing it beside a wall display',
       },
     ],
   },
+  // Fix-round (curation finding 1): #2 (the drone photo) moved to `innovations`,
+  // where it reads as a demonstrated outcome rather than community life. Backfilled
+  // with another candid, on-campus, non-ceremonial frame from the same event.
   life: {
     width: 800,
     // Byte-budget escalation (brief step 4): default webp quality 78 put three
@@ -166,8 +202,12 @@ const SETS = {
         alt: "Students at a robotics obstacle course on the CAS lawn, with the campus's two landmark buildings behind",
       },
       {
-        file: '1-9-c487927f4a0b.jpeg',
-        alt: 'Students flying a racing drone on the CAS lawn during a technical festival',
+        file: '1-5-1cc897810aa9.jpeg',
+        // Busy crowd frame — the set-wide quality-68 override still left this over
+        // the 70KB/image cap; pushed down further, matching the escalation the
+        // first curation pass already applied to this same set.
+        webpQuality: 56,
+        alt: 'Students and staff crowding a balcony to watch a robot-combat competition below during a CAS technical festival',
       },
       {
         file: '1-9b669eed82ab.jpg',
@@ -193,10 +233,13 @@ for (const [set, { width, items, webpQuality = 78 }] of Object.entries(SETS)) {
   await mkdir(path.join(OUT, set), { recursive: true });
   manifest[set] = [];
 
-  for (const [i, { file, alt, webpQuality: itemWebpQuality, jpegQuality: itemJpegQuality }] of items.entries()) {
+  for (const [
+    i,
+    { file, alt, width: itemWidth, webpQuality: itemWebpQuality, jpegQuality: itemJpegQuality },
+  ] of items.entries()) {
     const name = `${set}-${String(i + 1).padStart(2, '0')}`;
     const input = path.join(SRC, file);
-    const base = sharp(input).resize({ width, withoutEnlargement: true });
+    const base = sharp(input).resize({ width: itemWidth ?? width, withoutEnlargement: true });
 
     // jpg is the no-webp fallback path; quality 68 (not the brief template's 82)
     // because the whole-directory 4MB cap (webp+jpg together) needed it — see report.
