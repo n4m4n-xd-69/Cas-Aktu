@@ -6,6 +6,12 @@
     "**/.client/**/*.ts",
     ".react-router/types/**/*"
   ],
+  // docs/, research/, tools/, source-assets/, .claude/ are non-app project
+  // content living alongside the app at repo root (migration research,
+  // audit docs, project tooling) — never part of this app's TS scope,
+  // before or after the client/ root migration. node_modules is excluded
+  // by TypeScript's default even without listing it here.
+  "exclude": ["docs", "research", "tools", "source-assets", ".claude"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2024"],
     "types": ["node", "vite/client"],

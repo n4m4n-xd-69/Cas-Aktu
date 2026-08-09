@@ -1,0 +1,15 @@
+dist/
+.react-router/
+node_modules/
+package-lock.json
+
+# Non-app project content living alongside the React app at repo root
+# (migration research, audit docs, project tooling, Claude Code config) —
+# never part of this app's formatting gate, before or after the client/
+# root migration.
+.claude/
+docs/
+research/
+source-assets/
+tools/
+HANDOFF.md

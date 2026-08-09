@@ -325,7 +325,7 @@ a:not([class]):hover {
    default and the keyframes only ever run forward, so a failed script or a
    dropped stylesheet degrades to "no animation", never to "no content".
 
-   See client/src/lib/motion.ts for the same rule stated for Motion. */
+   See src/lib/motion.ts for the same rule stated for Motion. */
 @keyframes route-enter {
   from {
     opacity: 0;

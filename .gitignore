@@ -1,9 +1,9 @@
-# Node dependencies — restorable from client/package-lock.json
+# Node dependencies — restorable from package-lock.json
 node_modules/
 
 # React build output
-client/dist/
-client/.react-router/
+dist/
+.react-router/
 
 # Python bytecode
 __pycache__/

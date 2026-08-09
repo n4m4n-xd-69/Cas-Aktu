@@ -34,7 +34,7 @@ are done. **S3 is next.**
 
 React Router 8 emits **directory-form URLs natively** — `/about` →
 `dist/client/about/index.html`. No post-build reshaping needed; this retired the top risk
-in the design spec (§3.2). `client/scripts/verify-urls.mjs` enforces it on every build and
+in the design spec (§3.2). `scripts/verify-urls.mjs` enforces it on every build and
 was itself tested against a simulated regression.
 
 ### S2 headline
@@ -54,14 +54,14 @@ future CMS. **No pages yet** — that is S4.
 **Deliverables**
 
 ```
-client/src/data/
+src/data/
   collections/*.json   11 collections, machine-exported (never retyped)
   schema.ts            TypeScript types for every record shape
   loaders.ts           getFaculty(), getDocuments(), … the ONE CMS swap point
 ```
 
 1. Run `python build/export_json.py` — it already exists and writes to `web/src/data`.
-   Retarget it to `client/src/data/collections/`, or copy its output. **Do not hand-type
+   Retarget it to `src/data/collections/`, or copy its output. **Do not hand-type
    records**: programme names, seat counts, patent numbers and faculty credentials must be
    machine-exported, per `build/export_json.py`'s own docstring.
 2. Write `schema.ts` from the exported shapes.
@@ -126,7 +126,7 @@ time-sensitive; the automation should be found regardless.
 it, including canaries, and npm `overrides` cannot nest a TS 6 copy under the linter
 because peers hoist. Both workarounds were tested. Nothing in this codebase uses a TS 7
 feature. **Revisit when [typescript-eslint#10940](https://github.com/typescript-eslint/typescript-eslint/issues/10940) lands** — it is a one-line change in
-`client/package.json`.
+`package.json`.
 
 ### 3. Image rights clearance — launch blocker, not an engineering task
 
@@ -157,13 +157,13 @@ verify theme changes against a production build, not just `npm run dev`.
   it once in the shared record template at S4.
 - **Motion: `initial={false}` on first paint.** Declarative `initial` serialises the hidden
   state into prerendered HTML, shipping pages as `style="opacity:0"` that are blank without
-  JavaScript. See `client/src/lib/motion.ts`.
+  JavaScript. See `src/lib/motion.ts`.
 
 ### 7. Minor
 
 - `build/warm_images.py` has no `__main__` guard — importing it encodes the whole image
   library and writes to disk. Excluded from the dependency check for that reason.
-- `isbot` was auto-added to `client/package.json` by React Router's typegen. It is used by
+- `isbot` was auto-added to `package.json` by React Router's typegen. It is used by
   the build-time server entry only and ships **0 bytes** to clients.
 - Motion accounts for ~118 KB on the one route using it. The spec's ~180 KB/page estimate
   holds only if Motion stays selective. Watch this at S9.
@@ -180,8 +180,7 @@ git status
 git log --oneline -5
 git remote -v          # see known issue 1 before doing anything that pushes
 
-# 2. Client app
-cd client
+# 2. App (promoted to repo root — no more `cd client`)
 npm install            # if node_modules is missing; no --legacy-peer-deps needed
 npm run dev            # http://localhost:5173
                        # http://localhost:5173/_primitives  <- component gallery (dev only)
@@ -202,7 +201,7 @@ python -m venv .venv && .venv/Scripts/python -m pip install -r requirements.txt
 .venv/Scripts/python build/generate.py
 
 # 6. Start S3
-python build/export_json.py    # exports the 11 collections; retarget to client/src/data/
+python build/export_json.py    # exports the 11 collections; retarget to src/data/
 ```
 
 ### Rollback
@@ -222,5 +221,5 @@ git checkout main          # pristine: build/, site/, assets/, templates/, sourc
 | `docs/AUDIT.md` | Phase 1 audit. §10 rights, §11 performance baseline, §16 deletion evidence |
 | `docs/superpowers/specs/2026-08-07-react-migration-design.md` | Approved architecture, stage gates, risks |
 | `docs/master.md` | Original brief |
-| `client/src/lib/motion.ts` | The prerender/animation rule |
-| `client/src/theme/theme-script.ts` | Why the pre-paint scripts must stay inline |
+| `src/lib/motion.ts` | The prerender/animation rule |
+| `src/theme/theme-script.ts` | Why the pre-paint scripts must stay inline |

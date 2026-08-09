@@ -6,7 +6,18 @@ import globals from 'globals';
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', '.react-router/**', 'node_modules/**'],
+    // The last three: non-app project content living alongside the React
+    // app at repo root (migration research, audit docs, project tooling) —
+    // never part of this app's lint scope, before or after the client/
+    // root migration.
+    ignores: [
+      'dist/**',
+      '.react-router/**',
+      'node_modules/**',
+      'docs/**',
+      'research/**',
+      'tools/**',
+    ],
   },
 
   js.configs.recommended,
