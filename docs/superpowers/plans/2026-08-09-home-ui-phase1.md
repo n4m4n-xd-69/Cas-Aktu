@@ -22,7 +22,15 @@
 - **`prefers-reduced-motion: reduce` freezes every slideshow at slide 0**, controls stay operable.
 - Nav is exactly nine items: About, Academics, Research, People, Facilities, Publications, Updates, Documents, Contact.
 - Verified route paths: `/about` `/academics` `/research` `/people` `/research/facilities` `/research/publications` `/updates` `/documents` `/contact` `/campus` `/admissions`.
-- Run `npm run typecheck && npm run lint` before every commit.
+- Run `npm test && npm run typecheck && npm run lint` before every commit.
+- **`react-hooks/set-state-in-effect` is an ERROR in this project.** Calling a
+  setter synchronously in an effect body fails the build. To seed state from a
+  browser API (media query, visibility, scroll position), use
+  `useSyncExternalStore`, not `useState` + a self-calling effect.
+- **Known red baseline:** `src/components/Header/Header.tsx:35` violates that rule
+  and predates this plan (commit `259b961`). Until Task 5 clears it, `npm run lint`
+  reports exactly `1 problem (1 error, 0 warnings)`. Tasks 2–4 must introduce **no
+  additional** lint errors; that one is expected. Task 5 must bring lint to zero.
 
 ## Decision flagged for the user
 
@@ -310,7 +318,13 @@ Expected: FAIL — cannot resolve `./useSlideshow`.
 `src/lib/useSlideshow.ts`:
 
 ```ts
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
 
 export type SlideshowOptions = {
   /** Milliseconds each slide is held. */
@@ -328,31 +342,42 @@ export type Slideshow = {
   prev: () => void;
 };
 
+const MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+
+/**
+ * Both of these read a browser preference that lives outside React.
+ *
+ * They use useSyncExternalStore rather than useState + useEffect because the
+ * project lints `react-hooks/set-state-in-effect` as an error: the
+ * "set initial value inside the effect" pattern is a build failure here, not a
+ * style note. useSyncExternalStore also gets the SSR snapshot right for free,
+ * which matters — this site prerenders.
+ */
+function subscribeToMotionPreference(onChange: () => void) {
+  const query = window.matchMedia(MOTION_QUERY);
+  query.addEventListener('change', onChange);
+  return () => query.removeEventListener('change', onChange);
+}
+
 function usePrefersReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(false);
+  return useSyncExternalStore(
+    subscribeToMotionPreference,
+    () => window.matchMedia(MOTION_QUERY).matches,
+    () => false,
+  );
+}
 
-  useEffect(() => {
-    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const sync = () => setReduced(query.matches);
-    sync();
-    query.addEventListener('change', sync);
-    return () => query.removeEventListener('change', sync);
-  }, []);
-
-  return reduced;
+function subscribeToVisibility(onChange: () => void) {
+  document.addEventListener('visibilitychange', onChange);
+  return () => document.removeEventListener('visibilitychange', onChange);
 }
 
 function useDocumentHidden(): boolean {
-  const [hidden, setHidden] = useState(false);
-
-  useEffect(() => {
-    const sync = () => setHidden(document.visibilityState === 'hidden');
-    sync();
-    document.addEventListener('visibilitychange', sync);
-    return () => document.removeEventListener('visibilitychange', sync);
-  }, []);
-
-  return hidden;
+  return useSyncExternalStore(
+    subscribeToVisibility,
+    () => document.visibilityState === 'hidden',
+    () => false,
+  );
 }
 
 /**
@@ -376,6 +401,16 @@ export function useSlideshow(
   const lengthRef = useRef(length);
   lengthRef.current = length;
 
+  /**
+   * Clamped during render, never with a corrective setState in an effect —
+   * `react-hooks/set-state-in-effect` is an error in this project, and the
+   * effect version would also render one frame of a stale index first.
+   */
+  const safeIndex = index < length ? index : 0;
+
+  const indexRef = useRef(safeIndex);
+  indexRef.current = safeIndex;
+
   const goTo = useCallback((i: number) => {
     const count = lengthRef.current;
     if (count < 1) return;
@@ -385,9 +420,6 @@ export function useSlideshow(
 
   const next = useCallback(() => goTo(indexRef.current + 1), [goTo]);
   const prev = useCallback(() => goTo(indexRef.current - 1), [goTo]);
-
-  const indexRef = useRef(index);
-  indexRef.current = index;
 
   const frozen = paused || reducedMotion || documentHidden || length < 2;
 
@@ -413,17 +445,9 @@ export function useSlideshow(
     };
   }, [frozen, intervalMs, offsetMs, epoch]);
 
-  useEffect(() => {
-    if (index >= length) setIndex(0);
-  }, [index, length]);
-
-  return { index, goTo, next, prev };
+  return { index: safeIndex, goTo, next, prev };
 }
 ```
-
-> Note for the implementer: `indexRef` is declared after `next`/`prev` above for
-> readability of the public surface, but `const` bindings are not hoisted. Move the
-> `indexRef` declaration **above** `next` and `prev` when you write the file.
 
 - [ ] **Step 4: Run tests, typecheck and lint**
 
@@ -777,6 +801,34 @@ git commit -m "feat: curate and process home page photography"
 **Why the store:** `CommandPalette` currently owns `isOpen` in local state (line 19) and
 takes no props, so the header cannot open it. Rather than lift state into `root.tsx` and
 prop-drill, a three-function module store lets any component open it from anywhere.
+
+**This task also clears the repo's one pre-existing lint error.**
+`Header.tsx:35` calls `setHasScrolled(false)` synchronously inside a `useEffect` body,
+which `react-hooks/set-state-in-effect` rejects. Replace the whole
+`hasScrolled` useState + useEffect block with a `useSyncExternalStore` over the scroll
+event, matching the pattern used in `src/lib/useSlideshow.ts`:
+
+```tsx
+const SCROLL_THRESHOLD = 56;
+
+function subscribeToScroll(onChange: () => void) {
+  window.addEventListener('scroll', onChange, { passive: true });
+  return () => window.removeEventListener('scroll', onChange);
+}
+
+function useHasScrolled(active: boolean): boolean {
+  const scrolled = useSyncExternalStore(
+    subscribeToScroll,
+    () => window.scrollY > SCROLL_THRESHOLD,
+    () => false,
+  );
+  return active && scrolled;
+}
+```
+
+Call it as `const hasScrolled = useHasScrolled(isHome);` — the hook must be called
+unconditionally, so the `isHome` gate lives inside it, not around it. After this task
+`npm run lint` must report zero problems.
 
 - [ ] **Step 1: Create the store**
 
