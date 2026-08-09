@@ -33,5 +33,8 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     include: ['src/**/*.test.{ts,tsx}'],
+    // jsdom ships no `window.matchMedia` implementation at all; this
+    // polyfills it before any test file runs. See vitest.setup.ts.
+    setupFiles: ['./vitest.setup.ts'],
   },
 });
