@@ -1,13 +1,13 @@
 .toggle {
-  width: 40px;
-  height: 40px;
+  height: 34px;
+  min-width: 34px;
   padding: 0;
   display: grid;
   place-items: center;
   color: var(--text-secondary);
-  background: transparent;
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   cursor: pointer;
   transition:
     color var(--dur-fast) var(--ease-out),

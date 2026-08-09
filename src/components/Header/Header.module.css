@@ -168,12 +168,29 @@
 
 .navUtility {
   flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
-.home .navUtility button {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.26);
+/* Hero-only treatment for both utility pills (search + theme). Scoped to
+   :not(.scrolled): once the nav bar settles into its opaque state, both
+   pills fall back to the normal surface/border tokens set on .searchPill
+   and .toggle themselves — matching what interior pages already show.
+   Without the :not(.scrolled) gate here, this rule's unconditional
+   `color: #fff` would sit on top of the (opaque, light-theme-white)
+   `var(--surface)` background those tokens resolve to once scrolled,
+   producing invisible white-on-white text. */
+.home:not(.scrolled) .navUtility button {
+  color: rgb(255 255 255 / 0.86);
+  border-color: rgb(255 255 255 / 0.32);
+  background: rgb(255 255 255 / 0.12);
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
+}
+
+.home:not(.scrolled) .navUtility button:hover {
+  color: #fff;
+  border-color: rgb(255 255 255 / 0.55);
 }
 
 .scrolled .identityWrap {
@@ -181,18 +198,15 @@
   transform: translateY(-100%);
 }
 
+/* Opaque scrim, not a blur — the design forbids backdrop-filter anywhere.
+   #0a1c35 (not the brand ink token) matches the hero-scrim's own dark navy
+   so the bar reads as a continuation of the photo's overlay, not a
+   different, generic dark surface. */
 .home.scrolled .navWrap {
   transform: translateY(calc(-1 * var(--identity-height)));
-  background: rgba(7, 20, 39, 0.88);
+  background: #0a1c35;
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 6px 22px rgba(2, 9, 20, 0.14);
-  backdrop-filter: saturate(130%) blur(14px);
-}
-
-@supports not (backdrop-filter: blur(1px)) {
-  .home.scrolled .navWrap {
-    background: #0a1c35;
-  }
 }
 
 @media (max-width: 1100px) {
@@ -271,5 +285,54 @@
   .navWrap,
   .nav a {
     transition: none;
+  }
+}
+
+.searchPill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 34px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  color: var(--text-tertiary);
+  font: inherit;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.searchPill:hover {
+  border-color: var(--border-strong);
+  color: var(--text-secondary);
+}
+
+.home:not(.scrolled) .searchPill {
+  border-color: rgb(255 255 255 / 0.32);
+  background: rgb(255 255 255 / 0.12);
+  color: rgb(255 255 255 / 0.86);
+}
+
+.home:not(.scrolled) .searchPill:hover {
+  border-color: rgb(255 255 255 / 0.55);
+  color: #fff;
+}
+
+/* Nine nav items plus two pills is too much for a narrow viewport — drop
+   the "Search…" label and keep the pill as an icon-only touch target
+   rather than adding a drawer (explicitly out of scope). */
+@media (max-width: 560px) {
+  .searchPill {
+    width: 34px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .searchPill span {
+    display: none;
   }
 }

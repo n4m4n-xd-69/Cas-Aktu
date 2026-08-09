@@ -8,6 +8,11 @@ import {
   getPublications,
 } from '~/data/loaders';
 import styles from './CommandPalette.module.css';
+import {
+  closeCommandPalette,
+  toggleCommandPalette,
+  useCommandPaletteOpen,
+} from './paletteStore';
 
 type SearchResult = {
   title: string;
@@ -16,7 +21,7 @@ type SearchResult = {
 };
 
 export function CommandPalette() {
-  const [isOpen, setIsOpen] = useState(false);
+  const isOpen = useCommandPaletteOpen();
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -28,10 +33,10 @@ export function CommandPalette() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
-        setIsOpen((prev) => !prev);
+        toggleCommandPalette();
       }
       if (e.key === 'Escape') {
-        setIsOpen(false);
+        closeCommandPalette();
       }
     };
 
@@ -60,7 +65,7 @@ export function CommandPalette() {
 
   const handleSelect = (url: string) => {
     navigate(url);
-    setIsOpen(false);
+    closeCommandPalette();
   };
 
   const handleKeyDownInPalette = (e: React.KeyboardEvent) => {
@@ -79,7 +84,7 @@ export function CommandPalette() {
   if (!isOpen) return null;
 
   return (
-    <div className={styles.backdrop} onClick={() => setIsOpen(false)}>
+    <div className={styles.backdrop} onClick={() => closeCommandPalette()}>
       <div
         className={styles.palette}
         onClick={(e) => e.stopPropagation()}

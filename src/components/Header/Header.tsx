@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import { Link, NavLink, useLocation } from 'react-router';
 
+import { openCommandPalette } from '../CommandPalette/paletteStore';
 import { Container } from '../Container/Container';
 import { ThemeToggle } from '../ThemeToggle';
 import styles from './Header.module.css';
@@ -8,14 +9,36 @@ import styles from './Header.module.css';
 const NAV = [
   { to: '/about', label: 'About' },
   { to: '/academics', label: 'Academics' },
-  { to: '/admissions', label: 'Admissions' },
   { to: '/research', label: 'Research' },
   { to: '/people', label: 'People' },
   { to: '/research/facilities', label: 'Facilities' },
-  { to: '/campus', label: 'Campus' },
+  { to: '/research/publications', label: 'Publications' },
   { to: '/updates', label: 'Updates' },
+  { to: '/documents', label: 'Documents' },
   { to: '/contact', label: 'Contact' },
 ];
+
+const SCROLL_THRESHOLD = 56;
+
+function subscribeToScroll(onChange: () => void) {
+  window.addEventListener('scroll', onChange, { passive: true });
+  return () => window.removeEventListener('scroll', onChange);
+}
+
+/**
+ * Reads real scroll position via useSyncExternalStore rather than
+ * useState + useEffect — this project lints `react-hooks/set-state-in-effect`
+ * as an error, and the `isHome` gate must live inside the hook (not around
+ * the call) so the hook itself is called unconditionally on every render.
+ */
+function useHasScrolled(active: boolean): boolean {
+  const scrolled = useSyncExternalStore(
+    subscribeToScroll,
+    () => window.scrollY > SCROLL_THRESHOLD,
+    () => false,
+  );
+  return active && scrolled;
+}
 
 /**
  * Dual-institution masthead.
@@ -28,20 +51,7 @@ const NAV = [
 export function Header() {
   const { pathname } = useLocation();
   const isHome = pathname === '/';
-  const [hasScrolled, setHasScrolled] = useState(false);
-
-  useEffect(() => {
-    if (!isHome) {
-      setHasScrolled(false);
-      return;
-    }
-
-    const updateHeader = () => setHasScrolled(window.scrollY > 56);
-    updateHeader();
-    window.addEventListener('scroll', updateHeader, { passive: true });
-
-    return () => window.removeEventListener('scroll', updateHeader);
-  }, [isHome]);
+  const hasScrolled = useHasScrolled(isHome);
 
   return (
     <header
@@ -71,7 +81,7 @@ export function Header() {
                   Centre for Advanced Studies
                 </span>
                 <span className={styles.brandSub}>
-                  Research · Innovation · Excellence
+                  Research. Innovation. Excellence.
                 </span>
               </span>
             </Link>
@@ -109,6 +119,27 @@ export function Header() {
             ))}
           </nav>
           <div className={styles.navUtility}>
+            <button
+              type="button"
+              className={styles.searchPill}
+              onClick={openCommandPalette}
+              aria-label="Search the site"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" />
+              </svg>
+              <span>Search…</span>
+            </button>
             <ThemeToggle />
           </div>
         </Container>
