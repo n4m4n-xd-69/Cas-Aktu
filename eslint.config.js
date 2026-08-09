@@ -17,6 +17,10 @@ export default tseslint.config(
       'docs/**',
       'research/**',
       'tools/**',
+      // Git-ignored scratch: implementation-plan working files and throwaway
+      // scripts. Not app code, and lint errors from it were masking the real
+      // repo-wide count.
+      '.superpowers/**',
     ],
   },
 
