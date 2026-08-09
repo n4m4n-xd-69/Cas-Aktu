@@ -19,6 +19,7 @@ export {
   type ContainerProps,
   type ContainerWidth,
 } from './Container/Container';
+export { Crossfade } from './Crossfade';
 export { EmptyState, type EmptyStateProps } from './EmptyState/EmptyState';
 export { ErrorBoundary } from './ErrorBoundary';
 export { FadeIn } from './FadeIn';
