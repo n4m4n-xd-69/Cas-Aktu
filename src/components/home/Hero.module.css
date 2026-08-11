@@ -23,7 +23,21 @@
   flex-direction: column;
   justify-content: flex-end;
   gap: var(--space-12);
-  padding-block: var(--space-24) var(--space-10);
+  /* The home header is position: fixed over this section (see
+     Header.module.css), so the content box has to start clear of its real
+     rendered height — identity row + nav row — or the headline sits under
+     the nav text. --header-identity-h / --header-nav-h are the same global
+     tokens Header.module.css sizes its own rows with (src/styles/tokens.css),
+     so this can't drift out of sync with the header again. The content
+     block is bottom-anchored (justify-content: flex-end below), so on a
+     short viewport where it fills all the space this padding-top leaves,
+     the headline's top edge lands exactly at the token sum with zero
+     slack — the + var(--space-4) is deliberate breathing room above that
+     floor, not a magic number standing in for the header's height. */
+  padding-block: calc(
+      var(--header-identity-h) + var(--header-nav-h) + var(--space-4)
+    )
+    var(--space-10);
   width: 100%;
 }
 

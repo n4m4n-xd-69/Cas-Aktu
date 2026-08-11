@@ -1,6 +1,10 @@
 .header {
-  --identity-height: 96px;
-  --nav-height: 56px;
+  /* Row heights live in src/styles/tokens.css as --header-identity-h /
+     --header-nav-h — global, not local, because Hero.module.css must be
+     able to read the exact same values to reserve matching padding.
+     Never redeclare them here; if a row's rendered height changes, fix
+     the token's breakpoint tiers in tokens.css so both components move
+     together. */
   /* Inter has no Devanagari coverage, so the AKTU university name in Hindi
      falls back to a system font. That's expected — no webfont is added for
      one line of text. This stack pins the fallback to real Devanagari faces
@@ -38,7 +42,7 @@
 }
 
 .identity {
-  min-height: var(--identity-height);
+  min-height: var(--header-identity-h);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -110,7 +114,7 @@
 }
 
 .navWrap {
-  min-height: var(--nav-height);
+  min-height: var(--header-nav-h);
   border-block: 1px solid transparent;
   transition:
     transform var(--dur-base) var(--ease-in-out),
@@ -128,7 +132,7 @@
 }
 
 .navContainer {
-  min-height: var(--nav-height);
+  min-height: var(--header-nav-h);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -224,12 +228,23 @@
    so the bar reads as a continuation of the photo's overlay, not a
    different, generic dark surface. */
 .home.scrolled .navWrap {
-  transform: translateY(calc(-1 * var(--identity-height)));
+  transform: translateY(calc(-1 * var(--header-identity-h)));
   background: #0a1c35;
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 6px 22px rgba(2, 9, 20, 0.14);
 }
 
+/* Nine nav items plus two utility pills stop fitting one line somewhere
+   under ~1100px. Rather than hide the overflow behind a silently
+   scrollable row (undiscoverable, and it clipped "Publications" mid-word
+   at rest — see task-6-report.md fix-round notes), the nav wraps onto as
+   many lines as it needs. flex-wrap lets each `<a>` remain a whole,
+   unclipped unit — a line only ever breaks *between* items, never inside
+   one — and the row (and the fixed header above the hero) simply grows to
+   fit. The search/theme pills stay a separate flex item beside the nav
+   block the whole time, so they can never overlap nav text: flexbox lays
+   out siblings without overlap by construction, regardless of how many
+   lines the nav wraps to. */
 @media (max-width: 1100px) {
   .navContainer {
     justify-content: flex-start;
@@ -237,23 +252,13 @@
 
   .nav {
     flex: 1;
+    flex-wrap: wrap;
     justify-content: flex-start;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .nav::-webkit-scrollbar {
-    display: none;
+    row-gap: var(--space-2);
   }
 }
 
 @media (max-width: 680px) {
-  .header {
-    --identity-height: 78px;
-    --nav-height: 52px;
-  }
-
   .identity {
     gap: var(--space-2);
   }

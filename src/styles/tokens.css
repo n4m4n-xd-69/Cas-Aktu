@@ -343,6 +343,16 @@
   --touch: 44px;
   --header-h: 68px;
 
+  /* Header row heights — single source of truth shared with Hero, which
+     pads its content box down by their sum so the headline can never sit
+     under the fixed home-page header. Header.module.css consumes these
+     directly instead of declaring its own local copies; keep the
+     breakpoints below in sync with the ones in Header.module.css that
+     change the row content (identity emblem/type shrinking, nav
+     wrapping onto multiple lines). */
+  --header-identity-h: 96px;
+  --header-nav-h: 56px;
+
   /* ================= Motion ================= */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
@@ -400,6 +410,29 @@
     rgba(8, 9, 26, 0.2) 62%,
     rgba(8, 9, 26, 0.86) 100%
   );
+}
+
+/* ============ Header row heights — responsive tiers ============
+   Mirrors the breakpoints in Header.module.css. Nine nav items stop
+   fitting one line somewhere under 1100px (the same width where
+   Header.module.css switches .nav to flex-wrap), so the nav row wraps
+   onto 2 lines and grows taller; below 680px the identity row also
+   shrinks (smaller emblem/type), the nav row's font/padding shrink too,
+   and with less width per line it can wrap to 3 lines. Each value is the
+   tallest real rendered height measured across its whole tier (checked
+   at 5px-40px steps, not just the tier's boundary), so a width that
+   happens to need one fewer line than its neighbours just gets a little
+   extra breathing room instead of risking a shorter reservation. */
+@media (max-width: 1100px) {
+  :root {
+    --header-nav-h: 104px;
+  }
+}
+@media (max-width: 680px) {
+  :root {
+    --header-identity-h: 78px;
+    --header-nav-h: 150px;
+  }
 }
 
 /* ============ Reduced motion ============
