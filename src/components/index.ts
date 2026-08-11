@@ -1,3 +1,4 @@
+export { AdmissionsRail } from './AdmissionsRail';
 export { Badge, type BadgeProps, type BadgeTone } from './Badge/Badge';
 export { Bento, type BentoItemProps, type BentoProps } from './Bento';
 export {

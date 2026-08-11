@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 
 import { Container, FadeIn } from '~/components';
+import { CampusBand } from '~/components/home/CampusBand';
 import { Hero } from '~/components/home/Hero';
 import {
   getEquipment,
@@ -85,6 +86,7 @@ export default function Home() {
   return (
     <div className={styles.homePage} data-home-page>
       <Hero />
+      <CampusBand />
 
       <section id="explore" className={styles.explore} aria-labelledby="explore-title">
         <Container width="wide">

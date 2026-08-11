@@ -1,0 +1,78 @@
+.band {
+  padding-block: var(--section-y);
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(var(--space-8), 4vw, var(--space-16));
+  align-items: start;
+}
+
+/*
+ * A defined `auto` track still reserves its column-gap even when
+ * AdmissionsRail renders null and leaves no element in it — the grid has no
+ * second item, but the two declared column tracks still exist, so the gap
+ * between them survives as a dead strip on the right. Drop to a single
+ * track whenever the rail isn't in the DOM so Explore Campus is genuinely
+ * full width, not full-width-minus-one-gap.
+ */
+.grid:not(:has(aside)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-normal);
+  color: var(--text);
+}
+
+.lede {
+  margin: 0 0 var(--space-8);
+  max-width: 46ch;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.tour {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  list-style: none;
+}
+
+.tour img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--radius-sm);
+}
+
+.link {
+  font-size: var(--text-sm);
+  color: var(--brand);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .tour {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
