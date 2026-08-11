@@ -47,6 +47,21 @@
   list-style: none;
 }
 
+/*
+ * base.css's global `li + li { margin-top: var(--space-2) }` is written for
+ * stacked prose lists and matches any <li> that follows a sibling <li>,
+ * including these — it doesn't know this <ul> is a 4-up image grid. That
+ * margin-top made the first tour item's grid-stretched box 8px taller than
+ * items 2-4 (which each absorbed the 8px into their own box, per grid
+ * stretch alignment), producing a ragged top edge. This grid already spaces
+ * its items with `gap`, so the flow margin is pure double-spacing here —
+ * null it out, the same fix Footer.module.css uses for its own gap-based
+ * list.
+ */
+.tour li + li {
+  margin-top: 0;
+}
+
 .tour img {
   width: 100%;
   aspect-ratio: 4 / 3;
