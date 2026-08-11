@@ -1,0 +1,137 @@
+.hero {
+  position: relative;
+  min-height: clamp(30rem, 78vh, 46rem);
+  display: flex;
+  isolation: isolate;
+  background: var(--ink);
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    96deg,
+    rgb(8 9 26 / 0.86) 0%,
+    rgb(8 9 26 / 0.62) 46%,
+    rgb(8 9 26 / 0.28) 100%
+  );
+}
+
+.inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-12);
+  padding-block: var(--space-24) var(--space-10);
+  width: 100%;
+}
+
+.content {
+  max-width: 34rem;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-normal);
+  font-size: var(--text-5xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: #fff;
+}
+
+.rule {
+  display: block;
+  width: 3.5rem;
+  height: 2px;
+  margin-block: var(--space-6);
+  background: rgb(255 255 255 / 0.7);
+}
+
+.lede {
+  margin: 0;
+  max-width: 26rem;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: rgb(255 255 255 / 0.88);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-8);
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgb(255 255 255 / 0.45);
+  color: #fff;
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.cta:hover {
+  border-color: #fff;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.counters {
+  display: flex;
+  gap: var(--space-6);
+}
+
+.counter {
+  padding: 0 0 var(--space-1);
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: none;
+  color: rgb(255 255 255 / 0.55);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.counter[data-active] {
+  border-bottom-color: #fff;
+  color: #fff;
+}
+
+.arrows {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.arrows button {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 0.38);
+  border-radius: var(--radius-full);
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.arrows button:hover {
+  border-color: #fff;
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: var(--text-4xl);
+  }
+  .controls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+}

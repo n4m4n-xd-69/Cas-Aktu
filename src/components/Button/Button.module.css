@@ -86,9 +86,6 @@
   --btn-bg: rgba(255, 255, 255, 0.1);
   --btn-fg: #fff;
   --btn-bd: rgba(255, 255, 255, 0.42);
-  /* Unprefixed only — see Header.module.css. Lightning CSS keeps whichever
-     of the two spellings comes last, and Chrome has no -webkit- alias. */
-  backdrop-filter: var(--blur-glass);
 }
 .ondark:hover {
   --btn-bg: rgba(255, 255, 255, 0.2);

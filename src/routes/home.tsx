@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 
-import { Button, Container, FadeIn } from '~/components';
+import { Container, FadeIn } from '~/components';
+import { Hero } from '~/components/home/Hero';
 import {
   getEquipment,
   getFaculty,
@@ -83,43 +84,7 @@ export default function Home() {
 
   return (
     <div className={styles.homePage} data-home-page>
-      <section className={styles.hero} aria-labelledby="home-title">
-        <img
-          src="/assets/home/cas-campus-hero.jpg"
-          alt="Front facade of the Centre for Advanced Studies building in Lucknow"
-          width={2400}
-          height={1800}
-          fetchPriority="high"
-          className={styles.heroMedia}
-        />
-        <div className={styles.heroScrim} aria-hidden="true" />
-        <Container width="wide" className={styles.heroContainer}>
-          <div className={styles.heroContent}>
-            <p className={styles.heroEyebrow}>
-              An in-campus research institute of AKTU, Lucknow
-            </p>
-            <h1 id="home-title" className={styles.heroTitle}>
-              Centre for <span>Advanced Studies</span>
-            </h1>
-            <p className={styles.heroLede}>
-              Advanced education and interdisciplinary research across
-              computing, automation, nanotechnology, manufacturing and energy.
-            </p>
-            <div className={styles.heroActions}>
-              <Button variant="primary" href="/academics">
-                Explore programmes <span aria-hidden="true">→</span>
-              </Button>
-              <Button variant="ondark" href="/research">
-                Discover research
-              </Button>
-            </div>
-          </div>
-          <a className={styles.scrollCue} href="#explore">
-            <span>Explore CAS</span>
-            <span aria-hidden="true">↓</span>
-          </a>
-        </Container>
-      </section>
+      <Hero />
 
       <section id="explore" className={styles.explore} aria-labelledby="explore-title">
         <Container width="wide">
