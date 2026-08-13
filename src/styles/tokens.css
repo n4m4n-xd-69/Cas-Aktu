@@ -1,0 +1,401 @@
+/* ============================================================
+   CAS Design System — tokens
+   ------------------------------------------------------------
+   This site is light mode only. Every colour below is a single,
+   fixed value. Do not reintroduce light-dark(), a
+   prefers-color-scheme media query, or any data-theme selector —
+   there is no dark palette to switch to.
+   ============================================================ */
+
+/* ---------------- Self-hosted variable fonts ----------------
+   Latin loads first and is preloaded in the document head; latin-ext
+   is fetched only if the page actually uses one of its codepoints.
+   No external font CDN: no third-party request, no privacy leak, no
+   render-blocking round trip to another origin. */
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/assets/fonts/inter-latin.woff2') format('woff2');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/assets/fonts/inter-latin-ext.woff2') format('woff2');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('/assets/fonts/source-serif-4-latin.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('/assets/fonts/source-serif-4-latin-ext.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ---------------- Metric-matched fallbacks ----------------
+   font-display: swap renders in a system font first and swaps when the
+   webfont lands. Unless the stand-in occupies exactly the same space, every
+   line of text reflows at that moment: on a throttled mobile load that was
+   measured at 0.12-0.18 CLS, most of it the bottom-anchored hero copy
+   jumping as the headline changed height.
+
+   These descriptors scale the local fallback so its advance widths and
+   line box match the real font, which makes the swap invisible to layout.
+   The percentages are computed, not guessed — build/font_metrics.py derives
+   them from the shipped subsets against the named local font. Re-run it if
+   either font file is replaced. */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 104.86%;
+  ascent-override: 92.38%;
+  descent-override: 23%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Source Serif 4 Fallback';
+  src: local('Georgia'), local('Times New Roman'), local('Liberation Serif');
+  size-adjust: 96.92%;
+  ascent-override: 106.89%;
+  descent-override: 34.56%;
+  line-gap-override: 0%;
+}
+
+/* ---------------- Colour scheme wiring ----------------
+   Light only. Setting color-scheme still themes native controls,
+   scrollbars and form widgets to match. */
+:root {
+  color-scheme: light;
+}
+
+:root {
+  /* ================= Brand =================
+     Institutional indigo carries navigation and primary action.
+     Crimson is the single accent. Teal and gold are demoted to
+     status/taxonomy only — they must not appear in page furniture.
+     One accent on neutral ground is what makes a university site read
+     as authoritative rather than as a product landing page. */
+  --brand-50: #eef0fb;
+  --brand-100: #dce0f7;
+  --brand-200: #b8c0ef;
+  --brand-300: #8f9be4;
+  --brand-400: #6673d6;
+  --brand-500: #414cc0;
+  --brand-600: #2f369f;
+  --brand-700: #292b88;
+  --brand-800: #20216b;
+  --brand-900: #16174d;
+  --brand-950: #0e0f33;
+
+  --accent-400: #d9536a;
+  --accent-500: #c2334a;
+  --accent-600: #a51e2d;
+  --accent-700: #851623;
+
+  --teal-500: #0a8c88;
+  --teal-600: #006b68;
+  --gold-500: #c08800;
+  --gold-600: #9a6a00;
+
+  /* ---- Brand roles ---- */
+  --brand: #292b88;
+  --brand-hover: #20216b;
+  --accent: #a51e2d;
+  --on-brand: #ffffff;
+
+  /* ================= Semantic state ================= */
+  --success: #1e6b3a;
+  --warning: #8a5700;
+  --danger: #b42318;
+  --info: #2f369f;
+
+  /* ================= Surfaces ================= */
+  --bg: #ffffff;
+  --bg-subtle: #f7f8fb;
+  --bg-muted: #eff1f6;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-sunken: #f2f4f8;
+
+  /* Always-dark surfaces (stats band, footer, CTA) — the page's contrast
+     anchors — use fixed dark values and pair with --on-ink. */
+  --ink: #0e1024;
+  --ink-raised: #191c3a;
+  --on-ink: #ffffff;
+  --on-ink-dim: #b9bdd6;
+
+  /* Frosted chrome. Only floating surfaces may use these — the command
+     palette, the masthead over the hero, dialogs. Content that holds body
+     text stays opaque, because a translucent panel puts text on an
+     unpredictable backdrop (PREMIUM_REDESIGN_PRD.md §4.6). */
+  --surface-glass: rgba(255, 255, 255, 0.82);
+  --surface-glass-brd: rgba(16, 18, 28, 0.1);
+
+  /* Translucent glass. */
+  --glass: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(16, 18, 28, 0.09);
+
+  /* ================= Text ================= */
+  --text: #12131a;
+  --text-secondary: #4a4e5c;
+  --text-tertiary: #6b7080;
+  --text-invert: #ffffff;
+
+  /* ================= Lines ================= */
+  --border: #e2e5ed;
+  --border-strong: #c7ccd9;
+  --border-focus: #2f369f;
+  /* Hairline for editorial rules — deliberately lighter than --border */
+  --rule: #eceef3;
+
+  /* ================= Elevation ================= */
+  --shadow-xs: 0 1px 2px rgba(16, 18, 28, 0.05);
+  --shadow-sm:
+    0 1px 3px rgba(16, 18, 28, 0.07), 0 1px 2px rgba(16, 18, 28, 0.04);
+  --shadow-md:
+    0 4px 12px rgba(16, 18, 28, 0.07), 0 2px 4px rgba(16, 18, 28, 0.04);
+  --shadow-lg:
+    0 12px 32px rgba(16, 18, 28, 0.1), 0 4px 8px rgba(16, 18, 28, 0.04);
+  --shadow-xl:
+    0 24px 60px rgba(16, 18, 28, 0.14), 0 8px 16px rgba(16, 18, 28, 0.05);
+
+  /* ================= Typography =================
+     Two voices. Source Serif 4 gives headlines editorial authority and
+     is what separates this from a framework template; Inter carries
+     every piece of UI, metadata and body copy where a serif would cost
+     legibility at small sizes. */
+  --font-sans:
+    'Inter', 'Inter Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Noto Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-display:
+    'Source Serif 4', 'Source Serif 4 Fallback', ui-serif, Georgia,
+    'Times New Roman', serif;
+  --font-mono:
+    ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
+
+  /* Fluid scale. No viewport-only units: every clamp keeps a rem term so
+     the scale still responds to the user's browser font size. */
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(1.25rem, 0.4vw + 1.15rem, 1.375rem);
+  --text-2xl: clamp(1.5rem, 0.8vw + 1.3rem, 1.75rem);
+  --text-3xl: clamp(1.875rem, 1.4vw + 1.5rem, 2.25rem);
+  --text-4xl: clamp(2.25rem, 2.4vw + 1.7rem, 3rem);
+  --text-5xl: clamp(2.75rem, 4vw + 1.75rem, 4rem);
+  --text-6xl: clamp(3.25rem, 6vw + 1.5rem, 5.25rem);
+
+  --leading-tight: 1.06;
+  --leading-snug: 1.22;
+  --leading-normal: 1.55;
+  --leading-relaxed: 1.7;
+
+  --tracking-tight: -0.022em;
+  --tracking-snug: -0.012em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.08em;
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-black: 800;
+
+  /* ================= Space (4px base) ================= */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Vertical rhythm between full-width bands.
+     One value used to serve every band, at clamp(3.5rem, 7vw, 7rem) — 100.8px
+     top AND bottom at 1440px, so 201.6px of dead air between adjacent section
+     content, nine times over: roughly two full screens of nothing on the home
+     page alone. A band's padding should reflect what the band is, so there are
+     now three steps. Content inside the bands was not touched. */
+  --section-y-tight: clamp(1.75rem, 2.8vw, 2.75rem);
+  --section-y: clamp(2.5rem, 3.6vw, 4rem);
+  --section-y-loose: clamp(3rem, 5vw, 5rem);
+
+  /* ================= Shape ================= */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 999px;
+
+  /* ================= Layout ================= */
+  --container: 1280px;
+  --container-wide: 1440px;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --prose: 68ch;
+  --touch: 44px;
+  --header-h: 68px;
+
+  /* Header row heights — single source of truth shared with Hero, which
+     pads its content box down by their sum so the headline can never sit
+     under the fixed home-page header. Header.module.css consumes these
+     directly instead of declaring its own local copies; keep the
+     breakpoints below in sync with the ones in Header.module.css that
+     change the row content (identity emblem/type shrinking, nav
+     wrapping onto multiple lines). */
+  --header-identity-h: 96px;
+  --header-nav-h: 56px;
+
+  /* ================= Motion ================= */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 140ms;
+  --dur-base: 240ms;
+  --dur-slow: 420ms;
+  --dur-slower: 700ms;
+  --dur-cine: 1400ms; /* hero cross-fade */
+
+  /* ================= S8 — premium layer =================
+     Added at S8. Everything here composes existing role tokens; no new
+     raw colour is introduced, so the premium layer inherits theming and
+     forced-colours behaviour for free.
+
+     The lift/sheen pair is the whole interaction language: a surface
+     rises 2px and gains a one-directional highlight. It is deliberately
+     the ONLY hover treatment in the system — repeating one gesture is
+     what reads as considered rather than decorated. */
+  --lift: -2px;
+  --lift-lg: -4px;
+  --sheen: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--text) 4%, transparent) 0%,
+    transparent 42%
+  );
+  /* Hairline highlight along a card's top edge — the neumorphic cue.
+     Kept at 1px and low alpha. */
+  --edge-light: inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent);
+  --edge: inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent);
+
+  /* Bento rhythm. Wider than --space-4 so the grid reads as separate
+     panels rather than a table. */
+  --bento-gap: clamp(0.75rem, 1.2vw, 1.25rem);
+
+  /* ================= Effects ================= */
+  --blur-glass: saturate(180%) blur(20px);
+  /* Hero scrim — two edge-anchored gradients, not one wash.
+     The old single 100deg overlay ran 0.92 -> 0.42 across the whole frame,
+     so every slide read as a dark texture behind type rather than as a
+     photograph. These two darken only what has to carry text: the top strip
+     under the fixed masthead, and the bottom strip under the headline block.
+
+     Stops are absolute lengths, not percentages, and that is the point. The
+     copy block and the header are fixed pixel heights; a percentage stop
+     tuned for a 950px-tall hero silently moves off the text on a 700px one.
+     With px stops the covered bands stay put and only the untouched middle
+     grows or shrinks with the viewport — which is the band that is supposed
+     to be flexible.
+
+     Top: clears --header-identity-h + --header-nav-h (152px at desktop).
+     Bottom: sized to the title + lede + CTA block, ~350px at desktop.
+     Both fall to zero before the middle, so on a tall viewport the centre of
+     the frame is genuinely unmodified. Verified at 4.5:1 for white text
+     against the brightest region of hero-01 and hero-02; if either the copy
+     block or the header grows, re-measure before moving these. */
+  --hero-scrim-v:
+    linear-gradient(
+      180deg,
+      rgba(8, 9, 26, 0.78) 0,
+      rgba(8, 9, 26, 0.52) 110px,
+      rgba(8, 9, 26, 0.22) 190px,
+      rgba(8, 9, 26, 0) 290px
+    ),
+    linear-gradient(
+      0deg,
+      rgba(8, 9, 26, 0.9) 0,
+      rgba(8, 9, 26, 0.76) 170px,
+      rgba(8, 9, 26, 0.58) 350px,
+      rgba(8, 9, 26, 0.2) 450px,
+      rgba(8, 9, 26, 0) 560px
+    );
+}
+
+/* ============ Header row heights — responsive tiers ============
+   Mirrors the breakpoints in Header.module.css. Nine nav items stop
+   fitting one line somewhere under 1100px (the same width where
+   Header.module.css switches .nav to flex-wrap), so the nav row wraps
+   onto 2 lines and grows taller; below 680px the identity row also
+   shrinks (smaller emblem/type), the nav row's font/padding shrink too,
+   and with less width per line it can wrap to 3 lines. Each value is the
+   tallest real rendered height measured across its whole tier (checked
+   at 5px-40px steps, not just the tier's boundary), so a width that
+   happens to need one fewer line than its neighbours just gets a little
+   extra breathing room instead of risking a shorter reservation. */
+@media (max-width: 1100px) {
+  :root {
+    --header-nav-h: 104px;
+  }
+}
+@media (max-width: 680px) {
+  :root {
+    --header-identity-h: 78px;
+    --header-nav-h: 150px;
+  }
+}
+
+/* ============ Reduced motion ============
+   Durations collapse to ~0 so any transition still "completes" and
+   fires transitionend, but nothing visibly moves. Component-level
+   animation is additionally disabled at its own definition. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur-base: 1ms;
+    --dur-slow: 1ms;
+    --dur-slower: 1ms;
+    --dur-cine: 1ms;
+  }
+}
+
+/* ============ Forced colours (Windows high contrast) ============ */
+@media (forced-colors: active) {
+  :root {
+    --shadow-xs: none;
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+    --shadow-xl: none;
+  }
+}

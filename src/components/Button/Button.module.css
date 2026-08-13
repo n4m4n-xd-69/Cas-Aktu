@@ -1,0 +1,130 @@
+/* Ported from assets/css/components.css section 1 "Buttons" (lines 12-80).
+   Values are unchanged. Class names lose their BEM modifiers because CSS
+   Modules already scope them; `.btn--primary` is simply `.primary` here.
+
+   Dropped, with zero occurrences across the 392 generated pages:
+   `.btn--block`, `.btn--external`. Restore from assets/css/components.css
+   if a consumer ever needs them. */
+
+.btn {
+  --btn-bg: transparent;
+  --btn-fg: var(--text);
+  --btn-bd: var(--border-strong);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--touch);
+  padding: 0.7rem 1.25rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-snug);
+  line-height: 1.2;
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-bd);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+  /* Paired with the ripple below: the circle must be clipped to the pill. */
+  overflow: hidden;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+.btn:active {
+  transform: translateY(0);
+}
+.btn svg {
+  flex: none;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.btn:hover svg:last-child {
+  transform: translateX(3px);
+}
+
+.primary {
+  --btn-bg: var(--brand);
+  --btn-fg: var(--on-brand);
+  --btn-bd: var(--brand);
+  box-shadow: var(--shadow-sm);
+}
+.primary:hover {
+  --btn-bg: var(--brand-hover);
+  --btn-bd: var(--brand-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.secondary {
+  --btn-bg: var(--surface);
+  --btn-fg: var(--text);
+  --btn-bd: var(--border-strong);
+}
+.secondary:hover {
+  --btn-bd: var(--brand);
+  --btn-fg: var(--brand);
+}
+
+.ghost {
+  --btn-bd: transparent;
+  --btn-fg: var(--brand);
+}
+.ghost:hover {
+  --btn-bg: color-mix(in srgb, var(--brand) 8%, transparent);
+}
+
+/* On photography / always-dark surfaces */
+.ondark {
+  --btn-bg: rgba(255, 255, 255, 0.1);
+  --btn-fg: #fff;
+  --btn-bd: rgba(255, 255, 255, 0.42);
+}
+.ondark:hover {
+  --btn-bg: rgba(255, 255, 255, 0.2);
+  --btn-bd: rgba(255, 255, 255, 0.72);
+}
+
+.lg {
+  padding: 0.95rem 1.75rem;
+  font-size: var(--text-base);
+}
+.sm {
+  padding: 0.45rem 0.9rem;
+  font-size: var(--text-xs);
+  min-height: 36px;
+}
+
+/* Ripple. The element is appended on pointerdown by the interaction layer and
+   removed after ~700ms; that behaviour lives in app.js today and is ported at
+   S5. The styles ship now so the two halves cannot drift apart. Purely
+   decorative, so it is suppressed entirely for reduced motion. */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.28;
+  transform: scale(0);
+  pointer-events: none;
+  animation: ripple 640ms var(--ease-out) forwards;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ripple {
+    display: none;
+  }
+}

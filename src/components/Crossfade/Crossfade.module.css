@@ -1,0 +1,29 @@
+.stack {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.stack picture {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--dur-cine) var(--ease-in-out);
+}
+
+.stack picture[data-active] {
+  opacity: 1;
+}
+
+.stack img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stack picture {
+    transition: none;
+  }
+}

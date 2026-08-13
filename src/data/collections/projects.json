@@ -1,0 +1,83 @@
+[
+  {
+    "id": "design-and-development-of-artificial-intelligence-based-screening-tool-for-autom",
+    "title": "Design and Development of Artificial Intelligence based Screening Tool for Automatic Diagnosis of Osteoporosis in Women",
+    "sponsor": "Biomedical Device and Technology Development (BDTD), Department of Science and Technology (DST), Government of India",
+    "investigators": "Prof. M.K. Dutta (Principal Investigator); collaborator King George Medical University (KGMU), Lucknow",
+    "amount": "₹74 Lakh",
+    "duration": "3 years",
+    "status": "Sanctioned, fund release under process"
+  },
+  {
+    "id": "intelligent-stethoscope-a-low-cost-device-based-on-body-auscultation-for-early-m",
+    "title": "Intelligent Stethoscope: A Low-Cost Device based on Body Auscultation for Early Medical Diagnosis of Heart, Lung and Prenatal Health",
+    "sponsor": "TDT Division, Biomedical Device and Technology Development (BDTD), Department of Science and Technology, Government of India",
+    "investigators": "Prof. M.K. Dutta (PI)",
+    "amount": "₹34.45 Lakh",
+    "duration": "2 years",
+    "status": "In progress"
+  },
+  {
+    "id": "assistive-device-to-impart-perceptual-ability-to-visually-impaired-using-intelli",
+    "title": "Assistive Device to Impart Perceptual Ability to Visually-Impaired using Intelligent Scene Captioning",
+    "sponsor": "SEED Division, Technology Interventions for Disabled and Elderly Programme, Department of Science and Technology, Government of India",
+    "investigators": "Prof. M.K. Dutta (PI)",
+    "amount": "₹39.25 Lakh",
+    "duration": "3 years",
+    "status": "In progress"
+  },
+  {
+    "id": "development-of-thermal-sensors-for-measuring-the-tool-tip-temperature-and-its-on",
+    "title": "Development of Thermal Sensors for Measuring the Tool Tip Temperature and its Online Monitoring",
+    "sponsor": "AKTU, under the Visvesvaraya Research Promotion Scheme (VRPS)",
+    "investigators": "Dr. Anuj Kumar Sharma (PI), Dr. Rabesh Kumar Singh (Co-PI)",
+    "amount": "₹5.0 Lakh",
+    "duration": "2 years",
+    "status": "In progress"
+  },
+  {
+    "id": "design-and-fabrication-of-human-hand-inspired-soft-robotic-hand-for-differently-",
+    "title": "Design and Fabrication of Human-Hand-Inspired Soft Robotic Hand for Differently-Abled Persons",
+    "sponsor": "Collaborative Research and Innovation Program (CRIP) under AKTU Lucknow and TEQIP-III, MHRD, Government of India",
+    "investigators": "Dr. Anuj Kumar Sharma (PI), Dr. Rabesh Kumar Singh (Co-PI)",
+    "amount": "₹3.0 Lakh",
+    "duration": "1 year",
+    "status": "In progress"
+  },
+  {
+    "id": "computational-fluid-dynamics-cfd-analysis-for-designing-ore-transportation-throu",
+    "title": "Computational Fluid Dynamics (CFD) Analysis for Designing Ore Transportation through Pipelines",
+    "sponsor": "Collaborative Research and Innovation Program (CRIP) under AKTU Lucknow and TEQIP-III, MHRD, Government of India",
+    "investigators": "Dr. Anuj Kumar Sharma (Co-PI)",
+    "amount": "₹3.0 Lakh",
+    "duration": "1 year",
+    "status": "In progress"
+  },
+  {
+    "id": "development-of-novel-method-for-synthesizing-metal-oxide-carbon-nanocomposites-f",
+    "title": "Development of Novel Method for Synthesizing Metal Oxide/Carbon Nanocomposites for Energy Storage and Related Applications",
+    "sponsor": "Collaborative Research and Innovation Program (CRIP) under AKTU Lucknow and TEQIP-III, MHRD, Government of India",
+    "investigators": "Dr. Piyush Jaiswal (PI)",
+    "amount": "₹3.0 Lakh",
+    "duration": "1 year",
+    "status": "In progress"
+  },
+  {
+    "id": "near-net-shape-generation-of-nano-composite-parts-via-stir-casting-and-3d-printi",
+    "title": "Near Net Shape Generation of Nano-Composite Parts via Stir Casting and 3D Printing Approach",
+    "sponsor": "Collaborative Research and Innovation Program (CRIP) under AKTU Lucknow and TEQIP-III, MHRD, Government of India",
+    "investigators": "Dr. Rabesh Kumar Singh (Co-PI)",
+    "amount": "₹3.0 Lakh",
+    "duration": "1 year",
+    "status": "In progress"
+  },
+  {
+    "id": "development-of-sustainable-hybrid-nano-lubricant-with-improved-tribological-prop",
+    "title": "Development of Sustainable Hybrid Nano-Lubricant with Improved Tribological Properties for Green Machining",
+    "sponsor": "SERB, Department of Science and Technology, Government of India",
+    "investigators": "Dr. Anuj Kumar Sharma (PI), Prof. J. Ramkumar, IIT Kanpur (Co-PI)",
+    "amount": "₹18.30 Lakh",
+    "duration": "3 years",
+    "status": "In progress"
+  }
+]

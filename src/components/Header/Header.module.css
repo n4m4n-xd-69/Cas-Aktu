@@ -1,0 +1,506 @@
+.header {
+  /* Row heights live in src/styles/tokens.css as --header-identity-h /
+     --header-nav-h — global, not local, because Hero.module.css must be
+     able to read the exact same values to reserve matching padding.
+     Never redeclare them here; if a row's rendered height changes, fix
+     the token's breakpoint tiers in tokens.css so both components move
+     together. */
+  /* Inter has no Devanagari coverage, so the AKTU university name in Hindi
+     falls back to a system font. That's expected — no webfont is added for
+     one line of text. This stack pins the fallback to real Devanagari faces
+     instead of leaving it to whatever the browser's generic sans resolves
+     to. */
+  --font-devanagari:
+    'Nirmala UI', 'Noto Sans Devanagari', 'Kohinoor Devanagari', sans-serif;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  pointer-events: none;
+}
+
+.home {
+  position: fixed;
+  color: #fff;
+}
+
+.interior {
+  position: sticky;
+  color: var(--text);
+  background: var(--surface);
+  box-shadow: 0 1px 0 var(--rule);
+}
+
+.identityWrap,
+.navWrap {
+  pointer-events: auto;
+}
+
+.identityWrap {
+  transition:
+    transform var(--dur-base) var(--ease-in-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+
+.identity {
+  min-height: var(--header-identity-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1rem, 4vw, 4rem);
+}
+
+.casBrand,
+.aktuBrand {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: inherit;
+  border-radius: var(--radius-md);
+}
+
+.aktuBrand {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.emblem {
+  width: 58px;
+  height: 58px;
+  flex: none;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 5px rgba(0, 0, 0, 0.28));
+}
+
+.brandText {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.brandName,
+.universityName {
+  font-size: clamp(0.92rem, 1.25vw, 1.13rem);
+  font-weight: var(--weight-semibold);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.brandSub {
+  font-size: var(--text-xs);
+  line-height: 1.25;
+  color: color-mix(in srgb, currentColor 78%, transparent);
+}
+
+/* Devanagari university name, secondary to the English name beneath it:
+   smaller, lighter weight, muted colour — same hierarchy relationship
+   .brandSub has to .universityName, just placed above instead of below.
+   line-height is looser than .universityName's 1.2 because Devanagari
+   ascenders/descenders sit taller than Latin's at the same font-size. */
+.universityNameHi {
+  font-family: var(--font-devanagari);
+  font-size: clamp(0.72rem, 1vw, 0.85rem);
+  font-weight: var(--weight-normal);
+  line-height: 1.35;
+  color: color-mix(in srgb, currentColor 82%, transparent);
+}
+
+.home .brandName,
+.home .universityName,
+.home .universityNameHi,
+.home .brandSub {
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
+}
+
+.navWrap {
+  min-height: var(--header-nav-h);
+  border-block: 1px solid transparent;
+  transition:
+    transform var(--dur-base) var(--ease-in-out),
+    background-color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+
+/* No border-color for `.home` here on purpose: over the hero photograph the
+   nav row floats, unboxed. The `border-block: 1px solid transparent` above
+   still reserves its 2px, so removing the colour changes nothing about the
+   row's rendered height and --header-nav-h stays correct. Interior pages sit
+   on an opaque surface and keep their rule. */
+.interior .navWrap {
+  border-top-color: var(--rule);
+}
+
+.navContainer {
+  min-height: var(--header-nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* base.css sets `ul, ol { padding-left: 1.15em }` and `li + li { margin-top:
+   var(--space-2) }` globally for prose. Both have to be nulled here or the
+   nav indents and stair-steps — this is the same global-list bleed that
+   already had to be fixed once for the campus tour grid. */
+.navList,
+.panelList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(0.1rem, 0.55vw, 0.6rem);
+  row-gap: var(--space-1);
+}
+
+.navList > li + li,
+.panelList > li + li {
+  margin-top: 0;
+}
+
+.navItem {
+  position: relative;
+}
+
+.navRow {
+  display: inline-flex;
+  align-items: center;
+}
+
+.navLink {
+  position: relative;
+  min-height: 44px;
+  padding-inline: clamp(0.4rem, 0.75vw, 0.75rem);
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+  text-shadow: none;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.home .navLink,
+.home .caret {
+  color: rgba(255, 255, 255, 0.94);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
+}
+
+.navLink:hover {
+  color: currentColor;
+  background: color-mix(in srgb, currentColor 9%, transparent);
+}
+
+.navLink[aria-current='page'] {
+  font-weight: var(--weight-semibold);
+}
+
+.navLink[aria-current='page']::after {
+  content: '';
+  position: absolute;
+  right: 0.5rem;
+  bottom: 5px;
+  left: 0.5rem;
+  height: 2px;
+  background: var(--brand);
+}
+
+.home .navLink[aria-current='page']::after {
+  background: #fff;
+}
+
+/* 24x24 is exactly the WCAG 2.2 minimum target size. It stays a secondary
+   control — the section's own link beside it is the full-height primary
+   target — so it is not padded out to 44px, which would stretch the row. */
+.caret {
+  width: 24px;
+  height: 24px;
+  margin-left: -0.15rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.navItem[data-open] .caret {
+  transform: rotate(180deg);
+}
+
+.panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  min-width: 13rem;
+  padding: var(--space-2) 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  /* visibility, not display: the transition needs something to animate
+     from, and a hidden panel must also be untabbable — visibility: hidden
+     removes its links from the tab order, which is why the open state is
+     real React state rather than a CSS :focus-within trick. */
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out),
+    visibility var(--dur-fast);
+}
+
+.navItem[data-open] .panel {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* The panel is an opaque surface on every page, including over the hero, so
+   its contents use the normal text tokens rather than the header's inherited
+   white. */
+.panel a {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  color: var(--text);
+  font-size: var(--text-sm);
+  line-height: 1.3;
+  white-space: nowrap;
+  text-shadow: none;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.panelList > li + li > a {
+  box-shadow: inset 0 1px 0 var(--rule);
+}
+
+.panel a:hover {
+  background: var(--bg-subtle);
+  color: var(--brand);
+}
+
+.panel a[aria-current='page'] {
+  font-weight: var(--weight-semibold);
+  color: var(--brand);
+}
+
+/* Keeps the last menu from running off the right edge of the viewport. */
+.navItem:nth-last-child(-n + 3) .panel {
+  left: auto;
+  right: 0;
+}
+
+.navUtility {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.scrolled .identityWrap {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+/* Opaque scrim, not a blur — the design forbids backdrop-filter anywhere.
+   #0a1c35 (not the brand ink token) matches the hero scrim's own dark navy
+   so the bar reads as a continuation of the photo's overlay, not a
+   different, generic dark surface. */
+.home.scrolled .navWrap {
+  transform: translateY(calc(-1 * var(--header-identity-h)));
+  background: #0a1c35;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 6px 22px rgba(2, 9, 20, 0.14);
+}
+
+/* Seven items plus one pill fit one line comfortably further down than the
+   old nine did, but the row still wraps rather than scrolling or clipping:
+   flex-wrap lets each item stay a whole, unclipped unit — a line only ever
+   breaks *between* items, never inside one — and the row (and the fixed
+   header above the hero) simply grows to fit. The search pill stays a
+   separate flex item beside the nav block the whole time, so it can never
+   overlap nav text: flexbox lays out siblings without overlap by
+   construction, regardless of how many lines the nav wraps to. */
+@media (max-width: 900px) {
+  .navContainer {
+    justify-content: flex-start;
+  }
+
+  .navList {
+    flex: 1;
+    justify-content: flex-start;
+    row-gap: var(--space-2);
+  }
+}
+
+@media (max-width: 680px) {
+  .identity {
+    gap: var(--space-2);
+  }
+
+  .casBrand,
+  .aktuBrand {
+    width: 50%;
+    gap: var(--space-2);
+  }
+
+  .emblem {
+    width: 42px;
+    height: 42px;
+  }
+
+  .brandName,
+  .universityName {
+    font-size: 0.72rem;
+    line-height: 1.18;
+  }
+
+  /* .brandSub (the location line) hides at this width to keep the AKTU
+     side to two visible lines. .universityNameHi takes its place in the
+     line count instead of stacking as a third line, so the row's height
+     doesn't grow here even though it gains a line at desktop widths. */
+  .universityNameHi {
+    font-size: 0.62rem;
+    line-height: 1.3;
+  }
+
+  .brandSub {
+    display: none;
+  }
+
+  .navContainer {
+    gap: var(--space-2);
+    padding-right: var(--space-2);
+  }
+
+  .navLink {
+    font-size: var(--text-xs);
+  }
+
+  /* Anchored to the item at narrow widths the panel would overhang the
+     viewport; pin every menu to the container's left edge instead. */
+  .panel {
+    left: 0;
+    right: auto;
+    min-width: 11rem;
+  }
+
+  .navItem:nth-last-child(-n + 3) .panel {
+    left: 0;
+    right: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .emblem {
+    width: 36px;
+    height: 36px;
+  }
+
+  .brandName,
+  .universityName {
+    font-size: 0.66rem;
+  }
+
+  .universityNameHi {
+    font-size: 0.58rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .identityWrap,
+  .navWrap,
+  .navLink,
+  .caret,
+  .panel {
+    transition: none;
+  }
+}
+
+/* Transparent by default — over the hero it is a hairline outline on the
+   photograph, with no fill of its own. */
+.searchPill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 36px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.searchPill:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.home:not(.scrolled) .searchPill {
+  border-color: rgb(255 255 255 / 0.55);
+  background: transparent;
+  color: #fff;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
+}
+
+.home:not(.scrolled) .searchPill:hover {
+  border-color: #fff;
+  background: rgb(255 255 255 / 0.12);
+  color: #fff;
+}
+
+.home.scrolled .searchPill {
+  border-color: rgb(255 255 255 / 0.35);
+  color: rgb(255 255 255 / 0.9);
+}
+
+.home.scrolled .searchPill:hover {
+  border-color: #fff;
+  background: rgb(255 255 255 / 0.12);
+  color: #fff;
+}
+
+/* Below this the label goes and the pill becomes an icon-only target rather
+   than adding a drawer (explicitly out of scope). */
+@media (max-width: 560px) {
+  .searchPill {
+    width: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .searchPill span {
+    display: none;
+  }
+}
