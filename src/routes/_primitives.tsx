@@ -17,7 +17,6 @@ import {
   Section,
   Stack,
 } from '~/components';
-import { useTheme } from '~/theme/ThemeProvider';
 
 /**
  * Development-only component gallery. Not registered in production builds
@@ -28,7 +27,6 @@ import { useTheme } from '~/theme/ThemeProvider';
  * have somewhere to see the library.
  */
 export default function Primitives() {
-  const { theme, resolvedTheme, setTheme, mounted } = useTheme();
   const [page, setPage] = useState(4);
   const [filters, setFilters] = useState(['Patents', '2024', 'Nanotechnology']);
 
@@ -41,23 +39,6 @@ export default function Primitives() {
           Every primitive ported at S2, with each variant that survives into the
           React app. This route is not built in production.
         </Lede>
-
-        {/* Theme controls must wait for `mounted`: the prerendered HTML cannot
-            know the visitor's stored choice, so rendering it before hydration
-            completes would be a hydration mismatch. */}
-        <p style={{ marginTop: 'var(--space-4)' }}>
-          Theme: <strong>{mounted ? theme : '…'}</strong>
-          {mounted && theme === 'system'
-            ? ` (resolved: ${resolvedTheme})`
-            : null}
-        </p>
-        <div
-          style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}
-        >
-          <Button onClick={() => setTheme('light')}>Light</Button>
-          <Button onClick={() => setTheme('dark')}>Dark</Button>
-          <Button onClick={() => setTheme('system')}>System</Button>
-        </div>
       </Section>
 
       <Rule />

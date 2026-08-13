@@ -1,19 +1,68 @@
-import { useSyncExternalStore } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import { Link, NavLink, useLocation } from 'react-router';
 
 import { openCommandPalette } from '../CommandPalette/paletteStore';
 import { Container } from '../Container/Container';
-import { ThemeToggle } from '../ThemeToggle';
 import styles from './Header.module.css';
 
-const NAV = [
+type NavChild = { to: string; label: string };
+type NavItem = { to: string; label: string; children?: NavChild[] };
+
+/**
+ * Seven top-level sections, not nine.
+ *
+ * Facilities and Publications used to sit at the top level beside Research
+ * even though both are routes *inside* /research — so the bar advertised two
+ * arbitrary leaves of one section and hid the other four. They are now items
+ * in the Research menu, which is what makes these dropdowns worth having:
+ * every section with sub-routes exposes all of them, and the top-level link
+ * still goes to the section overview.
+ */
+const NAV: NavItem[] = [
   { to: '/about', label: 'About' },
-  { to: '/academics', label: 'Academics' },
-  { to: '/research', label: 'Research' },
-  { to: '/people', label: 'People' },
-  { to: '/research/facilities', label: 'Facilities' },
-  { to: '/research/publications', label: 'Publications' },
-  { to: '/updates', label: 'Updates' },
+  {
+    to: '/academics',
+    label: 'Academics',
+    children: [
+      { to: '/academics', label: 'Overview' },
+      { to: '/academics/btech', label: 'B.Tech' },
+      { to: '/academics/mtech', label: 'M.Tech' },
+      { to: '/academics/phd', label: 'Ph.D.' },
+      { to: '/academics/programs', label: 'Programmes' },
+    ],
+  },
+  {
+    to: '/research',
+    label: 'Research',
+    children: [
+      { to: '/research', label: 'Overview' },
+      { to: '/research/facilities', label: 'Facilities' },
+      { to: '/research/publications', label: 'Publications' },
+      { to: '/research/projects', label: 'Projects' },
+      { to: '/research/patents', label: 'Patents' },
+      { to: '/research/equipment', label: 'Equipment' },
+    ],
+  },
+  {
+    to: '/people',
+    label: 'People',
+    children: [
+      { to: '/people', label: 'Overview' },
+      { to: '/people/faculty', label: 'Faculty' },
+      { to: '/people/staff', label: 'Staff' },
+      { to: '/people/visiting', label: 'Visiting' },
+      { to: '/people/former', label: 'Former members' },
+    ],
+  },
+  {
+    to: '/updates',
+    label: 'Updates',
+    children: [
+      { to: '/updates', label: 'Overview' },
+      { to: '/updates/notices', label: 'Notices' },
+      { to: '/updates/events', label: 'Events' },
+    ],
+  },
   { to: '/documents', label: 'Documents' },
   { to: '/contact', label: 'Contact' },
 ];
@@ -53,6 +102,20 @@ export function Header() {
   const isHome = pathname === '/';
   const hasScrolled = useHasScrolled(isHome);
 
+  /**
+   * Which section menu is open, by index. Pointer users get it on hover;
+   * keyboard and touch users toggle the caret button, which is why this is
+   * real state rather than a CSS-only :hover/:focus-within trick — a closed
+   * panel is visibility: hidden, and focus cannot enter a hidden subtree, so
+   * a pure-CSS menu is simply unreachable by keyboard.
+   *
+   * Closing on navigation happens in the links' onClick rather than in an
+   * effect watching pathname: `react-hooks/set-state-in-effect` is an error
+   * in this project.
+   */
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const close = () => setOpenIdx(null);
+
   return (
     <header
       className={[
@@ -70,7 +133,7 @@ export function Header() {
           <div className={styles.identity}>
             <Link to="/" className={styles.casBrand} aria-label="CAS home">
               <img
-                src="/assets/brand/cas-emblem.png"
+                src="/assets/brand/cas-116.png"
                 alt=""
                 width={58}
                 height={58}
@@ -101,7 +164,7 @@ export function Header() {
                 <span className={styles.brandSub}>Lucknow, Uttar Pradesh</span>
               </span>
               <img
-                src="/assets/brand/aktu-emblem.png"
+                src="/assets/brand/aktu-116.png"
                 alt=""
                 width={58}
                 height={58}
@@ -114,13 +177,81 @@ export function Header() {
 
       <div className={styles.navWrap}>
         <Container width="wide" className={styles.navContainer}>
-          <nav className={styles.nav} aria-label="Primary navigation">
-            {NAV.map((item) => (
-              <NavLink key={item.to} to={item.to}>
-                {item.label}
-              </NavLink>
-            ))}
+          <nav
+            className={styles.nav}
+            aria-label="Primary navigation"
+            onKeyDown={(event) => {
+              if (event.key === 'Escape') close();
+            }}
+            onBlur={(event) => {
+              // Only close when focus has actually left the whole nav, not
+              // when it moves between a caret and its own panel links.
+              if (!event.currentTarget.contains(event.relatedTarget)) close();
+            }}
+          >
+            <ul className={styles.navList}>
+              {NAV.map((item, i) => (
+                <li
+                  key={item.to}
+                  className={styles.navItem}
+                  data-open={openIdx === i ? '' : undefined}
+                  onMouseEnter={item.children ? () => setOpenIdx(i) : undefined}
+                  onMouseLeave={item.children ? close : undefined}
+                >
+                  <span className={styles.navRow}>
+                    <NavLink
+                      to={item.to}
+                      className={styles.navLink}
+                      onClick={close}
+                      end={item.to === '/about' || item.to === '/contact'}
+                    >
+                      {item.label}
+                    </NavLink>
+
+                    {item.children ? (
+                      <button
+                        type="button"
+                        className={styles.caret}
+                        aria-expanded={openIdx === i}
+                        aria-controls={`nav-panel-${i}`}
+                        aria-label={`${item.label} submenu`}
+                        onClick={() => setOpenIdx(openIdx === i ? null : i)}
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                          width="14"
+                          height="14"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="m6 9 6 6 6-6" />
+                        </svg>
+                      </button>
+                    ) : null}
+                  </span>
+
+                  {item.children ? (
+                    <div id={`nav-panel-${i}`} className={styles.panel}>
+                      <ul className={styles.panelList}>
+                        {item.children.map((child) => (
+                          <li key={child.to}>
+                            <NavLink to={child.to} end onClick={close}>
+                              {child.label}
+                            </NavLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
           </nav>
+
           <div className={styles.navUtility}>
             <button
               type="button"
@@ -128,6 +259,7 @@ export function Header() {
               onClick={openCommandPalette}
               aria-label="Search the site"
             >
+              <span>Search</span>
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden="true"
@@ -141,9 +273,7 @@ export function Header() {
                 <circle cx="11" cy="11" r="7" />
                 <path d="m20 20-3.5-3.5" />
               </svg>
-              <span>Search…</span>
             </button>
-            <ThemeToggle />
           </div>
         </Container>
       </div>

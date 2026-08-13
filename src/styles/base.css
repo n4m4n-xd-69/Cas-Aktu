@@ -3,9 +3,9 @@
    ------------------------------------------------------------
    Rule for this file and every component file: use ROLE tokens
    (--brand, --accent, --text, --border) and never raw palette
-   steps (--brand-700, --accent-600). Role tokens are theme-aware
-   via light-dark(); palette steps are fixed values and will be
-   wrong in one theme or the other.
+   steps (--brand-700, --accent-600). Role tokens are the single
+   source of truth for colour; palette steps are just their raw
+   ingredients and must not be used directly in components.
    ============================================================ */
 
 *,

@@ -19,7 +19,7 @@ export function Footer() {
       <Container>
         <div className={styles.identity}>
           <img
-            src="/assets/brand/cas-emblem.png"
+            src="/assets/brand/cas-116.png"
             alt=""
             width={40}
             height={40}

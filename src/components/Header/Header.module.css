@@ -123,10 +123,11 @@
     box-shadow var(--dur-base) var(--ease-out);
 }
 
-.home .navWrap {
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
+/* No border-color for `.home` here on purpose: over the hero photograph the
+   nav row floats, unboxed. The `border-block: 1px solid transparent` above
+   still reserves its 2px, so removing the colour changes nothing about the
+   row's rendered height and --header-nav-h stays correct. Interior pages sit
+   on an opaque surface and keep their rule. */
 .interior .navWrap {
   border-top-color: var(--rule);
 }
@@ -143,13 +144,46 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.1rem, 0.55vw, 0.65rem);
 }
 
-.nav a {
+/* base.css sets `ul, ol { padding-left: 1.15em }` and `li + li { margin-top:
+   var(--space-2) }` globally for prose. Both have to be nulled here or the
+   nav indents and stair-steps — this is the same global-list bleed that
+   already had to be fixed once for the campus tour grid. */
+.navList,
+.panelList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(0.1rem, 0.55vw, 0.6rem);
+  row-gap: var(--space-1);
+}
+
+.navList > li + li,
+.panelList > li + li {
+  margin-top: 0;
+}
+
+.navItem {
+  position: relative;
+}
+
+.navRow {
+  display: inline-flex;
+  align-items: center;
+}
+
+.navLink {
   position: relative;
   min-height: 44px;
-  padding-inline: clamp(0.45rem, 0.8vw, 0.8rem);
+  padding-inline: clamp(0.4rem, 0.75vw, 0.75rem);
   display: inline-flex;
   align-items: center;
   color: inherit;
@@ -163,32 +197,121 @@
     background-color var(--dur-fast) var(--ease-out);
 }
 
-.home .nav a {
-  color: rgba(255, 255, 255, 0.92);
+.home .navLink,
+.home .caret {
+  color: rgba(255, 255, 255, 0.94);
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
 }
 
-.nav a:hover {
+.navLink:hover {
   color: currentColor;
   background: color-mix(in srgb, currentColor 9%, transparent);
 }
 
-.nav a[aria-current='page'] {
+.navLink[aria-current='page'] {
   font-weight: var(--weight-semibold);
 }
 
-.nav a[aria-current='page']::after {
+.navLink[aria-current='page']::after {
   content: '';
   position: absolute;
-  right: 0.7rem;
-  bottom: 3px;
-  left: 0.7rem;
+  right: 0.5rem;
+  bottom: 5px;
+  left: 0.5rem;
   height: 2px;
   background: var(--brand);
 }
 
-.home .nav a[aria-current='page']::after {
+.home .navLink[aria-current='page']::after {
   background: #fff;
+}
+
+/* 24x24 is exactly the WCAG 2.2 minimum target size. It stays a secondary
+   control — the section's own link beside it is the full-height primary
+   target — so it is not padded out to 44px, which would stretch the row. */
+.caret {
+  width: 24px;
+  height: 24px;
+  margin-left: -0.15rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.navItem[data-open] .caret {
+  transform: rotate(180deg);
+}
+
+.panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  min-width: 13rem;
+  padding: var(--space-2) 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  /* visibility, not display: the transition needs something to animate
+     from, and a hidden panel must also be untabbable — visibility: hidden
+     removes its links from the tab order, which is why the open state is
+     real React state rather than a CSS :focus-within trick. */
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out),
+    visibility var(--dur-fast);
+}
+
+.navItem[data-open] .panel {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* The panel is an opaque surface on every page, including over the hero, so
+   its contents use the normal text tokens rather than the header's inherited
+   white. */
+.panel a {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  color: var(--text);
+  font-size: var(--text-sm);
+  line-height: 1.3;
+  white-space: nowrap;
+  text-shadow: none;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.panelList > li + li > a {
+  box-shadow: inset 0 1px 0 var(--rule);
+}
+
+.panel a:hover {
+  background: var(--bg-subtle);
+  color: var(--brand);
+}
+
+.panel a[aria-current='page'] {
+  font-weight: var(--weight-semibold);
+  color: var(--brand);
+}
+
+/* Keeps the last menu from running off the right edge of the viewport. */
+.navItem:nth-last-child(-n + 3) .panel {
+  left: auto;
+  right: 0;
 }
 
 .navUtility {
@@ -198,33 +321,13 @@
   gap: var(--space-2);
 }
 
-/* Hero-only treatment for both utility pills (search + theme). Scoped to
-   :not(.scrolled): once the nav bar settles into its opaque state, both
-   pills fall back to the normal surface/border tokens set on .searchPill
-   and .toggle themselves — matching what interior pages already show.
-   Without the :not(.scrolled) gate here, this rule's unconditional
-   `color: #fff` would sit on top of the (opaque, light-theme-white)
-   `var(--surface)` background those tokens resolve to once scrolled,
-   producing invisible white-on-white text. */
-.home:not(.scrolled) .navUtility button {
-  color: rgb(255 255 255 / 0.86);
-  border-color: rgb(255 255 255 / 0.32);
-  background: rgb(255 255 255 / 0.12);
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
-}
-
-.home:not(.scrolled) .navUtility button:hover {
-  color: #fff;
-  border-color: rgb(255 255 255 / 0.55);
-}
-
 .scrolled .identityWrap {
   opacity: 0;
   transform: translateY(-100%);
 }
 
 /* Opaque scrim, not a blur — the design forbids backdrop-filter anywhere.
-   #0a1c35 (not the brand ink token) matches the hero-scrim's own dark navy
+   #0a1c35 (not the brand ink token) matches the hero scrim's own dark navy
    so the bar reads as a continuation of the photo's overlay, not a
    different, generic dark surface. */
 .home.scrolled .navWrap {
@@ -234,25 +337,21 @@
   box-shadow: 0 6px 22px rgba(2, 9, 20, 0.14);
 }
 
-/* Nine nav items plus two utility pills stop fitting one line somewhere
-   under ~1100px. Rather than hide the overflow behind a silently
-   scrollable row (undiscoverable, and it clipped "Publications" mid-word
-   at rest — see task-6-report.md fix-round notes), the nav wraps onto as
-   many lines as it needs. flex-wrap lets each `<a>` remain a whole,
-   unclipped unit — a line only ever breaks *between* items, never inside
-   one — and the row (and the fixed header above the hero) simply grows to
-   fit. The search/theme pills stay a separate flex item beside the nav
-   block the whole time, so they can never overlap nav text: flexbox lays
-   out siblings without overlap by construction, regardless of how many
-   lines the nav wraps to. */
-@media (max-width: 1100px) {
+/* Seven items plus one pill fit one line comfortably further down than the
+   old nine did, but the row still wraps rather than scrolling or clipping:
+   flex-wrap lets each item stay a whole, unclipped unit — a line only ever
+   breaks *between* items, never inside one — and the row (and the fixed
+   header above the hero) simply grows to fit. The search pill stays a
+   separate flex item beside the nav block the whole time, so it can never
+   overlap nav text: flexbox lays out siblings without overlap by
+   construction, regardless of how many lines the nav wraps to. */
+@media (max-width: 900px) {
   .navContainer {
     justify-content: flex-start;
   }
 
-  .nav {
+  .navList {
     flex: 1;
-    flex-wrap: wrap;
     justify-content: flex-start;
     row-gap: var(--space-2);
   }
@@ -298,8 +397,21 @@
     padding-right: var(--space-2);
   }
 
-  .nav a {
+  .navLink {
     font-size: var(--text-xs);
+  }
+
+  /* Anchored to the item at narrow widths the panel would overhang the
+     viewport; pin every menu to the container's left edge instead. */
+  .panel {
+    left: 0;
+    right: auto;
+    min-width: 11rem;
+  }
+
+  .navItem:nth-last-child(-n + 3) .panel {
+    left: 0;
+    right: auto;
   }
 }
 
@@ -322,51 +434,68 @@
 @media (prefers-reduced-motion: reduce) {
   .identityWrap,
   .navWrap,
-  .nav a {
+  .navLink,
+  .caret,
+  .panel {
     transition: none;
   }
 }
 
+/* Transparent by default — over the hero it is a hairline outline on the
+   photograph, with no fill of its own. */
 .searchPill {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  height: 34px;
+  height: 36px;
   padding: 0 var(--space-4);
   border: 1px solid var(--border);
   border-radius: var(--radius-full);
-  background: var(--surface);
-  color: var(--text-tertiary);
+  background: transparent;
+  color: var(--text-secondary);
   font: inherit;
   font-size: var(--text-sm);
   cursor: pointer;
   transition:
     border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
     color var(--dur-fast) var(--ease-out);
 }
 
 .searchPill:hover {
   border-color: var(--border-strong);
-  color: var(--text-secondary);
+  color: var(--text);
 }
 
 .home:not(.scrolled) .searchPill {
-  border-color: rgb(255 255 255 / 0.32);
-  background: rgb(255 255 255 / 0.12);
-  color: rgb(255 255 255 / 0.86);
+  border-color: rgb(255 255 255 / 0.55);
+  background: transparent;
+  color: #fff;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
 }
 
 .home:not(.scrolled) .searchPill:hover {
-  border-color: rgb(255 255 255 / 0.55);
+  border-color: #fff;
+  background: rgb(255 255 255 / 0.12);
   color: #fff;
 }
 
-/* Nine nav items plus two pills is too much for a narrow viewport — drop
-   the "Search…" label and keep the pill as an icon-only touch target
-   rather than adding a drawer (explicitly out of scope). */
+.home.scrolled .searchPill {
+  border-color: rgb(255 255 255 / 0.35);
+  color: rgb(255 255 255 / 0.9);
+}
+
+.home.scrolled .searchPill:hover {
+  border-color: #fff;
+  background: rgb(255 255 255 / 0.12);
+  color: #fff;
+}
+
+/* Below this the label goes and the pill becomes an icon-only target rather
+   than adding a drawer (explicitly out of scope). */
 @media (max-width: 560px) {
   .searchPill {
-    width: 34px;
+    width: 36px;
     padding: 0;
     justify-content: center;
   }

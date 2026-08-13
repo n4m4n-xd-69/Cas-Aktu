@@ -1,24 +1,10 @@
 /* ============================================================
    CAS Design System — tokens
    ------------------------------------------------------------
-   Colour is declared ONCE per token using light-dark(). Previously
-   the dark palette was duplicated in :root[data-theme="dark"] and in
-   a prefers-color-scheme media query; the two copies had already
-   drifted (the media copy was missing --shadow-xs/--shadow-sm), and
-   any component that wrote its own :root[data-theme="dark"] rule
-   silently did nothing for visitors on OS dark who had never touched
-   the toggle. That is exactly why the footer rendered white on a dark
-   page.
-
-   Every colour below therefore ships as a pair:
-       --token: <light value>;                 <- fallback, old browsers
-       --token: light-dark(<light>, <dark>);   <- everything since 2024
-   Browsers that do not understand light-dark() keep the first
-   declaration and get a complete, readable light theme.
-
-   Components must never write a dark-mode selector. If a component
-   looks wrong in dark mode, it is using a raw colour instead of a
-   token — fix the component, not the theme.
+   This site is light mode only. Every colour below is a single,
+   fixed value. Do not reintroduce light-dark(), a
+   prefers-color-scheme media query, or any data-theme selector —
+   there is no dark palette to switch to.
    ============================================================ */
 
 /* ---------------- Self-hosted variable fonts ----------------
@@ -102,17 +88,10 @@
 }
 
 /* ---------------- Colour scheme wiring ----------------
-   Setting color-scheme (not just custom properties) is what makes
-   light-dark() follow the toggle, and it also themes native controls,
-   scrollbars and form widgets for free. */
+   Light only. Setting color-scheme still themes native controls,
+   scrollbars and form widgets to match. */
 :root {
-  color-scheme: light dark;
-}
-:root[data-theme='light'] {
   color-scheme: light;
-}
-:root[data-theme='dark'] {
-  color-scheme: dark;
 }
 
 :root {
@@ -144,43 +123,28 @@
   --gold-500: #c08800;
   --gold-600: #9a6a00;
 
-  /* ---- Brand roles (theme-aware) ---- */
+  /* ---- Brand roles ---- */
   --brand: #292b88;
-  --brand: light-dark(#292b88, #8f9be4);
   --brand-hover: #20216b;
-  --brand-hover: light-dark(#20216b, #b8c0ef);
   --accent: #a51e2d;
-  --accent: light-dark(#a51e2d, #f2647c);
   --on-brand: #ffffff;
-  --on-brand: light-dark(#ffffff, #0b0c11);
 
   /* ================= Semantic state ================= */
   --success: #1e6b3a;
-  --success: light-dark(#1e6b3a, #4ade80);
   --warning: #8a5700;
-  --warning: light-dark(#8a5700, #fbbf24);
   --danger: #b42318;
-  --danger: light-dark(#b42318, #f87171);
   --info: #2f369f;
-  --info: light-dark(#2f369f, #8f9be4);
 
   /* ================= Surfaces ================= */
   --bg: #ffffff;
-  --bg: light-dark(#ffffff, #0b0c11);
   --bg-subtle: #f7f8fb;
-  --bg-subtle: light-dark(#f7f8fb, #12141b);
   --bg-muted: #eff1f6;
-  --bg-muted: light-dark(#eff1f6, #1a1d26);
   --surface: #ffffff;
-  --surface: light-dark(#ffffff, #14161e);
   --surface-raised: #ffffff;
-  --surface-raised: light-dark(#ffffff, #1b1e28);
   --surface-sunken: #f2f4f8;
-  --surface-sunken: light-dark(#f2f4f8, #0e1016);
 
-  /* Always-dark surfaces (stats band, footer, CTA). These stay dark in
-     both themes by design — they are the page's contrast anchors — so
-     they use fixed values and pair with --on-ink. */
+  /* Always-dark surfaces (stats band, footer, CTA) — the page's contrast
+     anchors — use fixed dark values and pair with --on-ink. */
   --ink: #0e1024;
   --ink-raised: #191c3a;
   --on-ink: #ffffff;
@@ -191,74 +155,35 @@
      text stays opaque, because a translucent panel puts text on an
      unpredictable backdrop (PREMIUM_REDESIGN_PRD.md §4.6). */
   --surface-glass: rgba(255, 255, 255, 0.82);
-  --surface-glass: light-dark(
-    rgba(255, 255, 255, 0.82),
-    rgba(18, 20, 28, 0.86)
-  );
   --surface-glass-brd: rgba(16, 18, 28, 0.1);
-  --surface-glass-brd: light-dark(
-    rgba(16, 18, 28, 0.1),
-    rgba(255, 255, 255, 0.12)
-  );
 
-  /* Translucent glass. Needs its own token because the alpha differs
-     per theme — a light blur over dark content turns to milk. */
+  /* Translucent glass. */
   --glass: rgba(255, 255, 255, 0.72);
-  --glass: light-dark(rgba(255, 255, 255, 0.72), rgba(16, 18, 26, 0.72));
   --glass-border: rgba(16, 18, 28, 0.09);
-  --glass-border: light-dark(rgba(16, 18, 28, 0.09), rgba(255, 255, 255, 0.1));
 
   /* ================= Text ================= */
   --text: #12131a;
-  --text: light-dark(#12131a, #f2f4f8);
   --text-secondary: #4a4e5c;
-  --text-secondary: light-dark(#4a4e5c, #aeb4c2);
   --text-tertiary: #6b7080;
-  --text-tertiary: light-dark(#6b7080, #858b9b);
   --text-invert: #ffffff;
-  --text-invert: light-dark(#ffffff, #0b0c11);
 
   /* ================= Lines ================= */
   --border: #e2e5ed;
-  --border: light-dark(#e2e5ed, #262a36);
   --border-strong: #c7ccd9;
-  --border-strong: light-dark(#c7ccd9, #3a3f4e);
   --border-focus: #2f369f;
-  --border-focus: light-dark(#2f369f, #8f9be4);
   /* Hairline for editorial rules — deliberately lighter than --border */
   --rule: #eceef3;
-  --rule: light-dark(#eceef3, #1e2230);
 
   /* ================= Elevation ================= */
   --shadow-xs: 0 1px 2px rgba(16, 18, 28, 0.05);
-  --shadow-xs: light-dark(
-    0 1px 2px rgba(16, 18, 28, 0.05),
-    0 1px 2px rgba(0, 0, 0, 0.4)
-  );
   --shadow-sm:
     0 1px 3px rgba(16, 18, 28, 0.07), 0 1px 2px rgba(16, 18, 28, 0.04);
-  --shadow-sm: light-dark(
-    0 1px 3px rgba(16, 18, 28, 0.07),
-    0 1px 3px rgba(0, 0, 0, 0.5)
-  );
   --shadow-md:
     0 4px 12px rgba(16, 18, 28, 0.07), 0 2px 4px rgba(16, 18, 28, 0.04);
-  --shadow-md: light-dark(
-    0 4px 12px rgba(16, 18, 28, 0.07),
-    0 4px 12px rgba(0, 0, 0, 0.5)
-  );
   --shadow-lg:
     0 12px 32px rgba(16, 18, 28, 0.1), 0 4px 8px rgba(16, 18, 28, 0.04);
-  --shadow-lg: light-dark(
-    0 12px 32px rgba(16, 18, 28, 0.1),
-    0 12px 32px rgba(0, 0, 0, 0.6)
-  );
   --shadow-xl:
     0 24px 60px rgba(16, 18, 28, 0.14), 0 8px 16px rgba(16, 18, 28, 0.05);
-  --shadow-xl: light-dark(
-    0 24px 60px rgba(16, 18, 28, 0.14),
-    0 24px 60px rgba(0, 0, 0, 0.7)
-  );
 
   /* ================= Typography =================
      Two voices. Source Serif 4 gives headlines editorial authority and
@@ -380,13 +305,9 @@
     transparent 42%
   );
   /* Hairline highlight along a card's top edge — the neumorphic cue.
-     Kept at 1px and low alpha so it survives dark mode without glowing. */
+     Kept at 1px and low alpha. */
   --edge-light: inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent);
-  --edge-light-dark: inset 0 1px 0 color-mix(in srgb, #fff 8%, transparent);
-  --edge: light-dark(
-    inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent),
-    inset 0 1px 0 color-mix(in srgb, #fff 8%, transparent)
-  );
+  --edge: inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent);
 
   /* Bento rhythm. Wider than --space-4 so the grid reads as separate
      panels rather than a table. */
@@ -394,22 +315,41 @@
 
   /* ================= Effects ================= */
   --blur-glass: saturate(180%) blur(20px);
-  /* Hero scrim. Layered rather than a single flat overlay so the photo
-     keeps depth while the headline still clears 4.5:1 contrast. */
-  --hero-scrim: linear-gradient(
-    100deg,
-    rgba(8, 9, 26, 0.92) 0%,
-    rgba(8, 9, 26, 0.78) 34%,
-    rgba(8, 9, 26, 0.42) 62%,
-    rgba(8, 9, 26, 0.58) 100%
-  );
-  --hero-scrim-v: linear-gradient(
-    180deg,
-    rgba(8, 9, 26, 0.62) 0%,
-    rgba(8, 9, 26, 0.1) 26%,
-    rgba(8, 9, 26, 0.2) 62%,
-    rgba(8, 9, 26, 0.86) 100%
-  );
+  /* Hero scrim — two edge-anchored gradients, not one wash.
+     The old single 100deg overlay ran 0.92 -> 0.42 across the whole frame,
+     so every slide read as a dark texture behind type rather than as a
+     photograph. These two darken only what has to carry text: the top strip
+     under the fixed masthead, and the bottom strip under the headline block.
+
+     Stops are absolute lengths, not percentages, and that is the point. The
+     copy block and the header are fixed pixel heights; a percentage stop
+     tuned for a 950px-tall hero silently moves off the text on a 700px one.
+     With px stops the covered bands stay put and only the untouched middle
+     grows or shrinks with the viewport — which is the band that is supposed
+     to be flexible.
+
+     Top: clears --header-identity-h + --header-nav-h (152px at desktop).
+     Bottom: sized to the title + lede + CTA block, ~350px at desktop.
+     Both fall to zero before the middle, so on a tall viewport the centre of
+     the frame is genuinely unmodified. Verified at 4.5:1 for white text
+     against the brightest region of hero-01 and hero-02; if either the copy
+     block or the header grows, re-measure before moving these. */
+  --hero-scrim-v:
+    linear-gradient(
+      180deg,
+      rgba(8, 9, 26, 0.78) 0,
+      rgba(8, 9, 26, 0.52) 110px,
+      rgba(8, 9, 26, 0.22) 190px,
+      rgba(8, 9, 26, 0) 290px
+    ),
+    linear-gradient(
+      0deg,
+      rgba(8, 9, 26, 0.9) 0,
+      rgba(8, 9, 26, 0.76) 170px,
+      rgba(8, 9, 26, 0.58) 350px,
+      rgba(8, 9, 26, 0.2) 450px,
+      rgba(8, 9, 26, 0) 560px
+    );
 }
 
 /* ============ Header row heights — responsive tiers ============

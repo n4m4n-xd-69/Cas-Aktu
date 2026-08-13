@@ -38,7 +38,6 @@ export {
 } from './Section/Section';
 export { Skeleton, SkeletonCard } from './Skeleton';
 export { Stat, type StatProps } from './Stat/Stat';
-export { ThemeToggle } from './ThemeToggle';
 export {
   Eyebrow,
   Heading,

@@ -1,20 +1,17 @@
 .hero {
   position: relative;
-  min-height: clamp(30rem, 78vh, 46rem);
+  min-height: clamp(32rem, 88vh, 54rem);
   display: flex;
   isolation: isolate;
   background: var(--ink);
 }
 
+/* Shape lives in --hero-scrim-v (tokens.css) so the stop positions can be
+   reasoned about next to the header row-height tokens they have to clear. */
 .scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    96deg,
-    rgb(8 9 26 / 0.86) 0%,
-    rgb(8 9 26 / 0.62) 46%,
-    rgb(8 9 26 / 0.28) 100%
-  );
+  background: var(--hero-scrim-v);
 }
 
 .inner {
@@ -22,14 +19,14 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: var(--space-12);
+  width: 100%;
   /* The home header is position: fixed over this section (see
      Header.module.css), so the content box has to start clear of its real
      rendered height — identity row + nav row — or the headline sits under
      the nav text. --header-identity-h / --header-nav-h are the same global
      tokens Header.module.css sizes its own rows with (src/styles/tokens.css),
      so this can't drift out of sync with the header again. The content
-     block is bottom-anchored (justify-content: flex-end below), so on a
+     block is bottom-anchored (justify-content: flex-end above), so on a
      short viewport where it fills all the space this padding-top leaves,
      the headline's top edge lands exactly at the token sum with zero
      slack — the + var(--space-4) is deliberate breathing room above that
@@ -37,115 +34,223 @@
   padding-block: calc(
       var(--header-identity-h) + var(--header-nav-h) + var(--space-4)
     )
-    var(--space-10);
-  width: 100%;
+    var(--space-12);
 }
 
+/* Wide enough that "Centre for Advanced Studies" sets on one line from
+   ~760px up. This is also load-bearing for contrast: a second title line
+   pushes the top of the copy block further up the frame, into the sky
+   region of hero-01/03 where the scrim has already fallen off. See
+   --hero-scrim-v in tokens.css.
+
+   The animation is the copy's show/hide cycle, restarted on every slide
+   change by the `key={index}` in Hero.tsx. Its 3.2s duration is
+   deliberately longer than the slideshow's 3s interval so the remount
+   always preempts the final keyframe. That ordering is the failsafe: if
+   the rotation stalls — hidden tab, or `useSlideshow` freezing under
+   reduced motion — the animation simply runs out and the element reverts
+   to the `opacity: 1` declared here, so the copy is never left stranded
+   invisible. `backwards` (not `forwards`) fill is what makes that revert
+   happen. */
 .content {
-  max-width: 34rem;
+  max-width: 60rem;
+  opacity: 1;
+  animation: hero-copy 3200ms var(--ease-in-out) backwards;
 }
 
+@keyframes hero-copy {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  9% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  72% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  94%,
+  100% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+/* Sans, not var(--font-display). The rest of the site sets headings in
+   Source Serif 4; the hero headline is the single deliberate exception,
+   carrying the weight-led treatment the design reference uses. Do not
+   propagate this to other headings. */
 .title {
   margin: 0;
-  font-family: var(--font-display);
-  font-weight: var(--weight-normal);
-  font-size: var(--text-5xl);
-  line-height: var(--leading-tight);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-4xl);
+  line-height: 1.06;
   letter-spacing: var(--tracking-tight);
   color: #fff;
-}
-
-.rule {
-  display: block;
-  width: 3.5rem;
-  height: 2px;
-  margin-block: var(--space-6);
-  background: rgb(255 255 255 / 0.7);
+  text-wrap: balance;
+  /* Widens the effective contrast margin over the brightest slides without
+     darkening the photograph further — the scrim carries the measured 4.5:1
+     on its own, and this sits on top of that. */
+  text-shadow: 0 2px 22px rgba(4, 6, 16, 0.55);
 }
 
 .lede {
-  margin: 0;
-  max-width: 26rem;
-  font-size: var(--text-base);
+  margin: var(--space-4) 0 0;
+  max-width: 62ch;
+  font-size: var(--text-sm);
   line-height: var(--leading-normal);
-  color: rgb(255 255 255 / 0.88);
+  color: rgb(255 255 255 / 0.92);
+  text-shadow: 0 1px 14px rgba(4, 6, 16, 0.6);
 }
 
 .cta {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  margin-top: var(--space-8);
-  padding-bottom: 2px;
-  border-bottom: 1px solid rgb(255 255 255 / 0.45);
+  margin-top: var(--space-6);
+  padding: 0.72rem 1.4rem;
+  border: 1px solid rgb(255 255 255 / 0.42);
+  border-radius: var(--radius-full);
   color: #fff;
   font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
   text-decoration: none;
-  transition: border-color var(--dur-fast) var(--ease-out);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
 }
 
 .cta:hover {
   border-color: #fff;
+  background: rgb(255 255 255 / 0.14);
 }
 
-.controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
+.cta span {
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
-.counters {
-  display: flex;
-  gap: var(--space-6);
+.cta:hover span {
+  transform: translateX(3px);
 }
 
-.counter {
-  padding: 0 0 var(--space-1);
-  border: 0;
-  border-bottom: 1px solid transparent;
-  background: none;
-  color: rgb(255 255 255 / 0.55);
-  font: inherit;
-  font-size: var(--text-sm);
-  font-variant-numeric: tabular-nums;
-  cursor: pointer;
-}
-
-.counter[data-active] {
-  border-bottom-color: #fff;
-  color: #fff;
-}
-
-.arrows {
-  display: flex;
-  gap: var(--space-3);
-}
-
-.arrows button {
-  width: 40px;
-  height: 40px;
+/* Single advance control, bare — no ring, no plate. */
+.advance {
+  position: absolute;
+  top: 50%;
+  right: clamp(0.25rem, 1.6vw, 1.5rem);
+  z-index: 2;
+  width: 56px;
+  height: 56px;
   display: grid;
   place-items: center;
-  border: 1px solid rgb(255 255 255 / 0.38);
-  border-radius: var(--radius-full);
+  padding: 0;
+  border: 0;
   background: none;
-  color: #fff;
+  color: rgb(255 255 255 / 0.78);
   cursor: pointer;
-  transition: border-color var(--dur-fast) var(--ease-out);
+  transform: translateY(-50%);
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
 }
 
-.arrows button:hover {
-  border-color: #fff;
+.advance svg {
+  width: 34px;
+  height: 34px;
+  filter: drop-shadow(0 1px 8px rgba(4, 6, 16, 0.6));
+}
+
+.advance:hover {
+  color: #fff;
+  transform: translateY(-50%) translateX(3px);
+}
+
+.scrollCue {
+  position: absolute;
+  right: clamp(0.5rem, 2vw, 2rem);
+  bottom: clamp(0.75rem, 2.5vh, 1.75rem);
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: rgb(255 255 255 / 0.72);
+  transition: color var(--dur-fast) var(--ease-out);
+  animation: cue-bob 2.6s var(--ease-in-out) infinite;
+}
+
+.scrollCue svg {
+  width: 26px;
+  height: 26px;
+  filter: drop-shadow(0 1px 8px rgba(4, 6, 16, 0.6));
+}
+
+.scrollCue:hover {
+  color: #fff;
+}
+
+@keyframes cue-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* useSlideshow freezes under reduced motion, so the copy would never be
+     remounted and re-shown. Hold it visible and still. */
+  .content {
+    animation: none;
+  }
+
+  .scrollCue {
+    animation: none;
+  }
+
+  .advance,
+  .cta,
+  .cta span {
+    transition: none;
+  }
 }
 
 @media (max-width: 640px) {
   .title {
-    font-size: var(--text-4xl);
+    font-size: var(--text-3xl);
   }
-  .controls {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-6);
+
+  /* The advance control is vertically centred at desktop widths, where the
+     bottom-anchored copy never reaches it. On a phone the copy block fills
+     most of the hero and would run underneath it, so the control moves down
+     beside the scroll cue — which is dropped here rather than shrinking both
+     into one another. Reduced motion freezes the rotation, so this has to
+     stay reachable at every width; hiding it on mobile would leave slides
+     2-4 with no way to be seen at all. */
+  .scrollCue {
+    display: none;
+  }
+
+  .advance {
+    top: auto;
+    right: clamp(0.25rem, 1.6vw, 1.5rem);
+    bottom: clamp(0.5rem, 2vh, 1.25rem);
+    width: 44px;
+    height: 44px;
+    transform: none;
+  }
+
+  .advance svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .advance:hover {
+    transform: translateX(3px);
   }
 }

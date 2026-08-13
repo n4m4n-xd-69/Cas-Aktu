@@ -9,8 +9,6 @@ import {
 } from 'react-router';
 
 import { CommandPalette, Footer, Header } from '~/components';
-import { ThemeProvider } from '~/theme/ThemeProvider';
-import { chromeHeightScript, prePaintScript } from '~/theme/theme-script';
 
 // Order is load-bearing: tokens.css declares the custom properties that
 // base.css and every CSS Module consume. Vite preserves import order when it
@@ -21,11 +19,48 @@ import './styles/base.css';
 import type { Route } from './+types/root';
 
 /**
+ * Scripts that must execute before first paint.
+ *
+ * Injected as inline <script> tags below, not run from a component effect.
+ * React effects run after hydration, which is far too late.
+ */
+
+/**
+ * Marks that scripts are running. `js-on` gates the scroll-reveal hidden
+ * state in base.css. Without it, every `.reveal` element renders visible —
+ * which is exactly what a visitor with no JavaScript, or a failed bundle,
+ * must get (FR-02). Never move this into React; if it lands after
+ * hydration, content is invisible until then.
+ */
+const jsOnScript = 'document.documentElement.classList.add("js-on");';
+
+/**
+ * Publishes the height of the fixed page chrome as --chrome-h.
+ *
+ * A full-viewport hero sizes itself against the space the chrome leaves. This
+ * has to run inline, immediately after the chrome markup is parsed and before
+ * <main> exists, so the hero is laid out correctly on the first pass. Running
+ * it from a bundle instead resized the hero after first paint and cost
+ * 0.06 CLS on the current site — a measured regression, not a theoretical one.
+ *
+ * The CSS carries a 140px fallback, so this is a refinement and never a
+ * dependency: if it finds nothing it writes nothing.
+ *
+ * Selector note: the original queried `.site-header`, a global class name.
+ * Class names are module-scoped now and hash per build, so the header instead
+ * carries a stable `data-site-chrome` attribute. Any element added to the
+ * fixed chrome at S4 (alert band, utility bar, header) must carry it.
+ */
+const chromeHeightScript = `(function(){try{var t=0;
+document.querySelectorAll("[data-site-chrome]").forEach(function(e){t+=e.getBoundingClientRect().height;});
+if(t>0)document.documentElement.style.setProperty("--chrome-h",Math.round(t)+"px");}catch(e){}})();`;
+
+/**
  * RootLayout — the document shell for every page. Replaces
  * templates/_layout.html.
  *
  * Present at S2: language, viewport, the skip link and #main landmark, the
- * design system, the pre-paint scripts, and the theme provider.
+ * design system, and the pre-paint scripts.
  *
  * Still to come: the alert band, utility bar, header, notice ticker and
  * footer (S4). Each of those must carry `data-site-chrome` if it is part of
@@ -38,16 +73,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta
-          name="theme-color"
-          content="#292B88"
-          media="(prefers-color-scheme: light)"
-        />
-        <meta
-          name="theme-color"
-          content="#0B0C11"
-          media="(prefers-color-scheme: dark)"
-        />
+        <meta name="theme-color" content="#292B88" />
         <Meta />
         <Links />
 
@@ -69,34 +95,31 @@ export function Layout({ children }: { children: React.ReactNode }) {
           href="/assets/fonts/source-serif-4-latin.woff2"
         />
 
-        {/* Must run before first paint and before any bundle: sets js-on and
-            resolves the stored theme. A React effect would be far too late —
-            the theme would flash and .reveal content would start hidden for
-            visitors whose JavaScript never runs. */}
-        <script dangerouslySetInnerHTML={{ __html: prePaintScript }} />
+        {/* Must run before first paint and before any bundle: sets js-on.
+            A React effect would be far too late — .reveal content would
+            start hidden for visitors whose JavaScript never runs. */}
+        <script dangerouslySetInnerHTML={{ __html: jsOnScript }} />
       </head>
       <body>
-        <ThemeProvider>
-          <a className="skip-link" href="#main">
-            Skip to main content
-          </a>
+        <a className="skip-link" href="#main">
+          Skip to main content
+        </a>
 
-          <Header />
-          <CommandPalette />
+        <Header />
+        <CommandPalette />
 
-          {/* Measures the chrome and publishes --chrome-h. Sits exactly where it
-              sat in _layout.html: after the chrome markup, before <main> exists,
-              so a full-viewport hero is laid out correctly on the first pass.
-              Running this from a bundle instead cost 0.06 CLS. */}
-          <script dangerouslySetInnerHTML={{ __html: chromeHeightScript }} />
+        {/* Measures the chrome and publishes --chrome-h. Sits exactly where it
+            sat in _layout.html: after the chrome markup, before <main> exists,
+            so a full-viewport hero is laid out correctly on the first pass.
+            Running this from a bundle instead cost 0.06 CLS. */}
+        <script dangerouslySetInnerHTML={{ __html: chromeHeightScript }} />
 
-          <main id="main">{children}</main>
+        <main id="main">{children}</main>
 
-          <Footer />
+        <Footer />
 
-          <ScrollRestoration />
-          <Scripts />
-        </ThemeProvider>
+        <ScrollRestoration />
+        <Scripts />
       </body>
     </html>
   );
