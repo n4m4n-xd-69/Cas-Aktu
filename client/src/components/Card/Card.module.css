@@ -1,4 +1,4 @@
-/* Ported from assets/css/components.css section 8 (lines 1210-1243). */
+/* Card — premium light-themed design */
 
 .card {
   display: flex;
@@ -7,33 +7,38 @@
   padding: var(--space-6);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  /* Anchors the title's ::after click target below. */
+  border-radius: var(--radius-xl);
   position: relative;
   transition:
     border-color var(--dur-base) var(--ease-out),
     box-shadow var(--dur-base) var(--ease-out),
     transform var(--dur-base) var(--ease-out);
+  box-shadow: var(--shadow-card);
 }
 
 .card:hover {
   border-color: var(--border-strong);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-4px);
 }
 
 .feature {
   padding: var(--space-8);
-  background: var(--bg-subtle);
+  background: var(--gradient-surface);
+  border-color: var(--brand-light);
+}
+
+.feature:hover {
+  border-color: var(--brand-200);
 }
 
 .icon {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   color: var(--brand);
-  background: color-mix(in srgb, var(--brand) 9%, transparent);
+  background: var(--brand-light);
   border-radius: var(--radius-md);
   margin-bottom: var(--space-1);
 }
@@ -49,21 +54,18 @@
 .title {
   font-size: var(--text-lg);
   font-weight: var(--weight-semibold);
-  /* Was covered by a global `.ui-heading, .card__title, …` rule in base.css.
-     That selector can no longer reach a scoped class name, so the two
-     declarations are restated here. Same values, one owner. */
   font-family: var(--font-sans);
   letter-spacing: var(--tracking-snug);
   overflow-wrap: anywhere;
+  line-height: var(--leading-snug);
 }
 
 .title a {
   color: var(--text);
+  text-decoration: none;
 }
 
-/* Whole-card click target without nesting interactive elements inside each
-   other. The pseudo-element covers the card, so the title's link is the only
-   focusable thing while the entire surface stays clickable. */
+/* Whole-card click target */
 .title a::after {
   content: '';
   position: absolute;
@@ -77,12 +79,14 @@
 .body {
   font-size: var(--text-sm);
   color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
 }
 
-/* margin-top:auto pins the footer to the bottom of a stretched grid cell, so
-   a row of cards has aligned footers regardless of body length. */
+/* margin-top:auto pins the footer to the bottom of a stretched grid cell */
 .foot {
   margin-top: auto;
   padding-top: var(--space-3);
   font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  font-weight: var(--weight-medium);
 }

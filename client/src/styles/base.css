@@ -1,11 +1,5 @@
 /* ============================================================
    Base — reset, typography, layout primitives, a11y
-   ------------------------------------------------------------
-   Rule for this file and every component file: use ROLE tokens
-   (--brand, --accent, --text, --border) and never raw palette
-   steps (--brand-700, --accent-600). Role tokens are theme-aware
-   via light-dark(); palette steps are fixed values and will be
-   wrong in one theme or the other.
    ============================================================ */
 
 *,
@@ -17,12 +11,6 @@
   margin: 0;
 }
 
-/* The `hidden` attribute is only a UA rule of `display: none`, so ANY class
-   that sets display beats it — `.browse__rail { display: grid }` kept the
-   facet rail on screen for visitors with JavaScript off, which is precisely
-   the audience it ships hidden for. Making it !important is the one place
-   that keyword is correct: `hidden` is an assertion about the element's
-   existence, not a style preference to be overridden. */
 [hidden] {
   display: none !important;
 }
@@ -30,15 +18,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  /* Clears the sticky header when jumping to an anchor. */
   scroll-padding-top: calc(var(--header-h) + 2rem);
-  /* Also on the root, not only on body. A full-bleed band's negative margin
-     is measured against its own grid area rather than the container, so it
-     overshoots the viewport edge; body's clip alone did not stop that from
-     scrolling the document sideways (199px at a 1024px viewport). The
-     overshoot is what makes a bleed look like a bleed — it just has to be
-     cut off rather than scrolled to. `clip`, not `hidden`, so no scroll
-     container is created and position: sticky keeps working. */
   overflow-x: clip;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -56,10 +36,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: 'cv11', 'ss01';
-  /* `clip` not `hidden`: overflow-x:hidden silently creates a scroll
-     container, which breaks position:sticky for every descendant and
-     disables scroll anchoring. `clip` stops sideways overflow without
-     either side effect. */
   overflow-x: clip;
 }
 
@@ -82,10 +58,7 @@ select {
   color: inherit;
 }
 
-/* ---- Headings ----
-   Display serif for editorial voice. Source Serif 4's variable range
-   is 400-700, so nothing here asks for 800 — a heavier request would
-   be synthesised by the browser and look smeared. */
+/* ---- Headings ---- */
 h1,
 h2,
 h3,
@@ -116,12 +89,6 @@ h4 {
   letter-spacing: var(--tracking-snug);
 }
 
-/* UI headings — card titles, row titles, nav — stay in the sans so
-   small sizes keep their legibility. */
-/* Card, row, footer and drawer titles now re-declare these two properties
-   inside their own CSS Modules, because their class names are scoped and a
-   global selector could never match them again. .ui-heading stays global:
-   it is a utility, applied by hand wherever a heading needs the sans. */
 .ui-heading {
   font-family: var(--font-sans);
   letter-spacing: var(--tracking-snug);
@@ -151,7 +118,6 @@ code {
   overflow-wrap: anywhere;
 }
 
-/* Long programme titles and file paths must never force a sideways scroll */
 h1,
 h2,
 h3,
@@ -160,7 +126,6 @@ p,
 li {
   overflow-wrap: anywhere;
 }
-/* Scoped title classes opt in via composes: see Card.module.css. */
 
 /* ---- Links ---- */
 a {
@@ -181,9 +146,7 @@ a:not([class]):hover {
   color: var(--brand-hover);
 }
 
-/* ---- Focus ----
-   Two-tone ring so it stays visible on both light and dark surfaces
-   and over photography, where a single colour can vanish. */
+/* ---- Focus ---- */
 :focus-visible {
   outline: 2px solid var(--border-focus);
   outline-offset: 3px;
@@ -204,28 +167,7 @@ a:not([class]):hover {
   background: color-mix(in srgb, var(--brand) 24%, transparent);
 }
 
-/* ---- Layout primitives ----
-   .container, .section, .stack, .lede and .rule used to live here as global
-   classes. They are now co-located CSS Modules next to the components that
-   own them — Container, Section, Typography — so each has exactly one
-   definition and cannot drift:
-
-     Container.module.css   .container / --wide / --prose
-     Section.module.css     .section / --subtle / --muted / --tight
-                            / --loose / --flush-top
-     Typography.module.css  .lede, .rule, .stack, .eyebrow
-
-   .ui-heading stays global below, with .sr-only and .skip-link: it is a
-   utility applied by hand to arbitrary headings, not owned by a component.
-
-   This file keeps only what must be global: reset, element typography,
-   focus, and the a11y and print rules that no single component owns. */
-
-/* ---- Responsive images ----
-   .pic wraps every <picture> the build emits. The LQIP is painted as a
-   background on the <img> itself, so it is covered the instant the real
-   pixels decode — no fade-out timer to get wrong, and nothing to clean
-   up if JS never runs. */
+/* ---- Responsive images ---- */
 .pic {
   display: block;
   position: relative;
@@ -271,10 +213,7 @@ a:not([class]):hover {
   transform: translate(-50%, 0);
 }
 
-/* ---- Scroll reveal ----
-   Hidden state only applies when JS is confirmed running (html.js-on).
-   Without JS the class never lands and all content renders visible, so
-   the page is complete for crawlers and for a failed script load. */
+/* ---- Scroll reveal ---- */
 .js-on .reveal {
   opacity: 0;
   transform: translate3d(0, 18px, 0);
@@ -299,9 +238,6 @@ a:not([class]):hover {
 
 /* ---- Print ---- */
 @media print {
-  /* Chrome that must not print. Was a list of global class names; those are
-     module-scoped now, so components opt in by adding .print-hide. Every
-     component ported after S2 that is page furniture must add it. */
   .print-hide {
     display: none !important;
   }
@@ -332,8 +268,5 @@ a:not([class]):hover {
   }
 }
 
-/* ---- Print opt-in utility (added at S2) ----
-   Global, deliberately: it is applied from inside CSS Modules via :global()
-   or as a plain className, and must resolve identically everywhere. */
 .print-hide {
 }

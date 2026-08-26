@@ -1,8 +1,4 @@
-/* Ported from assets/css/components.css section 8 (lines 1204-1208).
-
-   Every column count is auto-fit with a minimum track, not a fixed count, so
-   the grid reflows without media queries and never produces a column narrower
-   than its content can use. */
+/* Grid — premium light-themed design */
 
 .grid {
   display: grid;
@@ -10,11 +6,11 @@
 }
 
 .cols2 {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 .cols3 {
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 .cols4 {
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }

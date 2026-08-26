@@ -1,12 +1,6 @@
-/* Typographic primitives.
+/* Typography — premium light-themed design */
 
-   Headings themselves are NOT here: h1-h6 are styled globally in base.css,
-   because a heading must look right whether or not it came through a
-   component. This file holds the named typographic roles that the legacy
-   system applies by class — moved from base.css "Layout primitives" and
-   components.css section 2. */
-
-/* Intro paragraph under a page or section heading. Used 93 times. */
+/* Intro paragraph under a page or section heading. */
 .lede {
   font-size: var(--text-lg);
   line-height: var(--leading-relaxed);
@@ -14,8 +8,7 @@
   max-width: var(--prose);
 }
 
-/* Editorial hairline. Deliberately lighter than --border so it reads as
-   typographic structure rather than as a box edge. */
+/* Editorial hairline */
 .rule {
   border: 0;
   border-top: 1px solid var(--rule);
@@ -28,9 +21,7 @@
   margin-top: var(--space-8);
 }
 
-/* The eyebrow and its trailing rule are the system's most repeated editorial
-   signal — they establish hierarchy in place of an oversized heading. Used
-   101 times. */
+/* Eyebrow with trailing rule */
 .eyebrow {
   display: flex;
   align-items: center;
@@ -50,7 +41,7 @@
   max-width: 3.5rem;
   height: 1px;
   background: currentColor;
-  opacity: 0.45;
+  opacity: 0.35;
 }
 
 .eyebrowOnDark {

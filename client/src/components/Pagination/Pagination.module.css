@@ -1,15 +1,4 @@
-/* NET NEW at S2 — there is no legacy counterpart.
-
-   The audit confirmed the current site has no pagination anywhere: long
-   record lists are filtered with facets and otherwise rendered in full. So
-   unlike every other primitive in this folder, this one has no visual
-   baseline to be checked against.
-
-   It is therefore built strictly out of existing tokens and deliberately
-   reuses the chip/button idiom already in the system — pill radius,
-   --touch minimum target, --border/--brand roles — so that it reads as part
-   of the same family rather than as a new visual language. Nothing here
-   invents a value. */
+/* Pagination — premium light-themed design */
 
 .pagination {
   display: flex;
@@ -38,12 +27,14 @@
   transition:
     border-color var(--dur-fast) var(--ease-out),
     background-color var(--dur-fast) var(--ease-out),
-    color var(--dur-fast) var(--ease-out);
+    color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
 }
 
 .item:hover {
   border-color: var(--border-strong);
   background: var(--bg-subtle);
+  box-shadow: var(--shadow-xs);
 }
 
 .current {
@@ -51,25 +42,26 @@
   background: var(--brand);
   border-color: var(--brand);
   font-weight: var(--weight-semibold);
+  box-shadow: var(--shadow-sm);
 }
 
 .current:hover {
-  background: var(--brand);
-  border-color: var(--brand);
+  background: var(--brand-hover);
+  border-color: var(--brand-hover);
 }
 
 .disabled {
   color: var(--text-tertiary);
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .disabled:hover {
   border-color: var(--border);
   background: var(--surface);
+  box-shadow: none;
 }
 
-/* Non-interactive gap marker. */
 .ellipsis {
   display: inline-flex;
   align-items: center;

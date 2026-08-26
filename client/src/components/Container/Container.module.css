@@ -1,6 +1,4 @@
-/* Moved out of assets/css/base.css "Layout primitives". Values unchanged.
-   The site applies `.container` 1,751 times across 392 pages — it is the
-   single most-used class in the design system. */
+/* Container — premium light-themed design */
 
 .container {
   width: 100%;

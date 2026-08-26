@@ -1,10 +1,4 @@
-/* Ported from assets/css/components.css section 1 "Buttons" (lines 12-80).
-   Values are unchanged. Class names lose their BEM modifiers because CSS
-   Modules already scope them; `.btn--primary` is simply `.primary` here.
-
-   Dropped, with zero occurrences across the 392 generated pages:
-   `.btn--block`, `.btn--external`. Restore from assets/css/components.css
-   if a consumer ever needs them. */
+/* Button — premium light-themed design */
 
 .btn {
   --btn-bg: transparent;
@@ -12,6 +6,7 @@
   --btn-bd: var(--border-strong);
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-2);
   min-height: var(--touch);
   padding: 0.7rem 1.25rem;
@@ -27,8 +22,8 @@
   cursor: pointer;
   text-align: center;
   position: relative;
-  /* Paired with the ripple below: the circle must be clipped to the pill. */
   overflow: hidden;
+  text-decoration: none;
   transition:
     transform var(--dur-fast) var(--ease-out),
     background-color var(--dur-fast) var(--ease-out),
@@ -71,6 +66,7 @@
 .secondary:hover {
   --btn-bd: var(--brand);
   --btn-fg: var(--brand);
+  box-shadow: var(--shadow-sm);
 }
 
 .ghost {
@@ -78,7 +74,7 @@
   --btn-fg: var(--brand);
 }
 .ghost:hover {
-  --btn-bg: color-mix(in srgb, var(--brand) 8%, transparent);
+  --btn-bg: var(--brand-light);
 }
 
 /* On photography / always-dark surfaces */
@@ -104,10 +100,7 @@
   min-height: 36px;
 }
 
-/* Ripple. The element is appended on pointerdown by the interaction layer and
-   removed after ~700ms; that behaviour lives in app.js today and is ported at
-   S5. The styles ship now so the two halves cannot drift apart. Purely
-   decorative, so it is suppressed entirely for reduced motion. */
+/* Ripple */
 .ripple {
   position: absolute;
   border-radius: 50%;

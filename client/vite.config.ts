@@ -9,6 +9,10 @@ export default defineConfig({
   // less place for alias config to drift out of sync with TypeScript.
   resolve: { tsconfigPaths: true },
 
+  server: {
+    allowedHosts: true,
+  },
+
   css: {
     modules: {
       // Class names stay readable in dev and hash in production. The readable
