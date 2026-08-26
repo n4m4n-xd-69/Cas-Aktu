@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'motion/react';
 
 import {
   Badge,
@@ -17,18 +18,13 @@ import {
   Section,
   Stack,
 } from '~/components';
-import { useTheme } from '~/theme/ThemeProvider';
+import { fadeUp, staggerContainer, staggerItem, transition } from '~/lib/motion';
 
 /**
  * Development-only component gallery. Not registered in production builds
  * (see routes.ts) and never prerendered.
- *
- * Purpose: render every primitive and every variant on one page so S2's
- * "no visual regressions" check can be made by looking, and so later stages
- * have somewhere to see the library.
  */
 export default function Primitives() {
-  const { theme, resolvedTheme, setTheme, mounted } = useTheme();
   const [page, setPage] = useState(4);
   const [filters, setFilters] = useState(['Patents', '2024', 'Nanotechnology']);
 
@@ -41,23 +37,9 @@ export default function Primitives() {
           Every primitive ported at S2, with each variant that survives into the
           React app. This route is not built in production.
         </Lede>
-
-        {/* Theme controls must wait for `mounted`: the prerendered HTML cannot
-            know the visitor's stored choice, so rendering it before hydration
-            completes would be a hydration mismatch. */}
-        <p style={{ marginTop: 'var(--space-4)' }}>
-          Theme: <strong>{mounted ? theme : '…'}</strong>
-          {mounted && theme === 'system'
-            ? ` (resolved: ${resolvedTheme})`
-            : null}
+        <p style={{ marginTop: 'var(--space-4)', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>
+          Light theme only — dark mode has been removed.
         </p>
-        <div
-          style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}
-        >
-          <Button onClick={() => setTheme('light')}>Light</Button>
-          <Button onClick={() => setTheme('dark')}>Dark</Button>
-          <Button onClick={() => setTheme('system')}>System</Button>
-        </div>
       </Section>
 
       <Rule />
@@ -78,21 +60,13 @@ export default function Primitives() {
       <Section spacing="tight">
         <Heading level={2}>Button</Heading>
         <Stack>
-          <div
-            style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}
-          >
+          <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
             <Button variant="primary">Primary</Button>
             <Button variant="secondary">Secondary</Button>
             <Button variant="ghost">Ghost</Button>
-            <Button variant="primary" size="lg">
-              Large
-            </Button>
-            <Button variant="secondary" size="sm">
-              Small
-            </Button>
-            <Button variant="primary" href="https://example.org">
-              As a link
-            </Button>
+            <Button variant="primary" size="lg">Large</Button>
+            <Button variant="secondary" size="sm">Small</Button>
+            <Button variant="primary" href="https://example.org">As a link</Button>
           </div>
           <div
             style={{
@@ -113,9 +87,7 @@ export default function Primitives() {
 
       <Section spacing="tight">
         <Heading level={2}>Badge</Heading>
-        <div
-          style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}
-        >
+        <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
           <Badge tone="open">Open</Badge>
           <Badge tone="closing">Closing soon</Badge>
           <Badge tone="archived">Archived</Badge>
@@ -147,21 +119,19 @@ export default function Primitives() {
       <Section spacing="tight">
         <Heading level={2}>Card and Grid</Heading>
         <Grid columns={3}>
-          {['Nanotechnology', 'Mechatronics', 'Computer Science'].map(
-            (name) => (
-              <Card key={name}>
-                <Card.Eyebrow>Programme</Card.Eyebrow>
-                <Card.Title>
-                  <a href="#card">M.Tech {name}</a>
-                </Card.Title>
-                <Card.Body>
-                  Two-year postgraduate programme. Whole-card click target via
-                  the title link.
-                </Card.Body>
-                <Card.Foot>18 seats</Card.Foot>
-              </Card>
-            ),
-          )}
+          {['Nanotechnology', 'Mechatronics', 'Computer Science'].map((name) => (
+            <Card key={name}>
+              <Card.Eyebrow>Programme</Card.Eyebrow>
+              <Card.Title>
+                <a href="#card">M.Tech {name}</a>
+              </Card.Title>
+              <Card.Body>
+                Two-year postgraduate programme. Whole-card click target via
+                the title link.
+              </Card.Body>
+              <Card.Foot>18 seats</Card.Foot>
+            </Card>
+          ))}
         </Grid>
         <div style={{ marginTop: 'var(--space-6)' }}>
           <Card feature>
